@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>factory-starter — Notes</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #222;
+      }
+      h1 { font-weight: 600; }
+      form { display: grid; gap: 0.5rem; margin-bottom: 2rem; }
+      input, textarea, button {
+        font: inherit;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button { background: #222; color: white; cursor: pointer; border: none; }
+      button:hover { background: #444; }
+      .note {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+      .note h3 { margin: 0 0 0.25rem; }
+      .note .tags { color: #666; font-size: 0.85rem; }
+      .note .actions { margin-top: 0.5rem; }
+      .note button { background: #c33; padding: 0.25rem 0.5rem; font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Notes</h1>
+
+    <form id="new-note">
+      <input name="title" placeholder="Title" required />
+      <textarea name="body" placeholder="Body" rows="3" required></textarea>
+      <input name="tags" placeholder="tags, comma, separated" />
+      <button type="submit">Add Note</button>
+    </form>
+
+    <div id="notes"></div>
+
+    <script>
+      async function loadNotes() {
+        const res = await fetch('/api/notes');
+        const notes = await res.json();
+        const container = document.getElementById('notes');
+        container.innerHTML = '';
+        for (const note of notes) {
+          const el = document.createElement('div');
+          el.className = 'note';
+          el.innerHTML = `
+            <h3></h3>
+            <p></p>
+            <div class="tags"></div>
+            <div class="actions">
+              <button data-id="${note.id}">Delete</button>
+            </div>
+          `;
+          el.querySelector('h3').textContent = note.title;
+          el.querySelector('p').textContent = note.body;
+          el.querySelector('.tags').textContent = note.tags.length ? '#' + note.tags.join(' #') : '';
+          el.querySelector('button').addEventListener('click', async () => {
+            await fetch('/api/notes/' + note.id, { method: 'DELETE' });
+            loadNotes();
+          });
+          container.appendChild(el);
+        }
+      }
+
+      document.getElementById('new-note').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const data = new FormData(form);
+        const body = {
+          title: data.get('title'),
+          body: data.get('body'),
+          tags: (data.get('tags') || '').split(',').map((t) => t.trim()).filter(Boolean),
+        };
+        await fetch('/api/notes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        form.reset();
+        loadNotes();
+      });
+
+      loadNotes();
+    </script>
+  </body>
+</html>
