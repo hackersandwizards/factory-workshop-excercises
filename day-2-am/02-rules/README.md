@@ -16,9 +16,9 @@ Unterschied zu CLAUDE.md / Skills:
 
 ## Ziel
 
-Pirate kehrt wieder — diesmal als Rule mit Glob-Scope. Glob-Mechanik **viscerale**: TN sieht Verhalten am Datei-Wechsel, nicht nur an Theorie.
+Der Pirat kommt zurück — diesmal als Rule mit Glob-Scope. Glob-Mechanik **viscerale**: TN sieht Verhalten am Datei-Wechsel, nicht nur an Theorie.
 
-**Pirate erscheint im Workshop dreimal:**
+**Der Pirat erscheint im Workshop dreimal:**
 
 | Tag | Layer | Wo |
 |-----|-------|----|
