@@ -11,7 +11,7 @@ Siehe [SETUP.md](SETUP.md). Kurz: Bun, jq, git, Claude Code installiert.
 ## Struktur
 
 ```
-day-1/                      Foundations — eine Hands-On (Pirate-Skill)
+day-1/                      Foundations — Pirate-CLAUDE.md (always-on) + Pirate-Skill (on-demand)
 day-2-am/                   Customization-Atoms: Skills → Rules → Subagents → Hooks
 day-2-pm/                   Factory-Pipeline (v0-Build im factory-starter)
 ```
@@ -35,6 +35,7 @@ cd factory-workshop-excercises
 
 ## Tag-Navigation
 
+- [Day 1: Pirate-CLAUDE.md](day-1/00-pirate-claude-md/)
 - [Day 1: Pirate-Skill](day-1/01-pirate-skill/)
 - [Day 2 AM 01: Planning-Skill](day-2-am/01-planning-skill/)
 - [Day 2 AM 02: Rules](day-2-am/02-rules/)
