@@ -1,58 +1,72 @@
 # Day 2 AM · Übung 01 — Planning-Skill
 
-**Slot:** 09:00–10:00 · 60 Minuten
+**Slot:** 09:00–10:10 · 70 Minuten
 
 ## Ziel
 
-Eigenen Planning-Skill bauen, der mindestens **3 der 6 Mechaniken** für gutes Planen nutzt. Brücke zu PM: dieser Skill wird als `@refine`-Subagent wiederkehren.
+Eigenen Planning-Skill bauen, der ein **4-Mechaniken-Subset** aus `obra/superpowers/brainstorming` umsetzt. Output ist ein **Markdown-Plan-File** in `.plans/<task>.md` — Bean-File-Form, die in PM-Factory wiederkehrt.
 
-## Pädagogisches Pattern: Consume → Deconstruct → Reconstruct
+## Pädagogisches Pattern: Demo → Deconstruct → Reconstruct
 
 | Phase | Was | Dauer |
 |-------|-----|-------|
-| A — Concept-Anker | SKILL.md-Struktur kurz | 5min |
-| B — Show | Trainer demo Superpowers / Brainstorm-Skill live | 10min |
-| C — Deconstruct | Plenum: Welche Mechaniken machen Planen gut? | 15min |
-| D — Reconstruct | Eigener Planning-Skill bauen | 25min |
-| Share-out | Description-Check mit Nachbarn | 5min |
+| Demo | Trainer Walk-Through `obra/superpowers/brainstorming` SKILL.md auf GitHub | 10min |
+| Deconstruct | Plenum: was sehen wir? 8 Mechaniken extrahieren | 10min |
+| Reconstruct | Eigener Planning-Skill mit `/skill-creator`, 4★ Subset | 25min |
+| Share-out | Description + File-Output mit Nachbarn checken | 5min |
 
-## Die 6 Mechaniken (Phase C — Target-Liste)
+Rest ist Puffer + Übergang Rules.
 
-| Mechanik | Was es bewirkt |
-|----------|----------------|
-| Eine Frage pro Message (Multiple-Choice) | Explizite Entscheidungspunkte, kein Sammeln vager Wünsche |
-| 2-3 Alternativen vor Convergenz | Force-the-trade-off, nicht "first idea wins" |
-| Spec → File, nicht Conversation | File ist Vertrag, Conversation ist flüchtig |
-| Hard Approval Gate vor Implementation | Plan- + Execute-Phase getrennt |
-| Constraints/Non-Goals explizit | Verhindert Scope-Creep + Vagueness |
-| Wiederholbare Routine | Process > Inspiration, jeder kann's nachmachen |
+## Referenz-Skill
 
-Siehe auch [`exercise/HINTS.md`](exercise/HINTS.md) als Build-Checkliste.
+`https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md`
 
-## Schritte (Phase D)
+**Inspiration, nicht Template.** Eigenen massgeschneiderten Anzug bauen.
 
-1. Wähle eine Planning-Domäne aus deinem Stack:
+## Die 8 Mechaniken
+
+| Mechanik | Was es bewirkt | |
+|----------|----------------|---|
+| **Explore project context** | Recon vor Frage — kein Blind-Plan | ★ |
+| **Eine Frage pro Message** | Explizite Entscheidungspunkte | ★ |
+| **2-3 Alternativen vor Convergenz** | Force-the-trade-off | ★ |
+| **Self-Review (Guardrail)** | Check vor Plan-Abschluss | ★ |
+| Spec → File, nicht Conversation | File ist Vertrag | |
+| Hard Approval Gate | Plan + Execute getrennt | |
+| Constraints/Non-Goals explizit | Scope-Creep verhindern | |
+| Wiederholbare Routine | Process > Inspiration | |
+
+★ = Pflicht-Subset für die Übung. Rest sehen, später ergänzen.
+
+Build-Checkliste: [`exercise/HINTS.md`](exercise/HINTS.md).
+
+## Schritte (Reconstruct)
+
+1. Planning-Domäne aus eigenem Stack wählen:
    - `refactor-planner`, `migration-planner`, `test-coverage-planner`, `feature-planner`
    - Oder: SSW-domain-spezifisch
-2. `.claude/skills/<dein-name>/SKILL.md` anlegen
-3. Frontmatter: `name` + `description` (Description = Activation-Key!)
-4. Workflow-Body mit **mindestens 3 der 6 Mechaniken**
-5. Testen: Trigger-Phrase eingeben → triggert Skill?
+2. `/skill-creator` starten — Interview-Flow durch Frontmatter + Body
+3. `name` + `description` (Description = Activation-Key)
+4. Workflow-Body mit **4★ Pflicht-Subset**: Explore Context · Eine Frage pro Message · 2-3 Approaches · Self-Review
+5. Output-Pfad: Skill schreibt Plan nach `.plans/<task>.md`
+6. Testen: Trigger-Phrase eingeben → triggert Skill? → schreibt er wirklich `.md`-File?
 
 ## Verify
 
 - Description triggert für richtige Tasks, nicht für falsche
 - Nachbar liest Description und versteht wann zu triggern
-- Mindestens 3 Mechaniken im Workflow erkennbar
+- 4★ Mechaniken im Workflow erkennbar
+- Output landet als File in `.plans/`, nicht nur in Conversation
 
 ## Stretch
 
-- Skill mit `/skill-creator` (Anthropic's Skill) professionell bauen — Interview-Flow
-- Skill testen mit mehreren Trigger-Phrasen, Activation tunen
+- Restliche 4 Mechaniken ergänzen (Approval Gate, Constraints, etc.)
+- Skill mit mehreren Trigger-Phrasen testen, Activation tunen
+- Eigenen Subagent-Type via `.claude/agents/<name>.md` definieren und im Skill via `agent:` referenzieren
 
-## Brücke zu nächster Übung
+## Brücke zu PM
 
-Tag 2 AM 02 — Rules: Was Skills on-demand sind, sind Rules always-on per File-Scope.
+Markdown-File in `.plans/` = **Bean-File-Form**. PM-Factory nutzt File-as-Contract zwischen Agents — Planning-Skill ist der erste Schritt in Richtung Multi-Agent-Pipeline.
 
 ## Solution
 
@@ -60,4 +74,4 @@ Zwei Referenz-Skills in `solution/`:
 - [`refactor-planner/SKILL.md`](solution/.claude/skills/refactor-planner/SKILL.md) — Refactoring planen
 - [`migration-planner/SKILL.md`](solution/.claude/skills/migration-planner/SKILL.md) — Migration planen
 
-Erst selbst probieren. Dann vergleichen welche Mechaniken die Solutions nutzen.
+Erst selbst bauen. Dann vergleichen welche Mechaniken die Solutions nutzen.
