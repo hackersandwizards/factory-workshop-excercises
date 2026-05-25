@@ -47,4 +47,4 @@ Hierarchie:
 
 ## Brücke zur nächsten Übung
 
-CLAUDE.md ist **always-on**. Das ist Power und Risiko: jede Instruction kostet jeden Turn Token. Für Task-spezifisches Verhalten → Skill ([`../01-pirate-skill/`](../01-pirate-skill/)). Gleicher Effekt, on-demand getriggert.
+CLAUDE.md ist **always-on Persönlichkeit** — Claude redet immer pirate. Übung 01 baut ein anderes Werkzeug: `pirate-speak` Skill ([`../01-pirate-skill/`](../01-pirate-skill/)) — Claude bleibt normal, transformiert Text **on-demand** wenn der User danach fragt. Selbe Domäne, andere Mechanik.
