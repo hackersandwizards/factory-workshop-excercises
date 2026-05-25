@@ -70,8 +70,7 @@ Markdown-File in `.plans/` = **Bean-File-Form**. PM-Factory nutzt File-as-Contra
 
 ## Solution
 
-Zwei Referenz-Skills in `solution/`:
-- [`refactor-planner/SKILL.md`](solution/.claude/skills/refactor-planner/SKILL.md) — Refactoring planen
-- [`migration-planner/SKILL.md`](solution/.claude/skills/migration-planner/SKILL.md) — Migration planen
+Ein generischer Referenz-Skill in `solution/`:
+- [`planner/SKILL.md`](solution/.claude/skills/planner/SKILL.md) — domain-agnostisch, 4★ Subset + Externalize-Phase
 
-Erst selbst bauen. Dann vergleichen welche Mechaniken die Solutions nutzen.
+Erst selbst bauen. Dann vergleichen wie das Subset abgebildet ist.
