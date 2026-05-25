@@ -15,28 +15,32 @@ Hooks = Shell-Commands auf Tool-Events. Exit ≠ 0 = Tool-Call blockiert. **Agen
 
 ## Ziel
 
-Hook installieren, der `cat .env` und ähnliche Reads blockt. Selbst wenn Agent es versucht — Exit-Code 2 unterbricht.
+Hook installieren, der `cat .env` UND `Read .env` UND `Glob .env*` blockt. Selbst wenn Agent es versucht — Exit-Code 2 unterbricht.
+
+**Wichtig:** Agent hat mehrere Wege auf Files: `Bash` (cat/grep), `Read`, `Edit`, `Write`, `Glob`, `Grep`, `NotebookEdit`. Hook muss ALLE matchen — sonst Bypass trivial.
 
 ## Schritte
 
-1. `.claude/hooks/block-env-access.sh` anlegen — Bash-Skript, liest stdin JSON, checkt Command
-2. `chmod +x .claude/hooks/block-env-access.sh`
-3. `.claude/settings.json` anlegen mit PreToolUse-Hook für Bash-Tool
-4. `.env.example` als Test-Target ist schon im exercise/ — versuch Claude zu bitten, das zu lesen
-5. Verify: Bash-Command der `.env` matcht → wird geblockt mit Fehlermeldung
+1. `.claude/hooks/block-env-access.sh` anlegen — Bash-Skript, liest stdin JSON, checkt `tool_name` + `tool_input`
+2. Branchen nach Tool: Bash → Regex auf `command`; Read/Edit/Write/NotebookEdit → `file_path` basename; Glob/Grep → `pattern`/`path`/`glob`
+3. `chmod +x .claude/hooks/block-env-access.sh`
+4. `.claude/settings.json` mit PreToolUse-Hook, matcher = `Bash|Read|Edit|Write|NotebookEdit|Glob|Grep`
+5. `.env.example` als Test-Target ist schon im exercise/ — bitte Claude erst `cat .env.example`, dann `Read .env.example`
+6. Verify: beide Pfade geblockt mit Fehlermeldung
 
 ## Verify
 
 ```bash
 chmod +x .claude/hooks/block-env-access.sh
-# In Claude Code im exercise/ Folder:
-# Bitte Claude: "cat .env.example"
-# → wird geblockt mit "Blocked: command tries to access .env file."
+# In Claude Code im exercise/ Folder, beide Pfade testen:
+#   "cat .env.example"        → Bash-Pfad geblockt
+#   "lies die .env.example"   → Read-Tool-Pfad geblockt
+# → Fehlermeldung "Blocked: ... .env file."
 ```
 
 ## Stretch
 
-- Hook erweitern: auch `.env.production`, `.env.local` blocken
+- Regex härten: auch `.env`, `.env.production`, `.env.local`, gequotete Pfade, Glob `.env*`
 - Zweiter Hook (PostToolUse): logging aller Bash-Commands
 - Dispatcher-Pattern: ein PreToolUse-Hook mit mehreren Check-Functions gesourced (Performance: 1 Fork statt N)
 
