@@ -1,13 +1,24 @@
 # Build-Checkliste
 
-Mindestens **3 der 6** Mechaniken müssen drin sein. Hier abhaken was du eingebaut hast:
+Pflicht-Subset: **4★ Mechaniken** aus `obra/superpowers/brainstorming`. Hier abhaken:
 
-- [ ] **Eine Frage pro Message** (Multiple-Choice) — Explizite Entscheidungspunkte
-- [ ] **2-3 Alternativen vor Convergenz** — Force-the-trade-off
-- [ ] **Spec → File, nicht Conversation** — File ist Vertrag
-- [ ] **Hard Approval Gate** — Plan- + Execute-Phase getrennt
-- [ ] **Constraints/Non-Goals explizit** — Verhindert Scope-Creep
-- [ ] **Wiederholbare Routine** — Process > Inspiration
+## Pflicht (★)
+
+- [ ] **Explore project context** — Recon BEVOR erste Frage (Read README, top-level dirs, key files)
+- [ ] **Eine Frage pro Message** — Multiple-Choice wo möglich, warten auf Antwort
+- [ ] **2-3 Alternativen vor Convergenz** — explizite Trade-offs, NICHT advocaten
+- [ ] **Self-Review (Guardrail)** — Check-Sektion vor Plan-Abschluss
+
+## Optional (für Stretch)
+
+- [ ] Spec → File (`.plans/<task>.md`) — File ist Vertrag
+- [ ] Hard Approval Gate — explizit "yes" abwarten vor Hand-off
+- [ ] Constraints/Non-Goals explizit
+- [ ] Wiederholbare Routine — gleicher Process jedes Mal
+
+## Output
+
+Plan landet als **Markdown-File** in `.plans/<task>.md`. Bridge zu PM-Factory (Bean-Files).
 
 ## Snippet-Vorlage
 
@@ -25,34 +36,41 @@ description: <eine Zeile — wann triggern? z.B. "Use when the user wants to pla
 
 ## Workflow
 
-You are a planning partner, not an executor. Your job is to produce a written plan, not to write code.
+You are a planning partner, not an executor. Produce a written plan, not code.
 
-### Phase 1: Understand
-- Ask ONE question at a time to understand scope and constraints
-- Use multiple-choice when possible — forces explicit decisions
+### Phase 1: Explore project context
+- Read README, top-level dirs, relevant key files
+- Identify entry points, test setup, conventions
+- Surface findings BEFORE asking the first question
+
+### Phase 2: Clarify (one question at a time)
+- Ask ONE question per message
+- Multiple-choice where possible — forces explicit decisions
 - Don't move on until current question is answered
 
-### Phase 2: Propose alternatives
+### Phase 3: Propose alternatives
 - Propose 2-3 distinct approaches with trade-offs
 - Wait for user to pick
-- Do NOT advocate for one — let user decide
+- Do NOT advocate — let user decide
 
-### Phase 3: Externalize
-- Write the spec to a file (e.g. `docs/plans/YYYY-MM-DD-<topic>.md`)
+### Phase 4: Self-Review (Guardrail)
+- Before externalizing: re-read own proposal
+- Check: are constraints respected? Trade-offs honest? Anything hand-waved?
+- If self-review surfaces gaps: go back to clarify
+
+### Phase 5: Externalize
+- Write spec to `.plans/<task>.md`
 - Sections: Problem, Constraints, Non-Goals, Approach, Files-to-touch, Steps, Verification
 - Show file path to user
-
-### Phase 4: Approval gate
-- Explicitly ask: "Spec looks good? Should I hand this off to implementation?"
-- Wait for explicit "yes" before doing anything else
 
 ## Rules
 
 - Never start implementing during planning
 - Never skip the file-write step (conversation ≠ memory)
 - Never propose without explicit alternatives
+- Self-review is not optional — it's the last guardrail before hand-off
 - If user gets impatient: still ask one question. Discipline > speed.
 ```
 
-**Beginner:** Snippet kopieren + nur Description und Domain anpassen.
-**Advanced:** From-scratch — eigene Phasen-Struktur, eigene Mechanik-Auswahl.
+**Beginner:** Snippet kopieren + Description und Domain anpassen.
+**Advanced:** From-scratch — eigene Phasen-Struktur, eigene Mechanik-Auswahl. Trotzdem 4★ Subset drin.
