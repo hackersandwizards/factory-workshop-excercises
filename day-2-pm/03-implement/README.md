@@ -15,7 +15,9 @@ Einen `implement` Skill bauen, der die Refined-Plan-Sektion einer Bean nimmt, ei
 
 ## Aufgabe
 
-1. Lege im Sandbox-Repo `.claude/skills/implement/SKILL.md` an.
+Detail-Hinweise + Build-Checkliste + erwartete Bugs: `exercise/HINTS.md`. Skeleton: `exercise/.claude/skills/.gitkeep` — leerer Startpunkt, Skill von Null gebaut.
+
+1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`. Dann `mkdir ../sandbox/.claude/skills/implement && touch ../sandbox/.claude/skills/implement/SKILL.md`.
 2. Frontmatter: `name: implement`, `argument-hint: <bean-id>`, `model: claude-sonnet-4-6`, `allowed-tools: Read, Edit, Write, Bash, Glob, Grep`.
 3. Phase 1 (Preflight): Bean lesen, Refined Plan extrahieren. Working-Tree-clean prüfen. HEAD == `main` prüfen. Wenn nicht → abort mit klarer Meldung.
 4. Phase 2 (Branch): Slug aus Bean-Title generieren. Branch `feat/<bean-id>-<slug>` erstellen. Existiert er schon → abort.

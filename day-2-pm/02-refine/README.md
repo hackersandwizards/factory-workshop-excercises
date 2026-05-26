@@ -14,7 +14,9 @@ Einen `refine` Skill bauen, der eine Bean mit gefülltem High-Level Plan nimmt, 
 
 ## Aufgabe
 
-1. Lege im Sandbox-Repo `.claude/skills/refine/SKILL.md` an.
+Detail-Hinweise + Build-Checkliste: `exercise/HINTS.md`. Skeleton: `exercise/.claude/skills/.gitkeep` — leerer Startpunkt, Skill von Null gebaut.
+
+1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`. Dann `mkdir ../sandbox/.claude/skills/refine && touch ../sandbox/.claude/skills/refine/SKILL.md`.
 2. Frontmatter: `name: refine`, `argument-hint: <bean-id>`, `allowed-tools: Read, Grep, Glob, Bash, Edit, Task`.
 3. Phase 1: Bean lesen, High-Level Plan extrahieren. Wenn Placeholder → abort.
 4. Phase 2: **EINEN** Subagent via Task-Tool dispatchen (`subagent_type=general-purpose`). Prompt formulieren, der den Subagent zwingt, eine strukturierte Map (Files, Functions, Integration points, Test patterns) zurückzugeben. Read-only.

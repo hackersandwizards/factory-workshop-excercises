@@ -10,16 +10,18 @@ Den Tag-2-AM `planner` Skill so umbauen, dass er Bean-aware wird: Statt einen fr
 
 - Sandbox-Calculator existiert unter `../sandbox/` (vom Trainer gebaut)
 - Beans liegen unter `../sandbox/.beans/bean-00X--*.md` mit 4 Sektionen
-- Eigener Tag-2-AM `planner` Skill ist vorhanden — **oder** als Backup vom Tag-2-AM-Solution-Pfad: `/Users/bjro/Sources/factory-workshop-excercises/day-2-am/01-planning-skill/solution/.claude/skills/planner/SKILL.md`
+- Startpunkt-Skill liegt unter `exercise/.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Falls Du Deinen eigenen Tag-2-AM-Skill hast: ersetze die Kopie damit.
 
 ## Aufgabe
 
-1. Lege im Sandbox-Repo `.claude/skills/planner/SKILL.md` an. Wenn dein eigener Tag-2-AM-Skill existiert: kopiere ihn als Startpunkt. Sonst: kopiere vom Backup-Pfad oben.
-2. Passe das Frontmatter an: `argument-hint: <bean-id>`, Description um "reads bean by ID, appends High-Level Plan + Acceptance Criteria" ergänzen.
+1. `exercise/.claude/` in den Sandbox kopieren (oder symlinken): `cp -r exercise/.claude ../sandbox/`. Damit hat der Sandbox-Repo `.claude/skills/planner/SKILL.md` als Ausgangsbasis.
+2. Frontmatter anpassen: `argument-hint: <bean-id>`, Description um "reads bean by ID, appends High-Level Plan + Acceptance Criteria" ergänzen.
 3. Phase 1 (Explore) umbauen: statt Repo-Scan jetzt `./.beans/<bean-id>.md` lesen, 2-3 Findings zur Bean surfacen.
 4. Phase 5 (Externalize) umbauen: statt `.plans/<task>.md` schreiben jetzt die Bean editieren — nur die `## High-Level Plan`-Sektion, Placeholder ersetzen.
 5. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
 6. Test: `cd ../sandbox && claude` → `/planner bean-001` ausführen. Bean-File prüfen.
+
+Detail-Hinweise: `exercise/HINTS.md`.
 
 ## Self-Check
 
