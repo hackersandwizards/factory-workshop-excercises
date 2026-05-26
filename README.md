@@ -6,14 +6,14 @@ Geklont ein Mal am Tag-1-Morgen. Enthält pro Übung: Aufgabe (`README.md`), Sta
 
 ## Voraussetzungen
 
-Siehe [SETUP.md](SETUP.md). Kurz: Bun, jq, git, Claude Code installiert.
+Siehe [SETUP.md](SETUP.md). Kurz: cmake, beans CLI, jq, git, Claude Code installiert.
 
 ## Struktur
 
 ```
 day-1/                      Foundations — Pirate-CLAUDE.md (always-on) + Pirate-Skill (on-demand)
 day-2-am/                   Customization-Atoms: Skills → Rules → Subagents → Hooks
-day-2-pm/                   Factory-Pipeline (v0-Build im factory-starter)
+day-2-pm/                   Factory-Pipeline (Planner → Refine → Implement gegen calc-Sandbox)
 ```
 
 Tag 3 (Transfer-Hackathon) bringt ihr eure eigene Codebase mit — kein Folder hier.
@@ -41,4 +41,6 @@ cd factory-workshop-excercises
 - [Day 2 AM 02: Rules](day-2-am/02-rules/)
 - [Day 2 AM 03: Subagent](day-2-am/03-subagent/)
 - [Day 2 AM 04: env-block-Hook](day-2-am/04-env-block-hook/)
-- [Day 2 PM 01: Factory-Pipeline](day-2-pm/01-factory-pipeline/)
+- [Day 2 PM 01: Planner-Rework](day-2-pm/01-planner-rework/)
+- [Day 2 PM 02: Refine](day-2-pm/02-refine/)
+- [Day 2 PM 03: Implement](day-2-pm/03-implement/)

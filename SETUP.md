@@ -4,37 +4,34 @@ Idealerweise **vor Tag 1** erledigt. Spätestens in Mittagspause Tag 1.
 
 ## Pflicht
 
-- **Bun** (Runtime, statt Node)
+- **cmake** (>= 3.20) + C++17-Compiler (Tag 2 PM calc-Sandbox bauen)
+- **beans CLI** (Bean-Management für Factory-Pipeline Tag 2 PM)
 - **jq** (für Hook-JSON-Parsing in Tag 2 AM)
 - **git** mit `user.name` + `user.email` (Implement-Agent committed)
 - **Claude Code** installiert + eingeloggt ([claude.com/code](https://claude.com/claude-code))
 
 ## Install pro OS
 
-### Mit Package-Manager (empfohlen — ein Befehl)
+### Mit Package-Manager (empfohlen)
 
-| OS | Befehl (Bun + jq in einem) |
+| OS | Befehl |
 |----|----|
-| **macOS** (Homebrew) | `brew install bun jq` |
-| **Linux (Debian/Ubuntu)** | `sudo apt install jq && curl -fsSL https://bun.sh/install \| bash` |
-| **Linux (Fedora/RHEL)** | `sudo dnf install jq && curl -fsSL https://bun.sh/install \| bash` |
-| **Linux (Arch)** | `sudo pacman -S jq bun` |
+| **macOS** (Homebrew) | `brew install cmake jq hmans/beans/beans` |
+| **Linux (Debian/Ubuntu)** | `sudo apt install cmake jq build-essential` + beans via Homebrew oder Release-Binary |
+| **Linux (Fedora/RHEL)** | `sudo dnf install cmake jq gcc-c++` + beans via Homebrew oder Release-Binary |
+| **Linux (Arch)** | `sudo pacman -S cmake jq base-devel` + beans via AUR/Binary |
 | **Windows** | WSL2 → dann wie Linux (Ubuntu) |
 
-### Ohne Package-Manager
+### beans CLI ohne Homebrew
 
-| Tool | Befehl |
-|------|--------|
-| **Bun** (alle Unix-OS) | `curl -fsSL https://bun.sh/install \| bash` |
-| **jq** | Binary von [jqlang.github.io/jq/download](https://jqlang.github.io/jq/download/) → in `$PATH`, `chmod +x` |
-
-Bun-Doku: [bun.sh](https://bun.sh). Homebrew: [brew.sh](https://brew.sh).
+Release-Binary von [github.com/hmans/beans](https://github.com/hmans/beans) → in `$PATH`, `chmod +x`.
 
 ## Verify
 
 ```bash
-bun --version       # >= 1.0
+cmake --version     # >= 3.20
 jq --version        # >= 1.6
+beans --version     # CLI verfügbar
 git config user.name && git config user.email
 claude --version    # Claude Code installed
 ```
@@ -46,16 +43,17 @@ git clone https://github.com/hackersandwizards/factory-workshop-excercises.git
 cd factory-workshop-excercises
 ```
 
-## Factory-Starter (Tag 2 PM) vorab testen
+## calc-Sandbox (Tag 2 PM) vorab testen
 
 ```bash
-cd day-2-pm/01-factory-pipeline/exercise
-bun install
-bun run dev
-# → http://localhost:3000 → Notes-App lädt
+cd day-2-pm/sandbox
+cmake -B build
+cmake --build build
+ctest --test-dir build
+./build/calc        # REPL
 ```
 
-Wenn das läuft, bist du Tag-2-PM-ready.
+Wenn Tests grün laufen und REPL startet, bist du Tag-2-PM-ready.
 
 ## Bei Problemen
 
