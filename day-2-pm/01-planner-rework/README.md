@@ -1,43 +1,47 @@
-# Day 2 PM · Übung 01 — Planner-Rework (Bean-aware)
+# Day 2 PM · Übung 01 — Planner-Rework (Bean-Creator)
 
 **Slot:** ~35 Minuten · Phase 1 der Factory-Pipeline
 
 ## Ziel
 
-Den Tag-2-AM `planner` Skill so umbauen, dass er Bean-aware wird: Statt einen freien Plan in `.plans/` zu schreiben, liest er eine Bean per ID, befüllt nur deren `## High-Level Plan`-Sektion und bleibt strikt auf "Was"-Ebene (keine Pfade, keine Signaturen).
+Tag-2-AM `planner` Skill umbauen: statt einen freien Plan in `.plans/` zu schreiben, **erzeugt der Skill eine neue Bean** via `beans create` + `beans update` mit Description + High-Level Plan + Acceptance Criteria. Strikt auf "Was"-Ebene (keine Pfade, keine Signaturen). Refine + Implement bekommen die Bean-ID später als Argument — Planner nicht.
 
 ## Voraussetzung
 
 - Sandbox-Calculator existiert unter `../sandbox/` (vom Trainer gebaut)
 - `beans` CLI installiert (`brew install hmans/beans/beans`, Check: `beans --version`)
-- Beans liegen unter `../sandbox/.beans/sandbox-*.md` (3 Stück: Klammer, Variablen, Math-Funktionen). `beans list` zeigt sie an.
+- `.beans.yml` existiert in `../sandbox/` (prefix `sandbox-`)
 - Startpunkt-Skill liegt unter `exercise/.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Falls Du Deinen eigenen Tag-2-AM-Skill hast: ersetze die Kopie damit.
 
 ## Aufgabe
 
-1. `exercise/.claude/` in den Sandbox kopieren (oder symlinken): `cp -r exercise/.claude ../sandbox/`. Damit hat der Sandbox-Repo `.claude/skills/planner/SKILL.md` als Ausgangsbasis.
-2. Frontmatter anpassen: `argument-hint: <bean-id>`, Description um "reads bean by ID, appends High-Level Plan + Acceptance Criteria" ergänzen.
-3. Phase 1 (Explore) umbauen: statt Repo-Scan jetzt `beans show --json <bean-id>` parsen, Body lesen, 2-3 Findings zur Bean surfacen.
-4. Phase 5 (Externalize) umbauen: statt `.plans/<task>.md` schreiben jetzt `beans update <bean-id> --body-append "..."` mit Heredoc. **Niemals** `.beans/*.md` direkt editieren.
+1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`.
+2. Frontmatter: `argument-hint: [brief feature description]` (optional, kein bean-id). Description: "creates a new bean via beans CLI with description + High-Level Plan + AC".
+3. Phase 1 (Capture) umbauen: Feature-Idee aufnehmen — entweder aus Skill-Argument oder vom User abfragen. Kein Repo-Scan, kein Bean-Read.
+4. Phase 5 (Create Bean) umbauen: zwei CLI-Calls:
+   - `beans create "<title>" -t feature -d "<description>"` → ID aus stdout parsen
+   - `beans update <new-id> --body-append "..."` mit Heredoc für High-Level Plan
+   - **Niemals** `.beans/*.md` direkt editieren.
 5. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
-6. Test: `cd ../sandbox && claude` → `/planner sandbox-dy91` ausführen. `beans show sandbox-dy91` prüfen.
+6. Test: `cd ../sandbox && claude` → `/planner Klammer-Support für Calculator` ausführen. `beans list` + `beans show <new-id>` prüfen.
 
 Detail-Hinweise: `exercise/HINTS.md`.
 
 ## Self-Check
 
-- `beans show sandbox-dy91` zeigt im Body einen befüllten `## High-Level Plan` mit **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
+- `beans list` enthält eine neue Bean nach `/planner`-Run
+- `beans show <new-id>` zeigt Description (Mensch-Brief) + `## High-Level Plan` mit **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
 - Im Plan steht **kein** `src/lexer.cpp`, **keine** `tokenize()`, **keine** Zeilen-Referenz
-- Die ursprüngliche Description (Body vor `## High-Level Plan`) ist unverändert
-- Skill weigert sich elegant, wenn die Bean-ID nicht existiert (`beans show` exit-code prüfen)
+- Status der neuen Bean ist `todo`
+- Skill weigert sich elegant, wenn `beans` CLI fehlt
 
 ## Solution-Vergleich
 
-Nach der Übung — vergleich deinen Skill mit `solution/.claude/skills/planner/SKILL.md`. Was ist anders? Was würdest du übernehmen? Achte besonders auf: Self-Review-Phase, Wording der harten Regeln, Schema der externalisierten Sektion.
+Nach der Übung — vergleich deinen Skill mit `solution/.claude/skills/planner/SKILL.md`. Was ist anders? Was würdest du übernehmen? Achte besonders auf: Self-Review-Phase, Wording der harten Regeln, Schema der externalisierten Sektion, Parsing der ID aus `beans create`-Output.
 
 ## Lernziele
 
-- Skill-Refactor: bestehenden Skill auf neuen Input (Bean statt freier Task) umbauen
-- Strikte Sektions-Edits: ein Skill, der nur einen bestimmten Markdown-Abschnitt anfasst
+- Skill-Refactor: bestehenden Skill auf neuen Output (Bean-Creation statt Plan-File) umbauen
+- Output-Disziplin: Skill schreibt nur via CLI, niemals direkt in `.beans/*.md`
 - Disziplin der Abstraktions-Ebene: "Was" trennen vom "Wie"
-- Hand-off-Design: Output eines Skills ist Input des nächsten (Refine)
+- Hand-off-Design: Output eines Skills (neue Bean-ID) ist Input des nächsten (`/refine <id>`)

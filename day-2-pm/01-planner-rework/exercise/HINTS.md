@@ -4,22 +4,30 @@ Startpunkt: `.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Du 
 
 ## Voraussetzung — Beans CLI
 
-`brew install hmans/beans/beans` muss installiert sein (Check: `beans --version`). In `../sandbox/` zeigt `beans list` drei Beans (Klammer-Support, Variablen, Math-Funktionen). Bean-IDs lauten z.B. `sandbox-dy91`.
+`brew install hmans/beans/beans` muss installiert sein (Check: `beans --version`). `.beans.yml` existiert in `../sandbox/` (prefix `sandbox-`).
 
-## Pflicht — Bean-aware Rework
+## Pflicht — Bean-Creator Rework
 
-- [ ] **Frontmatter** — `argument-hint: <bean-id>` ergänzen, Description anpassen: "reads bean via beans CLI, appends High-Level Plan + AC"
-- [ ] **Phase 1 (Explore)** — statt Repo-Scan jetzt `beans show --json <bean-id>` parsen, Body lesen, 2-3 Findings zur Bean surfacen
-- [ ] **Phase 5 (Externalize)** — `beans update <bean-id> --body-append "..."` mit Heredoc, **kein** direktes Editieren von `.beans/*.md`
+- [ ] **Frontmatter** — `argument-hint: [brief feature description]` (optional, nicht `<bean-id>`). Description anpassen: "creates a new bean via beans CLI with description + High-Level Plan + AC".
+- [ ] **Phase 1 (Capture)** — Feature-Idee vom User aufnehmen, in einem Satz zurückspiegeln
+- [ ] **Phase 5 (Create Bean)** — Zwei CLI-Calls:
+  1. `beans create "<title>" -t feature -d "<description>"` → ID parsen aus stdout
+  2. `beans update <new-id> --body-append "..."` mit High-Level Plan, Steps, AC, Non-Goals
 - [ ] **Schema festschreiben** — Approach / Steps / Acceptance Criteria / Non-Goals
 - [ ] **Hard Rule** — keine File-Pfade, keine Funktions-Signaturen, keine Klassen-Namen im Plan
 
+## Pflicht — Disziplin
+
+- [ ] Niemals `.beans/*.md` direkt editieren — immer via CLI
+- [ ] Niemals Source-Code editieren — Planner ist read-only auf Source
+- [ ] Self-Review-Phase (4★-Mechanik aus Tag 2 AM) bleibt drin
+
 ## Self-Check vor Solution-Vergleich
 
-- [ ] `/planner sandbox-dy91` → `beans show sandbox-dy91` zeigt `## High-Level Plan` im Body
+- [ ] `/planner Klammer-Support für Calculator` → neue Bean entsteht (`beans list` zeigt sie)
+- [ ] `beans show <new-id>` zeigt Description + `## High-Level Plan` mit Approach/Steps/AC/Non-Goals
 - [ ] Im Plan steht **kein** `src/lexer.cpp`, **keine** `tokenize()`, **keine** Zeilen-Referenz
-- [ ] Skill weigert sich elegant, wenn Bean-ID nicht existiert (`beans show` exit-code prüfen)
-- [ ] Self-Review-Phase ist erhalten geblieben (4★-Mechanik aus Tag 2 AM)
+- [ ] Skill weigert sich elegant, wenn `beans` CLI fehlt
 
 ## Ausführen
 
@@ -27,9 +35,9 @@ Startpunkt: `.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Du 
 cd ../sandbox
 cp -r ../01-planner-rework/exercise/.claude .
 claude
-> /planner sandbox-dy91
+> /planner Klammer-Support für Calculator
 ```
 
 ## Bridge
 
-Output dieses Skills = Input für `/refine` in Übung 02. High-Level-Plan + AC reichen — Files und Signaturen kommen erst dort.
+Output dieses Skills = neue Bean-ID. Input für `/refine <bean-id>` in Übung 02. High-Level-Plan + AC reichen — Files und Signaturen kommen erst dort.
