@@ -1,98 +1,208 @@
 ---
 name: refine
-description: Use right before Implement — reads Bean High-Level Plan via beans CLI, explores codebase via subagent fork, appends Refined Plan with concrete files, signatures, test sketch to the bean body.
+description: Use after /planner — takes a bean that carries a `## High-Level Plan`, dispatches a read-only Explore subagent, and appends a `## Refined Plan` with real file paths, signatures, and a test sketch. Hand-off ready for /implement.
 argument-hint: <bean-id>
-allowed-tools: Read Grep Glob Bash Task
+allowed-tools: Read, Grep, Glob, Bash, Task
 ---
 
-# Refine (Plan → Refined Plan)
+# Refiner (Bean-Refiner)
 
-You translate a High-Level Plan into a concrete, file-level Refined Plan. Read-only on source code. Append ONLY to the Bean body via the `beans` CLI.
+You turn a high-level plan inside an existing Bean into a concrete, file-level
+plan. Inspired by Claude Code's Plan-Mode: explore once via a focused subagent
+(keeping the explore transcript out of the main context), then append a
+`## Refined Plan` section to the same Bean with **verifiable** file paths,
+function signatures, and a test sketch. You do **not** edit source code.
 
 ## When to use
 
-- User invokes `/refine <bean-id>` or says "refine <bean-id>"
-- Bean body contains a `## High-Level Plan` section (Planner has run)
-- Bean body does NOT yet contain a `## Refined Plan` section
+- User invokes `/refine <bean-id>` after `/planner` has created the Bean
+- The Bean's body contains a literal `## High-Level Plan` heading
+- The repo has `.beans.yml` (beans CLI initialised). If `beans` is missing:
+  refuse politely and point at `brew install hmans/beans/beans` + `.beans.yml`.
 
 ## Workflow
 
-### Phase 1: Read the Bean
+### Phase 1 — Read the Bean
 
-- `beans show --json <bean-id>` — parse JSON, extract body
-- If body lacks `## High-Level Plan` → abort: "High-Level Plan missing — run /planner first."
-- If body already contains `## Refined Plan` → abort: "Refined Plan already present. Remove it manually to re-refine."
-- Extract Approach, Steps, Acceptance Criteria, Non-Goals from the body
+```bash
+beans show <bean-id> --json
+```
 
-### Phase 2: Mark in-progress
+Parse `.body`. Locate the literal `## High-Level Plan` heading. Everything from
+that heading up to the next `## ` heading (or end-of-body) is the input plan.
+
+**Abort cleanly** if the heading is missing — tell the user to run `/planner`
+first (or to add the section via `beans update --body-file`). Do **not** change
+the Bean's status, do **not** dispatch the subagent, do **not** invent a plan.
+
+Capture from the JSON: `id`, `title`, `body`, and the extracted High-Level Plan
+block. You'll feed these to the subagent and use them when composing the
+Refined Plan.
+
+### Phase 2 — Status
+
+One call, no extras:
 
 ```bash
 beans update <bean-id> -s in-progress
 ```
 
-### Phase 3: Explore via Subagent (fork)
+### Phase 3 — Explore via Subagent (exactly one Task call)
 
-Dispatch ONE subagent via the Task tool to protect main context. Use `subagent_type=general-purpose`.
+Dispatch **one** subagent with `subagent_type: general-purpose`. The transcript
+of its exploration must stay in the fork — never replay it into your own
+context. Hand it the bean title and the High-Level Plan block verbatim.
 
-Prompt template (fill in `<topic>` from the High-Level Plan, e.g. "parenthesis support", "variable assignment"):
+Subagent prompt template (fill in `{{...}}` from Phase 1):
 
-> Read the C++ Calculator source under `./src/` and tests under `./tests/` related to **<topic>**. Specifically:
-> 1. List the relevant existing files with their key functions and signatures.
-> 2. Identify where new code for <topic> would integrate (which function calls which, which production rule, which test pattern).
-> 3. Note line numbers for the integration points.
->
-> Return a structured map:
-> - **Files** — `path:lines — role`
-> - **Functions** — `ReturnType Class::method(Args) — purpose`
-> - **Integration points** — `where new code hooks in, with line refs`
-> - **Test patterns** — `how existing tests are structured`
->
-> READ-ONLY. Do not edit any file. Do not run builds. Just map the territory.
+```
+You are a read-only code explorer. Do NOT edit any file. Do NOT run builds or
+tests. Use Read, Grep, Glob only. Working dir: {{cwd}}.
 
-Use the subagent's findings as the sole input for Phase 4. Do not re-explore in main context.
+Bean: {{title}}
 
-### Phase 4: Append the Refined Plan
+High-Level Plan:
+{{high_level_plan_block}}
 
-```bash
-beans update <bean-id> --body-append "$(cat <<'EOF'
+Return a structured map in this exact format — no prose, no recommendations,
+no code:
 
+### Files
+- path:line — why this file is relevant
+
+### Functions
+- ReturnType Class::method(Args) — existing signature, file:line
+
+### Integration points
+- where the new code plugs into existing call chains (file:line → file:line)
+
+### Test patterns
+- how nearby tests are structured (framework, fixtures, naming, file:line)
+
+Constraints:
+- Every path/line you cite must come from a file you actually opened.
+- If you cannot verify a path, omit it. Do not guess.
+- Do not propose changes. Map the territory; the parent plans the route.
+```
+
+Wait for the subagent's structured response. That response is your raw
+material for Phase 4.
+
+### Phase 4 — Compose & append the Refined Plan
+
+Build the Refined Plan block in this exact schema:
+
+```
 ## Refined Plan
 
 ### Files to change
-- \`src/lexer.h:42 — add TOKEN_LPAREN, TOKEN_RPAREN to enum\`
-- \`src/lexer.cpp:88 — extend tokenize() to emit paren tokens\`
-- \`src/parser.cpp:120 — new parseGroup() called from parseFactor()\`
-- \`tests/parser_test.cpp:NEW — parenthesis test cases\`
+- path:line — what changes (concise, one line)
+- path:NEW — new file, why it's needed
 
 ### New signatures
-- \`Token Lexer::lexParen(char c) — emit TOKEN_LPAREN or TOKEN_RPAREN\`
-- \`ASTNode* Parser::parseGroup() — consume '(', parse expression, expect ')'\`
+- ReturnType Class::method(Args) — purpose in 5–10 words
+- ReturnType free_function(Args) — purpose
 
 ### Test sketch
-- \`parses_simple_parens\` — input \`(1+2)*3\` → eval result \`9\`
-- \`parses_nested_parens\` — input \`((1+2))\` → eval result \`3\`
-- \`rejects_unbalanced_open\` — input \`(1+2\` → parse error with "expected ')'"
-- \`rejects_unbalanced_close\` — input \`1+2)\` → parse error
-- \`regression_no_parens\` — input \`1+2*3\` → eval result \`7\` (unchanged)
-EOF
-)"
+- test_name — Input → Expected
+- test_name — Input → Expected (edge case)
 ```
 
-Line numbers and file paths come from the subagent's map — do not invent them. The example above is a template; replace contents with the actual map.
+**Appending without `--body-append`** — that flag does not exist on `beans
+update`. Fetch the current body, concatenate locally, write the new body in
+one call:
 
-### Phase 5: Self-Check
+```bash
+# 1. Fetch current body. `beans show --json` returns the bean object directly
+#    with `.body` at the top level — no GraphQL `data` wrapper. Use it instead
+#    of `beans query`, which silently returns null when the path is wrong and
+#    will erase the body on the next `--body-file` write.
+CURRENT=$(beans show <bean-id> --json | jq -r '.body')
+if [ -z "$CURRENT" ] || [ "$CURRENT" = "null" ]; then
+  echo "ERROR: empty/null body for <bean-id> — aborting to avoid data loss" >&2
+  exit 1
+fi
 
-- For each file path in `### Files to change`: verify it exists via Glob or Read. If a path is `NEW`, mark it explicitly with `:NEW`.
-- For each signature: confirm the host class exists (Grep for `class ClassName`). If not — fix or abort.
-- Confirm no source file was edited: `git status` should show no changes to `src/` or `tests/`.
+# 2. Build the new body in a temp file
+TMP=$(mktemp)
+{
+  printf '%s\n\n' "$CURRENT"
+  cat <<'EOF'
+## Refined Plan
 
-Report to user: bean updated, file count, ready for `/implement <bean-id>`.
+### Files to change
+- src/lexer.cpp:42 — add LPAREN/RPAREN token branches
+- src/parser.cpp:NEW — add parse_group() production
+
+### New signatures
+- Token Lexer::next_token() — unchanged callers; new switch arms
+- std::unique_ptr<Expr> Parser::parse_group() — consumes `(`, expr, `)`
+
+### Test sketch
+- ParensSimple — Input "(1+2)*3" → 9
+- ParensNested — Input "((1+2))" → 3
+- ParensUnbalanced — Input "(1+2" → ParseError, no crash
+EOF
+} > "$TMP"
+
+# 3. Write back in one call
+beans update <bean-id> --body-file "$TMP"
+rm "$TMP"
+```
+
+(Equivalent: `printf '%s' "$NEW_BODY" | beans update <bean-id> -d -`.)
+
+The literal `## Refined Plan` heading is a contract: `/implement` parses by
+exact match. Do not rename, indent, or nest it under another section.
+
+### Phase 5 — Self-Check
+
+Before reporting done, verify every path you wrote under `### Files to change`:
+
+- For existing paths: `Glob` or `Read` the file. If the line number is off by a
+  lot, fix it. If the file does not exist, either correct the path or convert
+  the entry to `path:NEW`.
+- For `:NEW` entries: confirm the directory exists; if not, name the directory
+  that will hold the new file.
+- No edits to anything under `src/` or `tests/` — verification is read-only.
+
+If self-check changes any path, repeat Phase 4 with the corrected body. The
+fetch step is the same — `beans show <bean-id> --json | jq -r '.body'`. After
+the first Phase-4 write the body already contains a `## Refined Plan` section;
+strip it before re-appending so you don't stack duplicates:
+
+```bash
+CURRENT=$(beans show <bean-id> --json | jq -r '.body')
+[ -z "$CURRENT" ] || [ "$CURRENT" = "null" ] && { echo "ERROR: empty body"; exit 1; }
+TRIMMED=$(printf '%s' "$CURRENT" | awk '/^## Refined Plan$/{exit} {print}')
+# then re-append the corrected Refined Plan block to "$TRIMMED" exactly like
+# Phase 4 and write back via --body-file.
+```
+
+Report to the user: bean ID, that `## Refined Plan` is now in the body, and
+that the Bean is ready for `/implement <bean-id>`.
 
 ## Rules
 
-- Read-only on source code. ONLY append to the Bean body via `beans update --body-append`. Never Edit/Write `.beans/*.md` directly.
-- All file paths in the Refined Plan must be verifiable via Grep or Glob. No fabrications.
-- All line numbers come from the subagent's findings, not from guessing.
-- No code edits to source files in this Skill. That is the Implementer's job.
-- The subagent runs in a fork — its full exploration transcript does NOT pollute main context. Use only its structured findings.
-- If the High-Level Plan is missing or empty → abort cleanly. Do not "fill in" what the Planner should have written.
+- Never edit `.beans/*.md` files directly with Edit/Write — always via `beans
+  update`. The CLI manages frontmatter (ID, timestamps).
+- Never modify source under `src/` or `tests/`. Refiner is read-only on source.
+- Exactly **one** Task subagent dispatch. Two dispatches means you are reading
+  the explore transcript yourself — that defeats the fork.
+- The subagent prompt must forbid edits and builds. Verify the prompt before
+  sending.
+- Abort cleanly when `## High-Level Plan` is missing. Do not fabricate one from
+  the Bean's description.
+- Every file path in the Refined Plan must be verifiable via Glob/Read, or
+  explicitly marked `:NEW`. No fabrication.
+- The Refined Plan lives under the literal `## Refined Plan` heading. `/implement`
+  parses by exact match — renaming or nesting it breaks the next stage.
+- `beans update` has no `--body-append` flag. Always fetch + concatenate +
+  `--body-file` (or `-d -`). Do not invent flags.
+- Fetch the body with `beans show <bean-id> --json | jq -r '.body'`. The
+  GraphQL form (`beans query '{ bean(id:…) { body } }'`) does **not** wrap the
+  response in `data` — `jq -r '.data.bean.body'` returns `null` and the next
+  `--body-file` write will erase the bean. Always assert non-null before
+  writing back.
+- Never run the build, the tests, or the program. Refiner plans; `/implement`
+  executes.

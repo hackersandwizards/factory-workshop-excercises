@@ -1,10 +1,11 @@
 ---
-# planner-exercise-olqc
+# refine-exercise-olqc
 title: Klammer-Unterstützung im Rechner
-status: todo
+status: in-progress
 type: feature
+priority: normal
 created_at: 2026-05-26T12:06:51Z
-updated_at: 2026-05-26T12:06:51Z
+updated_at: 2026-05-26T12:36:23Z
 ---
 
 Der Rechner unterstützt aktuell nur flache Ausdrücke mit `+ - * /` und fest verdrahteter Vorrangordnung. Nutzer können die Auswertungsreihenfolge nicht explizit steuern. Wir ergänzen runde Klammern `(` und `)` als Gruppierung, sodass beliebig tief verschachtelte Teilausdrücke vor dem umgebenden Ausdruck ausgewertet werden. Verhalten ohne Klammern bleibt unverändert.
@@ -40,3 +41,32 @@ Der Rechner unterstützt aktuell nur flache Ausdrücke mit `+ - * /` und fest ve
 - Variablen, Funktionen, weitere Operatoren
 - Änderung der bestehenden Operator-Vorrangordnung
 - Performance-Optimierungen am Parser
+## Refined Plan
+
+### Files to change
+- src/lexer.h:9 — TokenType-Enum um `LPAREN` und `RPAREN` erweitern
+- src/lexer.cpp:39 — Punktuations-Switch in `Lexer::next()` um Branches für `(` und `)` ergänzen, jeweils ein Single-Char-Token zurückgeben
+- src/lexer.cpp:55 — `token_type_name`-Switch um Namen für `LPAREN`/`RPAREN` ergänzen (Parser-Fehlermeldungen)
+- src/parser.h:13 — Grammatik-Kommentar aktualisieren: `factor := NUMBER | '(' expr ')'`
+- src/parser.cpp:64 — `parse_factor()` um `LPAREN`-Alternative: `advance()` über `(`, rekursiv `parse_expr()`, dann `RPAREN` erwarten; leeres `()` und fehlendes `)` als `std::runtime_error` im Stil von :40/:68
+- tests/lexer_test.cpp:16 — neuer TEST `LexerTest.Parentheses` analog zu `AllOperators`
+- tests/parser_test.cpp:28 — neue TESTs `ParensGroupOverridesPrecedence`, `NestedParens` analog zu `MulBindsTighterThanAdd`
+- tests/parser_test.cpp:39 — neue TESTs `MissingClosingParenThrows`, `EmptyParensThrows`, `StrayClosingParenThrows` analog zu `TrailingTokenThrows`/`MissingOperandThrows`
+- tests/evaluator_test.cpp:16 — neue TESTs `ParensSimple`, `ParensRightSide`, `NestedParens`, `ParensOverridePrecedence`, `RegressionNoParens` über `eval_str` Helper
+
+### New signatures
+- (keine neuen Klassen/Funktionen) — `Token Lexer::next()` und `NodePtr Parser::parse_factor()` behalten ihre Signatur; Erweiterung rein innerhalb bestehender Switches/Branches
+- AST/Evaluator unverändert — Gruppierung wird durch Baumform kodiert, kein neuer `NodeKind`
+
+### Test sketch
+- LexerTest.Parentheses — Input `"()"` → Token-Sequenz `LPAREN, RPAREN, END`
+- ParserTest.ParensGroupOverridesPrecedence — Input `"(1+2)*3"` → AST `Mul(Add(1,2), 3)`
+- ParserTest.NestedParens — Input `"((1+2)*(3+4))"` → AST `Mul(Add(1,2), Add(3,4))`
+- ParserTest.MissingClosingParenThrows — Input `"(1+2"` → `std::runtime_error`
+- ParserTest.EmptyParensThrows — Input `"()"` → `std::runtime_error`
+- ParserTest.StrayClosingParenThrows — Input `"1+2)"` → `std::runtime_error`
+- EvaluatorTest.ParensSimple — Input `"(1+2)*3"` → `9`
+- EvaluatorTest.ParensRightSide — Input `"2*(3+4)"` → `14`
+- EvaluatorTest.NestedParens — Input `"((1+2)*(3+4))"` → `21`
+- EvaluatorTest.ParensOverridePrecedence — Input `"(2+3)*(4-1)"` → `15`
+- EvaluatorTest.RegressionNoParens — Input `"1+2*3"` → `7` (unverändertes Verhalten)

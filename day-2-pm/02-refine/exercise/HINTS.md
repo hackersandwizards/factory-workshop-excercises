@@ -12,15 +12,17 @@ Du baust einen neuen Skill `refine` von Null. Output: `## Refined Plan`-Sektion 
 - [ ] **Phase 1 (Read Bean)** — `beans show --json <bean-id>` parsen. Body extrahieren, `## High-Level Plan`-Sektion finden. Abort wenn fehlt.
 - [ ] **Phase 2 (Status)** — `beans update <bean-id> -s in-progress`
 - [ ] **Phase 3 (Explore via Subagent)** — **ein** Task-Subagent (`subagent_type: general-purpose`) mit fokussiertem Prompt. Read-only. Subagent gibt strukturierte Map zurück (Files / Functions / Integration-Points / Test-Patterns).
-- [ ] **Phase 4 (Refined Plan)** — `beans update <bean-id> --body-append "..."` mit Heredoc, Schema:
+- [ ] **Phase 4 (Refined Plan)** — `beans update` hat **kein** `--body-append`. Stattdessen: aktuellen Body fetchen, lokal konkatenieren, via `--body-file` zurückschreiben. Schema:
   - `### Files to change` — `path:line — what changes`
   - `### New signatures` — `ReturnType Class::method(Args)`
   - `### Test sketch` — Test-Namen + Input → Expected
+
+  **Body-Fetch-Falle:** `beans show <bean-id> --json | jq -r '.body'` benutzen — Body liegt auf Top-Level. `beans query '{ bean(id:…){body} }' --json | jq -r '.data.bean.body'` gibt **`null`** zurück (kein `data`-Wrapper) und der nächste `--body-file`-Write löscht den Bean-Body. Vor dem Schreiben auf non-null prüfen.
 - [ ] **Phase 5 (Self-Check)** — File-Pfade via Glob/Read verifizieren. Halluzinierte Pfade markieren als `:NEW` oder fixen.
 
 ## Pflicht — Disziplin
 
-- [ ] **Read-only auf Source** — Skill macht keine `git status`-Diffs in `src/` oder `tests/`
+- [ ] **Read-only auf Source** — Skill produziert keine `git status`-Diffs in `src/` oder `tests/`
 - [ ] **File-Pfade verifizierbar** — keine Fabrikation
 - [ ] **Subagent in Fork** — Explore-Transkript landet nicht im Main-Context
 - [ ] **Niemals `.beans/*.md` direkt editieren** — immer via `beans update`
@@ -32,10 +34,10 @@ Du baust einen neuen Skill `refine` von Null. Output: `## Refined Plan`-Sektion 
 cd ../sandbox
 cp -r ../02-refine/exercise/.claude .
 claude
-> /refine sandbox-dy91
+> /refine refine-exercise-olqc
 ```
 
-- [ ] `beans show sandbox-dy91` zeigt `## Refined Plan` im Body mit realen `src/lexer.cpp`-, `src/parser.cpp`-Pfaden
+- [ ] `beans show refine-exercise-olqc` zeigt `## Refined Plan` im Body mit realen `src/lexer.cpp`-, `src/parser.cpp`-Pfaden
 - [ ] `git grep` für jeden referenzierten Pfad findet ihn
 - [ ] `git status` in `sandbox/` zeigt keine Änderungen in `src/` oder `tests/`
 - [ ] Status der Bean ist `in-progress`
