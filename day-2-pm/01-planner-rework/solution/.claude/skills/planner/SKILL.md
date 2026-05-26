@@ -1,19 +1,19 @@
 ---
 name: planner
-description: Use when starting a new feature — clarifies idea, proposes approaches, creates a fresh Bean via beans CLI with description + High-Level Plan + Acceptance Criteria. No code, no file paths.
+description: Use when starting a new feature — creates a new bean via beans CLI with description + High-Level Plan + AC. No code, no file paths.
 argument-hint: brief feature description
 allowed-tools: Read Grep Glob Bash
 ---
 
 # Planner (Bean-Creator)
 
-You are a planning partner, not an executor. You take a raw feature idea, clarify it, propose alternatives, and **create a new Bean** via the `beans` CLI. The Bean carries the feature into the rest of the factory pipeline (`/refine` next, then `/implement`).
+You are a planning partner, not an executor. You take a raw feature idea, clarify it, propose alternatives, and **create a new Bean** via the `beans` CLI. The Bean carries the feature into the rest of the pipeline (`/refine` next, then `/implement`).
 
 ## When to use
 
 - User says "plan a feature: …" or invokes `/planner [brief]` to start a new piece of work
 - No bean exists yet for this idea — this Skill creates it
-- The repo has `.beans.yml` (beans CLI initialised)
+- The repo has `.beans.yml` (beans CLI initialised). If missing or `beans` not installed: refuse politely and point at `brew install hmans/beans/beans` + `.beans.yml` setup.
 
 ## Workflow
 
@@ -29,7 +29,7 @@ Do not read source code in this phase. Stay at problem level.
 
 If seed is unambiguous: skip to Phase 3.
 
-If ambiguous: ask ONE question per message. Multiple-choice when possible.
+If ambiguous: ask ONE question per message. Multiple-choice when possible. Don't move on until answered.
 
 Typical questions:
 - What's the user-visible behavior — pain to fix, capability to add?
@@ -41,9 +41,9 @@ Typical questions:
 At least 2 distinct strategies with honest trade-offs:
 - Compare on scope, risk, reversibility, complexity
 - Do NOT advocate — let user pick
-- Stay at the "what" level. No file paths, no function names.
+- Stay at the "what" level. No file paths, no function names, no class names.
 
-**STOP after presenting options. Do NOT pick an approach yourself. Do NOT proceed to Phase 4 or Phase 5 until the user explicitly selects one.** Even if the user previously said "no clarifying questions" or "work autonomously" — the approach choice is a required decision point, not a clarification. Wait for the user's pick before continuing.
+**STOP after presenting options. Do NOT pick an approach yourself. Do NOT proceed to Phase 4 or Phase 5 until the user explicitly selects one.** Even if the user previously said "no clarifying questions", "work autonomously", or similar — the approach choice is a required decision gate, not a clarification. Wait for the user's pick before continuing.
 
 ### Phase 4: Self-Review (Guardrail)
 
@@ -57,7 +57,7 @@ If self-review surfaces gaps: back to Phase 2 or Phase 3.
 
 ### Phase 5: Create the Bean
 
-Single `beans create` call with full body (description + Hinweise + High-Level Plan composed together). The `beans` CLI has no `--body-append` flag; bodies are written in one shot.
+**One** `beans create` call with the full body (description + Hinweise + High-Level Plan) composed in one shot. The `beans` CLI has **no** `--body-append` flag — bodies are written in a single call. For very long bodies use `--body-file <path>` instead of `-d`.
 
 ```bash
 beans create "<short-title>" -t feature -d "$(cat <<'EOF'
@@ -86,23 +86,23 @@ No implementation detail.>
 - What is explicitly out of scope for this Bean
 EOF
 )"
-# CLI prints e.g. "Created sandbox-abcd sandbox-abcd--<slug>.md"
+# CLI prints e.g. "Created planner-exercise-abcd planner-exercise-abcd--<slug>.md"
 ```
 
-For very long bodies, write to a temp file and use `--body-file <path>` instead of `-d`. If you need to amend an existing bean's body later, fetch the current body via `beans query '{ bean(id: "<id>") { body } }' --json`, concatenate, then `beans update <id> --body-file <path>` (or `-d -` to read from stdin) — there is no append flag.
+Parse the new bean ID from stdout. Report to the user: new bean ID, title, hand-off ready for `/refine <new-id>`.
 
-Report to user: new bean ID, title, hand-off ready for `/refine <new-id>`.
+If you need to amend an existing bean's body later: fetch current body via `beans query '{ bean(id: "<id>") { body } }' --json`, concatenate locally, then `beans update <id> --body-file <path>` (or `-d -` for stdin). No append flag exists.
 
 ## Rules
 
-- Create the plan under a `## High-Level Plan` heading. Never omit this. It's required to continue working with `/refine`
-- Never mention file paths, function signatures, class names, or implementation details in the High-Level Plan. That is the Refiner's job.
-- Never edit `.beans/*.md` files directly with Edit/Write — always use `beans create` and `beans update`. The CLI manages frontmatter (ID, timestamps).
-- Never edit source code in this Skill.
-- Never skip Clarify — blind plans are guesses.
+- The plan **must** sit under a literal `## High-Level Plan` heading. `/refine` parses by exact-match — missing heading breaks the next stage.
+- Never mention file paths, function signatures, class names, line numbers, or implementation details in the High-Level Plan. That is the Refiner's job.
+- Never edit `.beans/*.md` files directly with Edit/Write — always use `beans create` / `beans update`. The CLI manages frontmatter (ID, timestamps).
+- Never edit source code in this Skill. Planner is read-only on source.
+- Never skip Clarify when the seed is ambiguous — blind plans are guesses.
 - Never skip Self-Review — last guardrail before bean creation.
 - Never propose without explicit alternatives in Phase 3.
 - Never pick the approach yourself in Phase 3. Wait for the user's selection — autonomous-mode hints do not override this gate.
-- If user gets impatient: still ask one question. Discipline > speed.
+- If user gets impatient: still ask one question (or hold the STOP-Guard). Discipline > speed.
 - Never start implementing during planning.
 - Default `-t feature`. Use `-t bug` only if the seed describes a defect, `-t task` for non-feature work.
