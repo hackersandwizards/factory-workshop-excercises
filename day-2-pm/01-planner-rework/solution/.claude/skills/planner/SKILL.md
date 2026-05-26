@@ -95,6 +95,7 @@ Report to user: new bean ID, title, hand-off ready for `/refine <new-id>`.
 
 ## Rules
 
+- Create the plan under a `## High-Level Plan` heading. Never omit this. It's required to continue working with `/refine`
 - Never mention file paths, function signatures, class names, or implementation details in the High-Level Plan. That is the Refiner's job.
 - Never edit `.beans/*.md` files directly with Edit/Write — always use `beans create` and `beans update`. The CLI manages frontmatter (ID, timestamps).
 - Never edit source code in this Skill.

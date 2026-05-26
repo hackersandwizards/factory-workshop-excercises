@@ -16,6 +16,7 @@ Startpunkt: `.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Du 
   - Die `beans` CLI hat **kein** `--body-append`-Flag. Für sehr lange Bodies: `--body-file <path>` statt `-d`.
   - ID anschließend aus stdout parsen für User-Hand-off (`/refine <id>`).
 - [ ] **Schema festschreiben** — Approach / Steps / Acceptance Criteria / Non-Goals
+- [ ] **Heading-Kontrakt** — Plan steht wortwörtlich unter `## High-Level Plan` Heading. `/refine` parst per exact-match — fehlt Heading → Refine bricht ab.
 - [ ] **Hard Rule** — keine File-Pfade, keine Funktions-Signaturen, keine Klassen-Namen im Plan
 
 ## Pflicht — Disziplin

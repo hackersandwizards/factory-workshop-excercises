@@ -20,6 +20,7 @@ Tag-2-AM `planner` Skill umbauen: statt einen freien Plan in `.plans/` zu schrei
 3. Phase 1 (Capture) umbauen: Feature-Idee aufnehmen — entweder aus Skill-Argument oder vom User abfragen. Kein Repo-Scan, kein Bean-Read.
 4. Phase 5 (Create Bean) umbauen: **ein** CLI-Call mit komplettem Body:
    - `beans create "<title>" -t feature -d "<heredoc mit Description + Hinweise + High-Level Plan>"` → ID aus stdout
+   - Plan wortwörtlich unter `## High-Level Plan` Heading — `/refine` parst per exact-match, fehlt Heading → Abbruch.
    - Die `beans` CLI hat **kein** `--body-append`-Flag. Body wird in einem Rutsch geschrieben. Für sehr lange Bodies: `--body-file <path>` statt `-d`.
    - **Niemals** `.beans/*.md` direkt editieren.
 5. Phase 3 (Approaches) absichern: Skill **stoppt** nach Präsentation der Optionen und wartet auf explizite User-Wahl. Auch wenn "autonomously" / "no clarifying questions" vorher gesagt wurde — Approach-Pick ist Pflicht-Gate, keine Klarstellung.
