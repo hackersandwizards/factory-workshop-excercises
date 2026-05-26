@@ -1,11 +1,11 @@
 ---
-# implement-exercise-olqc
+# sandbox-exercise-olqc
 title: Klammer-Unterstützung im Rechner
-status: in-progress
+status: completed
 type: feature
 priority: normal
 created_at: 2026-05-26T12:06:51Z
-updated_at: 2026-05-26T12:36:23Z
+updated_at: 2026-05-26T13:16:25Z
 ---
 
 Der Rechner unterstützt aktuell nur flache Ausdrücke mit `+ - * /` und fest verdrahteter Vorrangordnung. Nutzer können die Auswertungsreihenfolge nicht explizit steuern. Wir ergänzen runde Klammern `(` und `)` als Gruppierung, sodass beliebig tief verschachtelte Teilausdrücke vor dem umgebenden Ausdruck ausgewertet werden. Verhalten ohne Klammern bleibt unverändert.
@@ -70,3 +70,22 @@ Der Rechner unterstützt aktuell nur flache Ausdrücke mit `+ - * /` und fest ve
 - EvaluatorTest.NestedParens — Input `"((1+2)*(3+4))"` → `21`
 - EvaluatorTest.ParensOverridePrecedence — Input `"(2+3)*(4-1)"` → `15`
 - EvaluatorTest.RegressionNoParens — Input `"1+2*3"` → `7` (unverändertes Verhalten)
+
+## Implementation Log
+
+**Branch:** feat/sandbox-exercise-olqc-klammer-unterstuetzung-im-rechner
+
+**Commits:**
+- 8cd1d76 — Add LPAREN/RPAREN token types to lexer
+- 5827d64 — Extend parse_factor() with parenthesised grouping
+- dbec914 — Add tests for parentheses: lexer, parser, evaluator
+
+**Final test status:** PASS  (ctest --test-dir build → 27/27 green)
+
+## Summary of Changes
+
+- **8cd1d76** — `TokenType` enum extended with `LPAREN`/`RPAREN`; `Lexer::next()` recognises `(` and `)`; `token_type_name()` returns human-readable names for both.
+- **5827d64** — `parse_factor()` extended with LPAREN branch: consumes `(`, recurses via `parse_expr()`, expects `)`. Empty `()` and missing `)` throw `std::runtime_error`. Grammar comment in `parser.h` updated.
+- **dbec914** — New tests across all three test files: `LexerTest.Parentheses`, five new `ParserTest` cases (grouping, nesting, three error paths), five new `EvaluatorTest` cases plus regression.
+
+All Acceptance Criteria from the High-Level Plan were exercised by the tests: `(1+2)*3→9`, `2*(3+4)→14`, `((1+2)*(3+4))→21`, `(2+3)*(4-1)→15`, `1+2*3→7` (regression), and all three error paths (missing `)`, empty `()`, stray `)`) throw `std::runtime_error` as required.
