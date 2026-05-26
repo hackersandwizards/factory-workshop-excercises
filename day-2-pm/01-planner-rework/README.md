@@ -18,12 +18,13 @@ Tag-2-AM `planner` Skill umbauen: statt einen freien Plan in `.plans/` zu schrei
 1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`.
 2. Frontmatter: `argument-hint: [brief feature description]` (optional, kein bean-id). Description: "creates a new bean via beans CLI with description + High-Level Plan + AC".
 3. Phase 1 (Capture) umbauen: Feature-Idee aufnehmen — entweder aus Skill-Argument oder vom User abfragen. Kein Repo-Scan, kein Bean-Read.
-4. Phase 5 (Create Bean) umbauen: zwei CLI-Calls:
-   - `beans create "<title>" -t feature -d "<description>"` → ID aus stdout parsen
-   - `beans update <new-id> --body-append "..."` mit Heredoc für High-Level Plan
+4. Phase 5 (Create Bean) umbauen: **ein** CLI-Call mit komplettem Body:
+   - `beans create "<title>" -t feature -d "<heredoc mit Description + Hinweise + High-Level Plan>"` → ID aus stdout
+   - Die `beans` CLI hat **kein** `--body-append`-Flag. Body wird in einem Rutsch geschrieben. Für sehr lange Bodies: `--body-file <path>` statt `-d`.
    - **Niemals** `.beans/*.md` direkt editieren.
-5. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
-6. Test: `cd ../sandbox && claude` → `/planner Klammer-Support für Calculator` ausführen. `beans list` + `beans show <new-id>` prüfen.
+5. Phase 3 (Approaches) absichern: Skill **stoppt** nach Präsentation der Optionen und wartet auf explizite User-Wahl. Auch wenn "autonomously" / "no clarifying questions" vorher gesagt wurde — Approach-Pick ist Pflicht-Gate, keine Klarstellung.
+6. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
+7. Test: `cd ../sandbox && claude` → `/planner Klammer-Support für Calculator` ausführen. `beans list` + `beans show <new-id>` prüfen.
 
 Detail-Hinweise: `exercise/HINTS.md`.
 

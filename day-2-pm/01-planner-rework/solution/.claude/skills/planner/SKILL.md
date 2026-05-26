@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Use when starting a new feature — clarifies idea, proposes approaches, creates a fresh Bean via beans CLI with description + High-Level Plan + Acceptance Criteria. No code, no file paths.
-argument-hint: [brief feature description]
+argument-hint: brief feature description
 allowed-tools: Read Grep Glob Bash
 ---
 
@@ -43,6 +43,8 @@ At least 2 distinct strategies with honest trade-offs:
 - Do NOT advocate — let user pick
 - Stay at the "what" level. No file paths, no function names.
 
+**STOP after presenting options. Do NOT pick an approach yourself. Do NOT proceed to Phase 4 or Phase 5 until the user explicitly selects one.** Even if the user previously said "no clarifying questions" or "work autonomously" — the approach choice is a required decision point, not a clarification. Wait for the user's pick before continuing.
+
 ### Phase 4: Self-Review (Guardrail)
 
 Before creating the bean — re-read own proposal:
@@ -55,10 +57,9 @@ If self-review surfaces gaps: back to Phase 2 or Phase 3.
 
 ### Phase 5: Create the Bean
 
-Two-step CLI flow. First `beans create` with title + description, then `beans update --body-append` with High-Level Plan.
+Single `beans create` call with full body (description + Hinweise + High-Level Plan composed together). The `beans` CLI has no `--body-append` flag; bodies are written in one shot.
 
 ```bash
-# Step 1: create bean with description body. Capture the returned ID.
 beans create "<short-title>" -t feature -d "$(cat <<'EOF'
 <2-5 sentence problem description. What the feature is and why we want it.
 No implementation detail.>
@@ -66,13 +67,6 @@ No implementation detail.>
 **Hinweise:**
 - <hint 1>
 - <hint 2>
-EOF
-)"
-# CLI prints e.g. "Created sandbox-abcd sandbox-abcd--<slug>.md"
-# Parse the ID from stdout.
-
-# Step 2: append the High-Level Plan to the new bean's body.
-beans update <new-id> --body-append "$(cat <<'EOF'
 
 ## High-Level Plan
 
@@ -92,7 +86,10 @@ beans update <new-id> --body-append "$(cat <<'EOF'
 - What is explicitly out of scope for this Bean
 EOF
 )"
+# CLI prints e.g. "Created sandbox-abcd sandbox-abcd--<slug>.md"
 ```
+
+For very long bodies, write to a temp file and use `--body-file <path>` instead of `-d`. If you need to amend an existing bean's body later, fetch the current body via `beans query '{ bean(id: "<id>") { body } }' --json`, concatenate, then `beans update <id> --body-file <path>` (or `-d -` to read from stdin) — there is no append flag.
 
 Report to user: new bean ID, title, hand-off ready for `/refine <new-id>`.
 
@@ -104,6 +101,7 @@ Report to user: new bean ID, title, hand-off ready for `/refine <new-id>`.
 - Never skip Clarify — blind plans are guesses.
 - Never skip Self-Review — last guardrail before bean creation.
 - Never propose without explicit alternatives in Phase 3.
+- Never pick the approach yourself in Phase 3. Wait for the user's selection — autonomous-mode hints do not override this gate.
 - If user gets impatient: still ask one question. Discipline > speed.
 - Never start implementing during planning.
 - Default `-t feature`. Use `-t bug` only if the seed describes a defect, `-t task` for non-feature work.

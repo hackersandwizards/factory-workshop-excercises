@@ -10,9 +10,11 @@ Startpunkt: `.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Du 
 
 - [ ] **Frontmatter** — `argument-hint: [brief feature description]` (optional, nicht `<bean-id>`). Description anpassen: "creates a new bean via beans CLI with description + High-Level Plan + AC".
 - [ ] **Phase 1 (Capture)** — Feature-Idee vom User aufnehmen, in einem Satz zurückspiegeln
-- [ ] **Phase 5 (Create Bean)** — Zwei CLI-Calls:
-  1. `beans create "<title>" -t feature -d "<description>"` → ID parsen aus stdout
-  2. `beans update <new-id> --body-append "..."` mit High-Level Plan, Steps, AC, Non-Goals
+- [ ] **Phase 3 (Approaches) — STOP-Guard** — Skill präsentiert 2-3 Optionen und **wartet auf explizite User-Wahl**. Auch wenn "autonomously" / "no clarifying questions" vorher gesagt wurde — Approach-Pick ist Pflicht-Gate, keine Klarstellung.
+- [ ] **Phase 5 (Create Bean)** — **Ein** CLI-Call mit komplettem Body:
+  - `beans create "<title>" -t feature -d "<heredoc>"` mit Description + Hinweise + `## High-Level Plan` (Approach, Steps, AC, Non-Goals) in einem Rutsch
+  - Die `beans` CLI hat **kein** `--body-append`-Flag. Für sehr lange Bodies: `--body-file <path>` statt `-d`.
+  - ID anschließend aus stdout parsen für User-Hand-off (`/refine <id>`).
 - [ ] **Schema festschreiben** — Approach / Steps / Acceptance Criteria / Non-Goals
 - [ ] **Hard Rule** — keine File-Pfade, keine Funktions-Signaturen, keine Klassen-Namen im Plan
 

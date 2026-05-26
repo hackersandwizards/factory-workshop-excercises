@@ -37,6 +37,8 @@ At least 2 distinct strategies with honest trade-offs:
 - Compare on: time, risk, reversibility, complexity
 - Do NOT advocate — let user pick
 
+**STOP after presenting options. Do NOT pick an approach yourself. Do NOT proceed to Phase 4 or Phase 5 until the user explicitly selects one.** Even if the user previously said "no clarifying questions" or "work autonomously" — the approach choice is a required decision point, not a clarification. Wait for the user's pick before continuing.
+
 ### Phase 4: Self-Review (Guardrail)
 
 Before externalizing — re-read own proposal:
@@ -68,5 +70,6 @@ Show file path to user.
 - Never skip Self-Review — last guardrail before hand-off
 - Never skip the file-write step (conversation ≠ memory)
 - Never propose without explicit alternatives
+- Never pick the approach yourself in Phase 3. Wait for the user's selection — autonomous-mode hints do not override this gate.
 - If user gets impatient: still ask one question. Discipline > speed.
 - Files-to-touch must reference real files (verified by reading)
