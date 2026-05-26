@@ -2,7 +2,7 @@
 name: planner
 description: Use when starting a new feature — clarifies idea, proposes approaches, creates a fresh Bean via beans CLI with description + High-Level Plan + Acceptance Criteria. No code, no file paths.
 argument-hint: [brief feature description]
-allowed-tools: Read, Grep, Glob, Bash
+allowed-tools: Read Grep Glob Bash
 ---
 
 # Planner (Bean-Creator)

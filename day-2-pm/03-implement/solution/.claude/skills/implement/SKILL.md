@@ -3,7 +3,7 @@ name: implement
 description: Implements a Bean's Refined Plan. Creates feature branch, edits files, runs ctest after each change, commits per logical step, appends Implementation Log + sets status=completed. Never pushes, never merges to main.
 argument-hint: <bean-id>
 model: claude-sonnet-4-6
-allowed-tools: Read, Edit, Write, Bash, Glob, Grep
+allowed-tools: Read Edit Write Bash Glob Grep
 ---
 
 # Implement (Refined Plan → Code on a Branch)

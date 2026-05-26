@@ -2,7 +2,7 @@
 name: refine
 description: Use right before Implement — reads Bean High-Level Plan via beans CLI, explores codebase via subagent fork, appends Refined Plan with concrete files, signatures, test sketch to the bean body.
 argument-hint: <bean-id>
-allowed-tools: Read, Grep, Glob, Bash, Task
+allowed-tools: Read Grep Glob Bash Task
 ---
 
 # Refine (Plan → Refined Plan)
