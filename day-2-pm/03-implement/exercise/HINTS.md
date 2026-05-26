@@ -30,15 +30,18 @@ Du baust einen neuen Skill `implement` von Null. **Erster Skill, der schreibt** 
 cd ../sandbox
 cp -r ../03-implement/exercise/.claude .
 # Skill bauen, dann komplette v0:
-/planner sandbox-dy91
-/refine sandbox-dy91
-/implement sandbox-dy91
+/planner 
+# produziert bean implement-exercise-olqc
+/refine implement-exercise-olqc
+/implement implement-exercise-olqc
 ```
 
-- [ ] Branch `feat/sandbox-dy91-klammer-support` (oder ähnlich) existiert
-- [ ] `git log feat/sandbox-dy91-...` zeigt mehrere Commits, einer pro Refined-Plan-Step
+implement-exercise-olqc
+
+- [ ] Branch `feat/implement-exercise-olqc` (oder ähnlich) existiert
+- [ ] `git log feat/implement-exercise-olqc-...` zeigt mehrere Commits, einer pro Refined-Plan-Step
 - [ ] `ctest --test-dir build` grün
-- [ ] `beans show sandbox-dy91` zeigt Status `completed` + `## Implementation Log` + `## Summary of Changes`
+- [ ] `beans show implement-exercise-olqc` zeigt Status `completed`
 - [ ] Skill weigert sich, auf `main` zu committen (Test: nach Phase 2 absichtlich `git checkout main` → Skill muss abbrechen)
 
 ## Erwartete Bugs (notieren, nicht fixen während Build)

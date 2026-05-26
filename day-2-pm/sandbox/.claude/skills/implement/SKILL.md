@@ -4,6 +4,7 @@ description: Use after /refine — takes a bean that carries a `## Refined Plan`
 argument-hint: <bean-id>
 model: claude-sonnet-4-6
 allowed-tools: Read, Edit, Write, Bash, Glob, Grep
+context: fork
 ---
 
 # Implementer (Bean-Implementer)
