@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implements a Bean's Refined Plan. Creates feature branch, edits files, runs ctest after each change, commits per logical step. Never pushes, never merges to main.
+description: Implements a Bean's Refined Plan. Creates feature branch, edits files, runs ctest after each change, commits per logical step, appends Implementation Log + sets status=completed. Never pushes, never merges to main.
 argument-hint: <bean-id>
 model: claude-sonnet-4-6
 allowed-tools: Read, Edit, Write, Bash, Glob, Grep
@@ -8,28 +8,28 @@ allowed-tools: Read, Edit, Write, Bash, Glob, Grep
 
 # Implement (Refined Plan → Code on a Branch)
 
-You execute a Refined Plan: branch, edit, build, test, commit per step. Append a complete log to the Bean. Never merge, never push.
+You execute a Refined Plan: branch, edit, build, test, commit per step. Append a complete log to the Bean and flip its status to `completed`. Never merge, never push.
 
 ## When to use
 
-- User invokes `/implement <bean-id>` or says "implement bean-XXX"
-- Bean's `## Refined Plan` is filled with real files, signatures, test sketch
+- User invokes `/implement <bean-id>` or says "implement <bean-id>"
+- Bean body contains `## Refined Plan` with real files, signatures, test sketch
 - Current branch is clean (no uncommitted changes); HEAD is on `main`
 
 ## Workflow
 
 ### Phase 1: Preflight
 
-- Read `./.beans/<bean-id>.md` end-to-end
-- Extract `## Refined Plan` — Files to change, New signatures, Test sketch
-- If Refined Plan is empty, the placeholder, or only schema-headers without bullets → abort: "Refined Plan missing — run /refine first."
+- `beans show --json <bean-id>` — parse JSON, extract title + body
+- Extract `## Refined Plan` section — Files to change, New signatures, Test sketch
+- If `## Refined Plan` missing or empty (only headers, no bullets) → abort: "Refined Plan missing — run /refine first."
 - `git status --porcelain` → if not empty, abort: "Working tree not clean. Commit or stash first."
 - `git rev-parse --abbrev-ref HEAD` → if not `main`, abort: "Must start from main. Currently on <branch>."
 
 ### Phase 2: Branch
 
-- Read Bean frontmatter `title:` field. Slugify: lowercase, replace non-alphanumerics with `-`, collapse repeats, trim leading/trailing `-`.
-- Branch name: `feat/<bean-id>-<slug>` (e.g. `feat/bean-001-klammer-support`).
+- From the JSON, read the `title` field. Slugify: lowercase, replace non-alphanumerics with `-`, collapse repeats, trim leading/trailing `-`.
+- Branch name: `feat/<bean-id>-<slug>` (e.g. `feat/sandbox-dy91-klammer-support`).
 - `git rev-parse --verify <branch-name>` → if exists, abort: "Branch already exists."
 - `git checkout -b <branch-name>`
 - Verify: `git rev-parse --abbrev-ref HEAD` returns the new branch. If not → abort.
@@ -52,28 +52,38 @@ For each `### Files to change` entry in the Refined Plan, in listed order:
 
 After the loop: run the full test suite once more end-to-end. Status: `green` or `red`.
 
-### Phase 4: Append Implementation Log to Bean
+### Phase 4: Append Implementation Log
 
-Edit `./.beans/<bean-id>.md`. Replace the placeholder in `## Implementation Log` with:
+Append the log to the bean body via the CLI:
 
-```markdown
+```bash
+beans update <bean-id> --body-append "$(cat <<'EOF'
+
 ## Implementation Log
 
-**Branch:** `feat/<bean-id>-<slug>`
+**Branch:** \`feat/<bean-id>-<slug>\`
 
 **Commits**
-- `<sha-short>` — <step description>
-- `<sha-short>` — <step description>
-- ...
+- \`<sha-short>\` — <step description>
+- \`<sha-short>\` — <step description>
 
 **Final test status:** green | red | aborted-tests-red
 
 **Notes** (only if aborted): which step failed, last test output excerpt, next-action hint.
+EOF
+)"
 ```
 
-Edit ONLY this section. Leave Description, High-Level Plan, Refined Plan untouched.
+### Phase 5: Status
 
-Final report to user: branch name, commit count, test status. Suggest review before merge.
+- If final test status is `green`:
+  ```bash
+  beans update <bean-id> --body-append $'\n\n## Summary of Changes\n\n<2-3 sentence summary>'
+  beans update <bean-id> -s completed
+  ```
+- If `aborted-tests-red`: leave status as `in-progress`. Append a `## Notes` section explaining where it stopped.
+
+Final report to user: branch name, commit count, test status, bean status. Suggest review before merge.
 
 ## Rules
 
@@ -82,5 +92,5 @@ Final report to user: branch name, commit count, test status. Suggest review bef
 - Tests must be green before each commit. No "fix it later" commits.
 - Max 2 fix attempts per failing step. Then stop, log state, surface to user. Do not loop forever.
 - One logical change per commit. Do not batch multiple Refined-Plan steps into one commit.
-- Edit ONLY the Bean's `## Implementation Log` section in Phase 4. Source files are edited in Phase 3 only.
+- Never edit `.beans/*.md` directly with Edit/Write. Use `beans update --body-append` and `beans update -s <status>`.
 - If `cmake` or `ctest` is missing on the system → abort with a clear message; do not improvise alternate builds.

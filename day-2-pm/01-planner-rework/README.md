@@ -9,26 +9,27 @@ Den Tag-2-AM `planner` Skill so umbauen, dass er Bean-aware wird: Statt einen fr
 ## Voraussetzung
 
 - Sandbox-Calculator existiert unter `../sandbox/` (vom Trainer gebaut)
-- Beans liegen unter `../sandbox/.beans/bean-00X--*.md` mit 4 Sektionen
+- `beans` CLI installiert (`brew install hmans/beans/beans`, Check: `beans --version`)
+- Beans liegen unter `../sandbox/.beans/sandbox-*.md` (3 Stück: Klammer, Variablen, Math-Funktionen). `beans list` zeigt sie an.
 - Startpunkt-Skill liegt unter `exercise/.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Falls Du Deinen eigenen Tag-2-AM-Skill hast: ersetze die Kopie damit.
 
 ## Aufgabe
 
 1. `exercise/.claude/` in den Sandbox kopieren (oder symlinken): `cp -r exercise/.claude ../sandbox/`. Damit hat der Sandbox-Repo `.claude/skills/planner/SKILL.md` als Ausgangsbasis.
 2. Frontmatter anpassen: `argument-hint: <bean-id>`, Description um "reads bean by ID, appends High-Level Plan + Acceptance Criteria" ergänzen.
-3. Phase 1 (Explore) umbauen: statt Repo-Scan jetzt `./.beans/<bean-id>.md` lesen, 2-3 Findings zur Bean surfacen.
-4. Phase 5 (Externalize) umbauen: statt `.plans/<task>.md` schreiben jetzt die Bean editieren — nur die `## High-Level Plan`-Sektion, Placeholder ersetzen.
+3. Phase 1 (Explore) umbauen: statt Repo-Scan jetzt `beans show --json <bean-id>` parsen, Body lesen, 2-3 Findings zur Bean surfacen.
+4. Phase 5 (Externalize) umbauen: statt `.plans/<task>.md` schreiben jetzt `beans update <bean-id> --body-append "..."` mit Heredoc. **Niemals** `.beans/*.md` direkt editieren.
 5. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
-6. Test: `cd ../sandbox && claude` → `/planner bean-001` ausführen. Bean-File prüfen.
+6. Test: `cd ../sandbox && claude` → `/planner sandbox-dy91` ausführen. `beans show sandbox-dy91` prüfen.
 
 Detail-Hinweise: `exercise/HINTS.md`.
 
 ## Self-Check
 
-- `cat ../sandbox/.beans/bean-001--parens.md` zeigt einen befüllten `## High-Level Plan` mit **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
+- `beans show sandbox-dy91` zeigt im Body einen befüllten `## High-Level Plan` mit **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
 - Im Plan steht **kein** `src/lexer.cpp`, **keine** `tokenize()`, **keine** Zeilen-Referenz
-- `## Description`, `## Refined Plan`, `## Implementation Log` sind unverändert
-- Skill weigert sich elegant, wenn die Bean nicht existiert
+- Die ursprüngliche Description (Body vor `## High-Level Plan`) ist unverändert
+- Skill weigert sich elegant, wenn die Bean-ID nicht existiert (`beans show` exit-code prüfen)
 
 ## Solution-Vergleich
 

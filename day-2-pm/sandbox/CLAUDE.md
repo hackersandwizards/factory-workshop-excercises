@@ -8,8 +8,12 @@ A tiny C++17 CLI calculator used as the **shared codebase** for the Tag 2 PM
 exercise on factory-pipeline Skills (Planner -> Refine -> Implement).
 
 Participants build their own Skills against this code. Each feature increment
-is captured as a **Bean** in `.beans/<id>.md`. The Skills read and write those
-files.
+is captured as a **Bean** in `.beans/<id>.md`, managed by the **beans CLI**
+(`brew install hmans/beans/beans`). Skills read beans via `beans show --json
+<id>` and write back via `beans update <id>` — never edit bean files directly.
+
+Run `beans prime` once to load the full agent-facing reference (types,
+statuses, commands, workflow). The SessionStart hook does this automatically.
 
 ## File layout
 
@@ -20,7 +24,8 @@ src/evaluator.{h,cpp}  Walks AST, returns int64_t. Throws std::runtime_error on 
 src/main.cpp           REPL. Catches std::exception, prints, continues.
 tests/*_test.cpp       GoogleTest. One file per source module.
 CMakeLists.txt         C++17, FetchContent GoogleTest 1.14.
-.beans/<id>.md         Per-feature bean files (see format below).
+.beans/<id>.md         Per-feature bean files (managed by beans CLI).
+.beans.yml             Beans CLI config (prefix, id length, defaults).
 ```
 
 ## Build & test
@@ -49,36 +54,22 @@ ctest --test-dir build
 - **Naming.** snake_case for functions and variables, PascalCase for types,
   `kFoo` for compile-time constants. Match what's already in `src/`.
 
-## Bean format
+## Beans workflow
 
-Each feature increment is a single markdown file at `.beans/<id>.md` with
-**exactly these four sections, in this order**:
+Beans are managed by the `beans` CLI — never `Edit` or `Write` a bean file
+directly. The factory-pipeline Skills compose like this:
 
-```markdown
-# Bean <id>: <short title>
+1. **Planner** appends a `## High-Level Plan` section (approach + AC, no
+   file paths) via `beans update <id> --body-append "..."`.
+2. **Refine** appends a `## Refined Plan` section (files + signatures + test
+   sketch) via the same mechanism. Set status to `in-progress` when work
+   starts: `beans update <id> -s in-progress`.
+3. **Implement** appends a `## Implementation Log` section with branch + commit
+   SHAs. On completion: `beans update <id> -s completed`.
 
-## Description
-Human-written. What the feature is and why we want it. 2–5 sentences. No
-implementation detail — that's what the other sections are for.
-
-## High-Level Plan
-Produced by the **Planner** Skill. Bullet list of plan steps + explicit
-acceptance criteria (AC) the implementation must satisfy. Plan steps reference
-files at the module level ("extend the lexer", not full diffs).
-
-## Refined Plan
-Produced by the **Refine** Skill. Concrete files to touch, function signatures
-to add or change, and a test sketch (test names + one-line intent). This is
-the contract Implement consumes.
-
-## Implementation Log
-Produced by the **Implement** Skill. Branch name and the commit SHAs that
-realised the bean, in order. Append-only — never rewrite history here.
-```
-
-Skills append to their own section and leave earlier sections alone. If
-Implement finds the Refined Plan inadequate, it stops and bounces the bean
-back to Refine rather than silently extending the spec.
+Body sections are conventions, not enforced — the CLI treats the body as one
+markdown blob. Skills must append rather than rewrite. Run `beans prime` for
+the full reference.
 
 ## What Claude should not do here
 
