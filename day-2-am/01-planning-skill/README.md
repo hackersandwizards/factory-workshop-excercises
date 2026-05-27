@@ -42,9 +42,8 @@ Build-Checkliste: [`exercise/HINTS.md`](exercise/HINTS.md).
 
 ## Schritte (Reconstruct)
 
-1. Planning-Domäne aus eigenem Stack wählen:
+1. Genereller Planer oder Planner in spezifischer Planning-Domäne aus eigenem Stack wählen:
    - `refactor-planner`, `migration-planner`, `test-coverage-planner`, `feature-planner`
-   - Oder: SSW-domain-spezifisch
 2. `/skill-creator` starten — Interview-Flow durch Frontmatter + Body
 3. `name` + `description` (Description = Activation-Key)
 4. Workflow-Body mit **4★ Pflicht-Subset**: Explore Context · Eine Frage pro Message · 2-3 Approaches · Self-Review
