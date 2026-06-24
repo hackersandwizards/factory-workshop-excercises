@@ -4,7 +4,7 @@ Context for Claude Code sessions inside this sandbox.
 
 ## What this is
 
-A tiny C++17 CLI calculator used as the **shared codebase** for the Tag 2 PM
+A tiny C++17 CLI calculator used as the **shared codebase** for the Day 2 PM
 exercise on factory-pipeline Skills (Planner -> Refine -> Implement).
 
 Participants build their own Skills against this code. Each feature increment

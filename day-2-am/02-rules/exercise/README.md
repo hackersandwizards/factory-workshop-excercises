@@ -1,19 +1,19 @@
-# Test-Repo für Pirate-Rule
+# Test repo for the pirate rule
 
-Dieses Folder ist deine Test-Spielwiese für die Rules-Übung.
+This folder is your test playground for the Rules exercise.
 
-## Test-Plan
+## Test plan
 
-1. Lege `.claude/rules/pirate.md` an (siehe ../README.md für Details)
-2. Öffne Claude Code in diesem Folder
-3. Bitte Claude: "Erweitere diese README um einen Abschnitt 'About'" → erwartet: **Pirate-Sprache**
-4. Bitte Claude: "Erkläre was main.cpp macht" → erwartet: **normale Sprache**
+1. Create `.claude/rules/pirate.md` (see ../README.md for details)
+2. Open Claude Code in this folder
+3. Ask Claude: "Add an 'About' section to this README" → expected: **pirate language**
+4. Ask Claude: "Explain what main.cpp does" → expected: **normal language**
 
-## Files in diesem Folder
+## Files in this folder
 
-- `README.md` — diese Datei (Markdown → Glob matches → Pirate)
-- `main.cpp` — C++ Sample (matched nicht den Pirate-Glob → normal)
+- `README.md` — this file (Markdown → glob matches → pirate)
+- `main.cpp` — C++ sample (does not match the pirate glob → normal)
 
 ## Notes
 
-Die Pirate-Rule existiert nur, wenn DU sie anlegst. Solution-Referenz: `../solution/.claude/rules/pirate.md`.
+The pirate rule only exists if YOU create it. Solution reference: `../solution/.claude/rules/pirate.md`.

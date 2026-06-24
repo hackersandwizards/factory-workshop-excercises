@@ -1,14 +1,14 @@
-# Day 2 AM · Übung 03 — Subagent
+# Day 2 AM · Exercise 03 — Subagent
 
-**Slot:** 10:45–11:30 · 45 Minuten
+**Slot:** 10:45–11:30 · 45 minutes
 
 ## Concept
 
-Subagent läuft in **isoliertem Context** (eigene Conversation). Macht Heavy-Lifting (viel lesen, viel Code), gibt nur **Summary** zurück an Hauptlauf. Du sparst Context-Tokens im Main.
+A subagent runs in an **isolated context** (its own conversation). It does the heavy lifting (lots of reading, lots of code) and returns only a **summary** to the main run. You save context tokens in the main conversation.
 
-Skill = on-demand Markdown im aktuellen Context. Subagent = explizit delegiert in isolierten Context.
+Skill = on-demand Markdown in the current context. Subagent = explicitly delegated to an isolated context.
 
-## Frontmatter — was du konfigurieren kannst
+## Frontmatter — what you can configure
 
 ```yaml
 ---
@@ -19,51 +19,51 @@ model: claude-sonnet-4-6
 ---
 ```
 
-| Feld | Zweck |
+| Field | Purpose |
 |------|-------|
-| `tools` | Whitelist — Subagent kann nur diese nutzen |
-| `model` | Haiku für Routine, Sonnet/Opus für Schwieriges |
-| `description` | Activation-Key (gleich wie Skill) |
+| `tools` | Whitelist — the subagent can use only these |
+| `model` | Haiku for routine work, Sonnet/Opus for hard problems |
+| `description` | Activation key (same as a skill) |
 
-## Ziel
+## Goal
 
-Subagent für einen wiederkehrenden Workflow aus deinem Stack. Output-Contract definieren.
+A subagent for a recurring workflow from your stack. Define the output contract.
 
-## Vorschläge
+## Suggestions
 
-1. **`codebase-explorer`** — *"finde alle Stellen wo X passiert + summarize"*
-2. **`test-runner-and-summarizer`** — `npm test` ausführen, parse, kurzer Bericht
-3. **`dependency-analyzer`** — `package.json` + Lock-File lesen, Outdated/Risks zusammenfassen
-4. **`legacy-code-explainer`** — alte Datei lesen, moderner Kommentar (C++/Java-Legacy)
-5. **`pr-diff-summarizer`** — `git diff main...HEAD`, strukturierte Zusammenfassung
+1. **`codebase-explorer`** — *"find every place where X happens and summarize"*
+2. **`test-runner-and-summarizer`** — run `npm test`, parse, short report
+3. **`dependency-analyzer`** — read `package.json` plus the lock file, summarize outdated packages and risks
+4. **`legacy-code-explainer`** — read an old file, modern commentary (C++/Java legacy)
+5. **`pr-diff-summarizer`** — `git diff main...HEAD`, structured summary
 
-## Schritte
+## Steps
 
-1. `.claude/agents/<dein-name>.md` anlegen
-2. Frontmatter mit `name`, `description`, `tools` (Whitelist!), `model`
-3. Body: Rolle + Workflow + Output-Contract + Rules
-4. Trigger im Main-Context: `@<name>` oder via Task tool
-5. Verify: Output unter 400 Wörter, Summary + Findings strukturiert
+1. Create `.claude/agents/<your-name>.md`
+2. Frontmatter with `name`, `description`, `tools` (whitelist!), `model`
+3. Body: role + workflow + output contract + rules
+4. Trigger from the main context: `@<name>` or via the Task tool
+5. Verify: output under 400 words, summary plus findings, structured
 
 ## Verify
 
-- Subagent läuft, gibt Summary zurück
-- Output ist kompakter als das gelesene Material (Context-Schutz!)
-- Tools-Whitelist verhindert ungewollte Side-Effects
+- The subagent runs and returns a summary
+- The output is more compact than the material it read (context protection!)
+- The tools whitelist prevents unwanted side effects
 
 ## Stretch
 
-- Model-Tuning: Haiku vs Sonnet — fühlt's anders an?
-- Mehrere Subagents komponieren: `@explorer` → `@summarizer`
+- Model tuning: Haiku vs Sonnet — does it feel different?
+- Compose several subagents: `@explorer` → `@summarizer`
 
-## Brücke zu nächster Übung
+## Bridge to the next exercise
 
-Tag 2 AM 04 — Hooks: Subagents sind Soft-Boundaries (Prompt-basiert). Hooks sind Hard-Boundaries (Shell-Exit-Code, unumgehbar).
+Day 2 AM 04 — Hooks: subagents are soft boundaries (prompt-based). Hooks are hard boundaries (shell exit code, unavoidable).
 
-Tag 2 PM: Was du gerade gebaut hast, wird `@refine` — gleicher Job, isolierter Context, Plan landet in Bean.
+Day 2 PM: what you just built becomes `@refine` — same job, isolated context, the plan lands in a bean.
 
 ## Solution
 
-Zwei Referenz-Subagents in `solution/`:
-- [`codebase-explorer.md`](solution/.claude/agents/codebase-explorer.md) — Read-only Discovery
-- [`pr-diff-summarizer.md`](solution/.claude/agents/pr-diff-summarizer.md) — Strukturierte Diff-Zusammenfassung
+Two reference subagents in `solution/`:
+- [`codebase-explorer.md`](solution/.claude/agents/codebase-explorer.md) — read-only discovery
+- [`pr-diff-summarizer.md`](solution/.claude/agents/pr-diff-summarizer.md) — structured diff summary

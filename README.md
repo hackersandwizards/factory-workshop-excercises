@@ -1,39 +1,39 @@
 # factory-workshop-excercises
 
-Übungs-Repo für den **3-Tages-Workshop "Agentic Coding"** (h&w · SSW).
+Exercise repo for the **3-day "Agentic Coding" workshop** (h&w · SSW).
 
-Geklont ein Mal am Tag-1-Morgen. Enthält pro Übung: Aufgabe (`README.md`), Start-Punkt (`exercise/`), Referenz-Lösung (`solution/`).
+Cloned once on the morning of Day 1. Each exercise contains: the task (`README.md`), a starting point (`exercise/`), and a reference solution (`solution/`).
 
-## Voraussetzungen
+## Prerequisites
 
-Siehe [SETUP.md](SETUP.md). Kurz: cmake, beans CLI, jq, git, Claude Code installiert.
+See [SETUP.md](SETUP.md). In short: cmake, beans CLI, jq, git, and Claude Code installed.
 
-## Struktur
+## Structure
 
 ```
 day-1/                      Foundations — Pirate-CLAUDE.md (always-on) + Pirate-Skill (on-demand)
-day-2-am/                   Customization-Atoms: Skills → Rules → Subagents → Hooks
-day-2-pm/                   Factory-Pipeline (Planner → Refine → Implement gegen calc-Sandbox)
+day-2-am/                   Customization atoms: Skills → Rules → Subagents → Hooks
+day-2-pm/                   Factory pipeline (Planner → Refine → Implement against the calc sandbox)
 ```
 
-Tag 3 (Transfer-Hackathon) bringt ihr eure eigene Codebase mit — kein Folder hier.
+For Day 3 (Transfer Hackathon) you bring your own codebase — no folder here.
 
-## Pro Übung
+## Per exercise
 
-| Folder | Inhalt |
+| Folder | Contents |
 |--------|--------|
-| `README.md` | Ziel · Zeit · Schritte · Verify · Stretch · Brücke zur nächsten Übung |
-| `exercise/` | Start-Punkt — ihr baut hier |
-| `solution/` | Referenz-Lösung (nicht reinschauen bevor ihr selbst probiert habt) |
+| `README.md` | Goal · Time · Steps · Verify · Stretch · Bridge to the next exercise |
+| `exercise/` | Starting point — you build here |
+| `solution/` | Reference solution (don't peek before you've tried it yourself) |
 
-## Klon
+## Clone
 
 ```bash
 git clone https://github.com/hackersandwizards/factory-workshop-excercises.git
 cd factory-workshop-excercises
 ```
 
-## Tag-Navigation
+## Day navigation
 
 - [Day 1: Pirate-CLAUDE.md](day-1/00-pirate-claude-md/)
 - [Day 1: Pirate-Skill](day-1/01-pirate-skill/)

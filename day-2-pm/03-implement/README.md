@@ -1,47 +1,47 @@
-# Day 2 PM · Übung 03 — Implement (Refined Plan → Code auf Branch)
+# Day 2 PM · Exercise 03 — Implement (Refined Plan → Code on a Branch)
 
-**Slot:** ~60 Minuten · Phase 3 der Factory-Pipeline
+**Slot:** ~60 minutes · Phase 3 of the Factory pipeline
 
-## Ziel
+## Goal
 
-Einen `implement` Skill bauen, der die Refined-Plan-Sektion einer Bean nimmt, einen Feature-Branch erstellt, jeden Step einzeln implementiert + baut + testet + committed, und am Ende ein Implementation Log in die Bean schreibt. Niemals merge, niemals push.
+Build an `implement` skill that takes a bean's Refined Plan section, creates a feature branch, implements + builds + tests + commits each step individually, and finally writes an Implementation Log into the bean. Never merge, never push.
 
-## Voraussetzung
+## Prerequisites
 
-- Sandbox-Calculator unter `../sandbox/` ist gebaut und Tests laufen grün
-- `beans` CLI installiert. Bean aus Übung 02 hat `## Refined Plan` im Body, Status `in-progress`.
-- `cmake` und `ctest` sind installiert
-- `git status` in `../sandbox/` ist clean, HEAD ist auf `main`
+- The sandbox calculator under `../sandbox/` is built and its tests pass green
+- The `beans` CLI is installed. The bean from Exercise 02 has a `## Refined Plan` in its body, status `in-progress`.
+- `cmake` and `ctest` are installed
+- `git status` in `../sandbox/` is clean, HEAD is on `main`
 
-## Aufgabe
+## Task
 
-Detail-Hinweise + Build-Checkliste + erwartete Bugs: `exercise/HINTS.md`. Skeleton: `exercise/.claude/skills/.gitkeep` — leerer Startpunkt, Skill von Null gebaut.
+Detailed hints + build checklist + expected bugs: `exercise/HINTS.md`. Skeleton: `exercise/.claude/skills/.gitkeep` — an empty starting point, the skill is built from scratch.
 
-1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`. Dann `mkdir ../sandbox/.claude/skills/implement && touch ../sandbox/.claude/skills/implement/SKILL.md`.
+1. Copy `exercise/.claude/` into the sandbox: `cp -r exercise/.claude ../sandbox/`. Then `mkdir ../sandbox/.claude/skills/implement && touch ../sandbox/.claude/skills/implement/SKILL.md`.
 2. Frontmatter: `name: implement`, `argument-hint: <bean-id>`, `model: claude-sonnet-4-6`, `allowed-tools: Read, Edit, Write, Bash, Glob, Grep`.
-3. Phase 1 (Preflight): `beans show --json <bean-id>` parsen, `## Refined Plan` extrahieren. Working-Tree-clean prüfen. HEAD == `main` prüfen. Wenn nicht → abort mit klarer Meldung.
-4. Phase 2 (Branch): Slug aus Bean-`title`-Feld generieren. Branch `feat/<bean-id>-<slug>` erstellen. Existiert er schon → abort.
-5. Phase 3 (Loop): pro `### Files to change`-Eintrag: edit → `cmake --build build` → `ctest --test-dir build`. Wenn rot: max 2 Fix-Versuche, dann abort. Wenn grün: commit mit beschreibendem Message.
-6. Phase 4 (Log): `beans update <bean-id> --body-append "..."` mit Branch-Name, Liste der Commit-SHAs + Beschreibungen, finalem Test-Status.
-7. Phase 5 (Status): wenn grün → `beans update <bean-id> -s completed` + `## Summary of Changes` appenden. Wenn rot → Status bleibt `in-progress`, Notes appenden.
-8. Harte Regeln: niemals zu `main` committen, niemals `git push`, niemals `git merge`. Tests müssen grün sein vor jedem Commit. Niemals `.beans/*.md` direkt editieren.
+3. Phase 1 (Preflight): parse `beans show --json <bean-id>`, extract the `## Refined Plan`. Check the working tree is clean. Check HEAD == `main`. If not → abort with a clear message.
+4. Phase 2 (Branch): generate a slug from the bean's `title` field. Create the branch `feat/<bean-id>-<slug>`. If it already exists → abort.
+5. Phase 3 (Loop): per `### Files to change` entry: edit → `cmake --build build` → `ctest --test-dir build`. If red: max 2 fix attempts, then abort. If green: commit with a descriptive message.
+6. Phase 4 (Log): `beans update <bean-id> --body-append "..."` with the branch name, a list of commit SHAs + descriptions, and the final test status.
+7. Phase 5 (Status): if green → `beans update <bean-id> -s completed` + append `## Summary of Changes`. If red → status stays `in-progress`, append notes.
+8. Hard rules: never commit to `main`, never `git push`, never `git merge`. Tests must be green before every commit. Never edit `.beans/*.md` directly.
 
 ## Self-Check
 
-- `git branch` in `../sandbox/` zeigt `feat/sandbox-dy91-klammer-support` (oder ähnlich)
-- `git log feat/sandbox-dy91-...` zeigt mehrere kleine Commits, einer pro logischem Step
-- `main` ist unverändert (`git log main` enthält keine neuen Commits)
-- `ctest --test-dir build` ist grün
-- `beans show sandbox-dy91` zeigt Status `completed`, `## Implementation Log` mit Branch + Commits + Status, `## Summary of Changes`
-- Bei künstlich kaputtem Step (z.B. Refined Plan absichtlich falsch) → Skill stoppt nach 2 Versuchen, schreibt `aborted-tests-red` ins Log, Status bleibt `in-progress`, ruined nicht die Codebase
+- `git branch` in `../sandbox/` shows `feat/sandbox-dy91-parenthesis-support` (or similar)
+- `git log feat/sandbox-dy91-...` shows several small commits, one per logical step
+- `main` is unchanged (`git log main` contains no new commits)
+- `ctest --test-dir build` is green
+- `beans show sandbox-dy91` shows status `completed`, a `## Implementation Log` with branch + commits + status, and a `## Summary of Changes`
+- For an artificially broken step (e.g. a deliberately wrong Refined Plan) → the skill stops after 2 attempts, writes `aborted-tests-red` into the log, status stays `in-progress`, and it does not ruin the codebase
 
-## Solution-Vergleich
+## Solution Comparison
 
-Nach der Übung — vergleich deinen Skill mit `solution/.claude/skills/implement/SKILL.md`. Achte auf: die Preflight-Guards (clean tree, on main), den 2-Versuche-Limit, das exakte Implementation-Log-Schema, und die Branch-Naming-Logik. Was ist defensiver formuliert als bei dir?
+After the exercise, compare your skill with `solution/.claude/skills/implement/SKILL.md`. Pay attention to: the preflight guards (clean tree, on main), the 2-attempt limit, the exact Implementation Log schema, and the branch-naming logic. What is worded more defensively than in yours?
 
-## Lernziele
+## Learning Goals
 
-- Hard Constraints in Skills: "niemals X" muss klar, prüfbar und unmissverständlich stehen
-- Test-driven Implementation Loop: build/test/commit pro Step ist ein Sicherheits-Pattern
-- Fail-Loud statt Fail-Silent: lieber sauberer Abort mit State im Log als "irgendwie fertig"
-- End-to-end-Pipeline: Planner → Refine → Implement als Factory, die einen Bean von Idee zu Branch trägt — ohne dass die Haupt-Konversation den Code je sieht
+- Hard constraints in skills: "never X" must be stated clearly, checkably, and unambiguously
+- Test-driven implementation loop: build/test/commit per step is a safety pattern
+- Fail loud instead of fail silent: a clean abort with state in the log beats "somehow done"
+- End-to-end pipeline: Planner → Refine → Implement as a factory that carries a bean from idea to branch — without the main conversation ever seeing the code

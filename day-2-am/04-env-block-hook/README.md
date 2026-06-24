@@ -1,54 +1,54 @@
-# Day 2 AM · Übung 04 — env-block-Hook
+# Day 2 AM · Exercise 04 — env-block hook
 
-**Slot:** 11:30–12:00 · 30 Minuten
+**Slot:** 11:30–12:00 · 30 minutes
 
 ## Concept
 
-Hooks = Shell-Commands auf Tool-Events. Exit ≠ 0 = Tool-Call blockiert. **Agent kann Hooks NICHT bypassen** — anders als Prompt-Instruktionen.
+Hooks = shell commands on tool events. A non-zero exit blocks the tool call. **The agent CANNOT bypass hooks** — unlike prompt instructions.
 
-| Event | Wann |
+| Event | When |
 |-------|------|
-| **PreToolUse** | Vor jedem Tool-Call. Exit ≠ 0 blockiert. |
-| **PostToolUse** | Nach Tool-Call. Validierung, Logging. |
-| **SessionStart** | Bei Session-Start. Context laden. |
-| **PreCompact** | Vor Context-Compaction. State sichern. |
+| **PreToolUse** | Before every tool call. A non-zero exit blocks it. |
+| **PostToolUse** | After a tool call. Validation, logging. |
+| **SessionStart** | At session start. Load context. |
+| **PreCompact** | Before context compaction. Save state. |
 
-## Ziel
+## Goal
 
-Hook installieren, der `cat .env` UND `Read .env` UND `Glob .env*` blockt. Selbst wenn Agent es versucht — Exit-Code 2 unterbricht.
+Install a hook that blocks `cat .env` AND `Read .env` AND `Glob .env*`. Even if the agent tries — exit code 2 interrupts it.
 
-**Wichtig:** Agent hat mehrere Wege auf Files: `Bash` (cat/grep), `Read`, `Edit`, `Write`, `Glob`, `Grep`, `NotebookEdit`. Hook muss ALLE matchen — sonst Bypass trivial.
+**Important:** the agent has several ways to reach files: `Bash` (cat/grep), `Read`, `Edit`, `Write`, `Glob`, `Grep`, `NotebookEdit`. The hook must match ALL of them — otherwise the bypass is trivial.
 
-## Schritte
+## Steps
 
-1. `.claude/hooks/block-env-access.sh` anlegen — Bash-Skript, liest stdin JSON, checkt `tool_name` + `tool_input`
-2. Branchen nach Tool: Bash → Regex auf `command`; Read/Edit/Write/NotebookEdit → `file_path` basename; Glob/Grep → `pattern`/`path`/`glob`
+1. Create `.claude/hooks/block-env-access.sh` — a Bash script that reads stdin JSON and checks `tool_name` + `tool_input`
+2. Branch by tool: Bash → regex on `command`; Read/Edit/Write/NotebookEdit → `file_path` basename; Glob/Grep → `pattern`/`path`/`glob`
 3. `chmod +x .claude/hooks/block-env-access.sh`
-4. `.claude/settings.json` mit PreToolUse-Hook, matcher = `Bash|Read|Edit|Write|NotebookEdit|Glob|Grep`
-5. `.env.example` als Test-Target ist schon im exercise/ — bitte Claude erst `cat .env.example`, dann `Read .env.example`
-6. Verify: beide Pfade geblockt mit Fehlermeldung
+4. `.claude/settings.json` with a PreToolUse hook, matcher = `Bash|Read|Edit|Write|NotebookEdit|Glob|Grep`
+5. `.env.example` is already in exercise/ as a test target — ask Claude first to `cat .env.example`, then to `Read .env.example`
+6. Verify: both paths blocked with an error message
 
 ## Verify
 
 ```bash
 chmod +x .claude/hooks/block-env-access.sh
-# In Claude Code im exercise/ Folder, beide Pfade testen:
-#   "cat .env.example"        → Bash-Pfad geblockt
-#   "lies die .env.example"   → Read-Tool-Pfad geblockt
+# In Claude Code, inside the exercise/ folder, test both paths:
+#   "cat .env.example"        → Bash path blocked
+#   "read the .env.example"   → Read-tool path blocked
 # → Fehlermeldung "Blocked: ... .env file."
 ```
 
 ## Stretch
 
-- Regex härten: auch `.env`, `.env.production`, `.env.local`, gequotete Pfade, Glob `.env*`
-- Zweiter Hook (PostToolUse): logging aller Bash-Commands
-- Dispatcher-Pattern: ein PreToolUse-Hook mit mehreren Check-Functions gesourced (Performance: 1 Fork statt N)
+- Harden the regex: also `.env`, `.env.production`, `.env.local`, quoted paths, glob `.env*`
+- A second hook (PostToolUse): log all Bash commands
+- Dispatcher pattern: one PreToolUse hook with several check functions sourced in (performance: 1 fork instead of N)
 
-## Brücke zu PM
+## Bridge to PM
 
-Hooks sind das **Determinismus-Atom** für die Factory. PM bauen wir Pipeline-Stationen mit Refine + Implement. Hooks sind die Guard-Rails drumherum — `block-env-access` ist die einfachste Form.
+Hooks are the **atom of determinism** for the Factory. For PM we build pipeline stations with Refine + Implement. Hooks are the guard rails around them — `block-env-access` is the simplest form.
 
 ## Solution
 
-- [`solution/.claude/hooks/block-env-access.sh`](solution/.claude/hooks/block-env-access.sh) — der Hook
-- [`solution/.claude/settings.json`](solution/.claude/settings.json) — die Hook-Konfiguration
+- [`solution/.claude/hooks/block-env-access.sh`](solution/.claude/hooks/block-env-access.sh) — the hook
+- [`solution/.claude/settings.json`](solution/.claude/settings.json) — the hook configuration

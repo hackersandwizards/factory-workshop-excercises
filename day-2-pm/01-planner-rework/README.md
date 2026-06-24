@@ -1,49 +1,49 @@
-# Day 2 PM · Übung 01 — Planner-Rework (Bean-Creator)
+# Day 2 PM · Exercise 01 — Planner Rework (Bean Creator)
 
-**Slot:** ~35 Minuten · Phase 1 der Factory-Pipeline
+**Slot:** ~35 minutes · Phase 1 of the Factory pipeline
 
-## Ziel
+## Goal
 
-Tag-2-AM `planner` Skill umbauen: statt einen freien Plan in `.plans/` zu schreiben, **erzeugt der Skill eine neue Bean** via `beans create` + `beans update` mit Description + High-Level Plan + Acceptance Criteria. Strikt auf "Was"-Ebene (keine Pfade, keine Signaturen). Refine + Implement bekommen die Bean-ID später als Argument — Planner nicht.
+Rework the Day 2 AM `planner` skill: instead of writing a freeform plan to `.plans/`, **the skill creates a new bean** via `beans create` + `beans update` with a description, a High-Level Plan, and Acceptance Criteria. Stay strictly at the "what" level (no paths, no signatures). Refine and Implement will receive the bean ID as an argument later — Planner does not.
 
-## Voraussetzung
+## Prerequisites
 
-- Sandbox-Calculator existiert unter `../sandbox/` (vom Trainer gebaut)
-- `beans` CLI installiert (`brew install hmans/beans/beans`, Check: `beans --version`)
-- `.beans.yml` existiert in `../sandbox/` (prefix `sandbox-`)
-- Startpunkt-Skill liegt unter `exercise/.claude/skills/planner/SKILL.md` (Kopie aus Tag-2-AM-Solution). Falls Du Deinen eigenen Tag-2-AM-Skill hast: ersetze die Kopie damit.
+- The sandbox calculator exists under `../sandbox/` (built by the trainer)
+- The `beans` CLI is installed (`brew install hmans/beans/beans`, check: `beans --version`)
+- `.beans.yml` exists in `../sandbox/` (prefix `sandbox-`)
+- The starting-point skill lives at `exercise/.claude/skills/planner/SKILL.md` (a copy from the Day 2 AM solution). If you have your own Day 2 AM skill, replace the copy with it.
 
-## Aufgabe
+## Task
 
-1. `exercise/.claude/` in Sandbox kopieren: `cp -r exercise/.claude ../sandbox/`.
-2. Frontmatter: `argument-hint: [brief feature description]` (optional, kein bean-id). Description: "creates a new bean via beans CLI with description + High-Level Plan + AC".
-3. Phase 1 (Capture) umbauen: Feature-Idee aufnehmen — entweder aus Skill-Argument oder vom User abfragen. Kein Repo-Scan, kein Bean-Read.
-4. Phase 5 (Create Bean) umbauen: **ein** CLI-Call mit komplettem Body:
-   - `beans create "<title>" -t feature -d "<heredoc mit Description + Hinweise + High-Level Plan>"` → ID aus stdout
-   - Plan wortwörtlich unter `## High-Level Plan` Heading — `/refine` parst per exact-match, fehlt Heading → Abbruch.
-   - Die `beans` CLI hat **kein** `--body-append`-Flag. Body wird in einem Rutsch geschrieben. Für sehr lange Bodies: `--body-file <path>` statt `-d`.
-   - **Niemals** `.beans/*.md` direkt editieren.
-5. Phase 3 (Approaches) absichern: Skill **stoppt** nach Präsentation der Optionen und wartet auf explizite User-Wahl. Auch wenn "autonomously" / "no clarifying questions" vorher gesagt wurde — Approach-Pick ist Pflicht-Gate, keine Klarstellung.
-6. Harte Regel ergänzen: **keine** File-Pfade, **keine** Funktions-Signaturen, **keine** Klassen-Namen im Plan. Acceptance Criteria stattdessen.
-7. Test: `cd ../sandbox && claude` → `/planner Klammer-Support für Calculator` ausführen. `beans list` + `beans show <new-id>` prüfen.
+1. Copy `exercise/.claude/` into the sandbox: `cp -r exercise/.claude ../sandbox/`.
+2. Frontmatter: `argument-hint: [brief feature description]` (optional, no bean-id). Description: "creates a new bean via beans CLI with description + High-Level Plan + AC".
+3. Rework Phase 1 (Capture): capture the feature idea — either from the skill argument or by asking the user. No repo scan, no bean read.
+4. Rework Phase 5 (Create Bean): **one** CLI call with the complete body:
+   - `beans create "<title>" -t feature -d "<heredoc with Description + notes + High-Level Plan>"` → ID from stdout
+   - Put the plan verbatim under the `## High-Level Plan` heading — `/refine` parses by exact match; if the heading is missing it aborts.
+   - The `beans` CLI has **no** `--body-append` flag. The body is written in one go. For very long bodies, use `--body-file <path>` instead of `-d`.
+   - **Never** edit `.beans/*.md` directly.
+5. Lock down Phase 3 (Approaches): the skill **stops** after presenting the options and waits for an explicit user choice. Even if "autonomously" / "no clarifying questions" was stated earlier — picking an approach is a mandatory gate, not a clarification.
+6. Add a hard rule: **no** file paths, **no** function signatures, **no** class names in the plan. Use Acceptance Criteria instead.
+7. Test: `cd ../sandbox && claude` → run `/planner Parenthesis support for calculator`. Check `beans list` + `beans show <new-id>`.
 
-Detail-Hinweise: `exercise/HINTS.md`.
+Detailed hints: `exercise/HINTS.md`.
 
 ## Self-Check
 
-- `beans list` enthält eine neue Bean nach `/planner`-Run
-- `beans show <new-id>` zeigt Description (Mensch-Brief) + `## High-Level Plan` mit **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
-- Im Plan steht **kein** `src/lexer.cpp`, **keine** `tokenize()`, **keine** Zeilen-Referenz
-- Status der neuen Bean ist `todo`
-- Skill weigert sich elegant, wenn `beans` CLI fehlt
+- `beans list` contains a new bean after the `/planner` run
+- `beans show <new-id>` shows a description (human brief) + a `## High-Level Plan` with **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
+- The plan contains **no** `src/lexer.cpp`, **no** `tokenize()`, **no** line reference
+- The new bean's status is `todo`
+- The skill refuses gracefully when the `beans` CLI is missing
 
-## Solution-Vergleich
+## Solution Comparison
 
-Nach der Übung — vergleich deinen Skill mit `solution/.claude/skills/planner/SKILL.md`. Was ist anders? Was würdest du übernehmen? Achte besonders auf: Self-Review-Phase, Wording der harten Regeln, Schema der externalisierten Sektion, Parsing der ID aus `beans create`-Output.
+After the exercise, compare your skill with `solution/.claude/skills/planner/SKILL.md`. What is different? What would you adopt? Pay particular attention to: the self-review phase, the wording of the hard rules, the schema of the externalized section, and how the ID is parsed from the `beans create` output.
 
-## Lernziele
+## Learning Goals
 
-- Skill-Refactor: bestehenden Skill auf neuen Output (Bean-Creation statt Plan-File) umbauen
-- Output-Disziplin: Skill schreibt nur via CLI, niemals direkt in `.beans/*.md`
-- Disziplin der Abstraktions-Ebene: "Was" trennen vom "Wie"
-- Hand-off-Design: Output eines Skills (neue Bean-ID) ist Input des nächsten (`/refine <id>`)
+- Skill refactor: rework an existing skill to produce a new output (bean creation instead of a plan file)
+- Output discipline: the skill only writes via the CLI, never directly into `.beans/*.md`
+- Abstraction-level discipline: separate the "what" from the "how"
+- Hand-off design: one skill's output (the new bean ID) is the next one's input (`/refine <id>`)

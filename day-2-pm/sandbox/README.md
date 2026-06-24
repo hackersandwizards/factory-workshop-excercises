@@ -1,7 +1,7 @@
 # calc — Workshop Sandbox
 
 A minimal C++17 CLI calculator. Lexer + recursive-descent parser + tree-walking
-evaluator + a REPL. Used as the shared codebase for the Tag 2 PM exercise on
+evaluator + a REPL. Used as the shared codebase for the Day 2 PM exercise on
 factory-pipeline Skills (Planner -> Refine -> Implement).
 
 ## Build & test

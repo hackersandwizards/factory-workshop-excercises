@@ -1,31 +1,31 @@
-# Build-Checkliste
+# Build checklist
 
-Pflicht-Subset: **4★ Mechaniken** aus `obra/superpowers/brainstorming`. Hier abhaken:
+Mandatory subset: the **4★ mechanics** from `obra/superpowers/brainstorming`. Check them off here:
 
-## Pflicht (★)
+## Mandatory (★)
 
-- [ ] **Explore project context** — Recon BEVOR erste Frage (Read README, top-level dirs, key files)
-- [ ] **Eine Frage pro Message** — Multiple-Choice wo möglich, warten auf Antwort
-- [ ] **2-3 Alternativen vor Convergenz** — explizite Trade-offs, NICHT advocaten
-- [ ] **Self-Review (Guardrail)** — Check-Sektion vor Plan-Abschluss
+- [ ] **Explore project context** — recon BEFORE the first question (read README, top-level dirs, key files)
+- [ ] **One question per message** — multiple choice where possible, wait for the answer
+- [ ] **2-3 alternatives before converging** — explicit trade-offs, do NOT advocate
+- [ ] **Self-review (guardrail)** — a check section before finalizing the plan
 
-## Optional (für Stretch)
+## Optional (for the stretch)
 
-- [ ] Spec → File (`.plans/<task>.md`) — File ist Vertrag
-- [ ] Hard Approval Gate — explizit "yes" abwarten vor Hand-off
-- [ ] Constraints/Non-Goals explizit
-- [ ] Wiederholbare Routine — gleicher Process jedes Mal
+- [ ] Spec → file (`.plans/<task>.md`) — the file is the contract
+- [ ] Hard approval gate — wait for an explicit "yes" before hand-off
+- [ ] Explicit constraints / non-goals
+- [ ] Repeatable routine — the same process every time
 
 ## Output
 
-Plan landet als **Markdown-File** in `.plans/<task>.md`. Bridge zu PM-Factory (Bean-Files).
+The plan lands as a **Markdown file** at `.plans/<task>.md`. Bridge to the PM Factory (bean files).
 
-## Snippet-Vorlage
+## Snippet template
 
 ```markdown
 ---
 name: <planning-skill-name>
-description: <eine Zeile — wann triggern? z.B. "Use when the user wants to plan a refactoring before writing code">
+description: <one line — when to trigger? e.g. "Use when the user wants to plan a refactoring before writing code">
 ---
 
 # <Planning-Skill-Titel>
@@ -72,5 +72,5 @@ You are a planning partner, not an executor. Produce a written plan, not code.
 - If user gets impatient: still ask one question. Discipline > speed.
 ```
 
-**Beginner:** Snippet kopieren + Description und Domain anpassen.
-**Advanced:** From-scratch — eigene Phasen-Struktur, eigene Mechanik-Auswahl. Trotzdem 4★ Subset drin.
+**Beginner:** copy the snippet and adapt the description and domain.
+**Advanced:** from scratch — your own phase structure, your own selection of mechanics. Still include the 4★ subset.

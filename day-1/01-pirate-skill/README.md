@@ -1,64 +1,64 @@
-# Day 1 · Übung 01 — Pirate-Skill
+# Day 1 · Exercise 01 — Pirate-Skill
 
-**Slot:** Block 4a, ~30 Minuten
+**Slot:** Block 4a, ~30 minutes
 
-## Ziel
+## Goal
 
-Skill bauen, der **on-demand** Text in Piraten-Sprache umwandelt. Kontrast zu Übung 00 (CLAUDE.md, always-on Persönlichkeit): hier ein **Werkzeug**, das nur greift wenn jemand "piraterize this" o.ä. sagt.
+Build a skill that transforms text into pirate speech **on-demand**. In contrast to Exercise 00 (CLAUDE.md, an always-on personality): here a **tool** that only kicks in when someone says "piraterize this" or similar.
 
-## Was unterscheidet das vom CLAUDE.md-Pirate?
+## What sets this apart from the CLAUDE.md pirate?
 
 | | CLAUDE.md (00) | Skill (01) |
 |---|---|---|
-| Trigger | Always-on, jede Session | On-demand, per Task-Match |
-| Effekt | Claude redet immer pirate | Claude bleibt normal, transformiert nur wenn gefragt |
-| Ort | `./CLAUDE.md` | `.claude/skills/<name>/SKILL.md` |
-| Token-Cost | Jeder Turn | Nur wenn aktiviert |
+| Trigger | Always-on, every session | On-demand, on a task match |
+| Effect | Claude always talks like a pirate | Claude stays normal, transforms only when asked |
+| Location | `./CLAUDE.md` | `.claude/skills/<name>/SKILL.md` |
+| Token cost | Every turn | Only when activated |
 
-Skill = Tool im Werkzeugkasten. CLAUDE.md = Charakter-Layer.
+A skill is a tool in the toolbox. CLAUDE.md is a character layer.
 
-## Schritte
+## Steps
 
-1. Test-Projekt (oder hier in `exercise/`): `.claude/skills/pirate-speak/SKILL.md` anlegen
-2. Frontmatter setzen — **Description ist der Activation-Key**, präzise Trigger-Phrasen nennen:
+1. In a test project (or here in `exercise/`): create `.claude/skills/pirate-speak/SKILL.md`
+2. Set the frontmatter — **the description is the activation key**; name precise trigger phrases:
    ```yaml
    ---
    name: pirate-speak
    description: Rephrase text in pirate language. Use when the user asks to "piraterize", "make it pirate", "talk like a pirate", or wants any text converted to pirate dialect.
    ---
    ```
-3. Body: was der Skill tut
-   - Vocabulary-Swaps (you→ye, hello→ahoy, the→th', ...)
-   - Interjections ("Arrr!", "Avast!", "Shiver me timbers!") sparsam
-   - Grammar-Shifts (-ing → -in', "going to" → "settin' sail to")
-   - **Was NICHT angefasst wird:** Code, URLs, file paths, technische Identifier
-4. Test ohne Skill: *"Make this pirate: Hello team, I'll update the deployment."* → triggert?
-5. Test mit irrelevanter Frage: *"What's the weather in Hamburg?"* → triggert **nicht**, Skill bleibt off
-6. Tune Description bis Trigger-Verhalten sauber ist
+3. Body: what the skill does
+   - Vocabulary swaps (you→ye, hello→ahoy, the→th', ...)
+   - Interjections ("Arrr!", "Avast!", "Shiver me timbers!"), used sparingly
+   - Grammar shifts (-ing → -in', "going to" → "settin' sail to")
+   - **What must NOT be touched:** code, URLs, file paths, technical identifiers
+4. Test without the skill: *"Make this pirate: Hello team, I'll update the deployment."* → does it trigger?
+5. Test with an irrelevant question: *"What's the weather in Hamburg?"* → does **not** trigger, the skill stays off
+6. Tune the description until the trigger behavior is clean
 
 ## Verify
 
-- Trigger-Phrase aktiviert Skill → Text wird transformiert
-- Normale Frage (Code, Wetter) lässt Skill schlafen
-- Code-Blöcke / URLs / Paths bleiben in Pirate-Output unverändert
+- A trigger phrase activates the skill → the text gets transformed
+- A normal question (code, weather) lets the skill stay asleep
+- Code blocks / URLs / paths stay unchanged in the pirate output
 
-## Was du lernst
+## What you learn
 
-- SKILL.md = Markdown, nichts Magisches
-- `description` ist Activation-Key — Agent entscheidet selbst ob triggern; je präziser, desto verlässlicher
-- Anti-Pattern: zu generische Description → Skill triggert ständig oder nie
-- Preserving-Rules wichtig (was bleibt, was wird transformiert) — sonst zerstört Skill Code
+- SKILL.md = Markdown, nothing magical
+- `description` is the activation key — the agent decides for itself whether to trigger; the more precise, the more reliable
+- Anti-pattern: too generic a description → the skill triggers constantly or never
+- Preserving rules matter (what stays, what gets transformed) — otherwise the skill destroys code
 
 ## Stretch
 
-- Mode-Switching: `light` vs `medium` vs `heavy` Intensität per User-Hint
-- File-Replace-Mode: "Piraterize README.md" → Skill liest Datei, transformiert, schreibt zurück (Code-Blöcke unangetastet)
-- `/skill-creator` Demo (Anthropic's eigener Skill) — Skill-Building per Interview-Flow
+- Mode switching: `light` vs `medium` vs `heavy` intensity based on a user hint
+- File-replace mode: "Piraterize README.md" → the skill reads the file, transforms it, writes it back (code blocks untouched)
+- `/skill-creator` demo (Anthropic's own skill) — skill building via an interview flow
 
-## Brücke zu Tag 2
+## Bridge to Day 2
 
-Tag 2 AM bauen wir ernsthaftere Skills — Planning-Skills mit 6 Mechaniken. Pirate-Speak war Aufwärm: zeigt Frontmatter + Activation-Trigger + Preserving-Rules. Drei Bausteine, die in jedem Skill wiederkehren.
+On Day 2 AM we build more serious skills — planning skills with 6 mechanics. Pirate-speak was the warm-up: it shows frontmatter + activation triggers + preserving rules. Three building blocks that recur in every skill.
 
 ## Solution
 
-[`solution/.claude/skills/pirate-speak/SKILL.md`](solution/.claude/skills/pirate-speak/SKILL.md) — Reference-Implementation mit Vocabulary-Tabelle, Interjections, Grammar-Shifts, Preserving-Rules, Operating-Modes, Calibration. Erst selbst probieren, dann vergleichen.
+[`solution/.claude/skills/pirate-speak/SKILL.md`](solution/.claude/skills/pirate-speak/SKILL.md) — a reference implementation with a vocabulary table, interjections, grammar shifts, preserving rules, operating modes, and calibration. Try it yourself first, then compare.

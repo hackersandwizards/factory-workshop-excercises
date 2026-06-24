@@ -2,7 +2,7 @@
 glob: "**/*.{cpp,h,hpp}"
 ---
 
-# Modern C++ Konventionen
+# Modern C++ Conventions
 
 Enforce these when working with C++ source or headers.
 
