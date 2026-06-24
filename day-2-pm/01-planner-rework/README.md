@@ -6,11 +6,13 @@
 
 Rework the Day 2 AM `planner` skill: instead of writing a freeform plan to `.plans/`, **the skill creates a new bean** via `beans create` + `beans update` with a description, a High-Level Plan, and Acceptance Criteria. Stay strictly at the "what" level (no paths, no signatures). Refine and Implement will receive the bean ID as an argument later — Planner does not.
 
+> **Your sandbox.** Wherever this README says `../sandbox`, use the folder for your language: `../sandbox` (C++) · `../sandbox-java` (Java) · `../sandbox-python` (Python). The beans prefix differs too: `sandbox-` / `jsandbox-` / `pysandbox-`. Planner itself is language-neutral — it writes a High-Level Plan, no code.
+
 ## Prerequisites
 
-- The sandbox calculator exists under `../sandbox/` (built by the trainer)
+- The sandbox calculator for your language exists (built by the trainer) — `../sandbox` (C++), `../sandbox-java` (Java), or `../sandbox-python` (Python)
 - The `beans` CLI is installed (`brew install hmans/beans/beans`, check: `beans --version`)
-- `.beans.yml` exists in `../sandbox/` (prefix `sandbox-`)
+- `.beans.yml` exists in your sandbox (prefix `sandbox-` / `jsandbox-` / `pysandbox-`)
 - The starting-point skill lives at `exercise/.claude/skills/planner/SKILL.md` (a copy from the Day 2 AM solution). If you have your own Day 2 AM skill, replace the copy with it.
 
 ## Task
@@ -33,7 +35,7 @@ Detailed hints: `exercise/HINTS.md`.
 
 - `beans list` contains a new bean after the `/planner` run
 - `beans show <new-id>` shows a description (human brief) + a `## High-Level Plan` with **Approach**, **Steps**, **Acceptance Criteria**, **Non-Goals**
-- The plan contains **no** `src/lexer.cpp`, **no** `tokenize()`, **no** line reference
+- The plan contains **no** file paths, **no** function names, **no** line references (e.g. no `src/lexer.cpp` / `Lexer.java` / `lexer.py`, no `tokenize()`)
 - The new bean's status is `todo`
 - The skill refuses gracefully when the `beans` CLI is missing
 

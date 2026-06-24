@@ -4,7 +4,7 @@ Starting point: `.claude/skills/planner/SKILL.md` (a copy from the Day 2 AM solu
 
 ## Prerequisite — Beans CLI
 
-`brew install hmans/beans/beans` must be installed (check: `beans --version`). `.beans.yml` exists in `../sandbox/` (prefix `sandbox-`).
+`brew install hmans/beans/beans` must be installed (check: `beans --version`). `.beans.yml` exists in your sandbox (`../sandbox` → prefix `sandbox-`, `../sandbox-java` → `jsandbox-`, `../sandbox-python` → `pysandbox-`). Wherever this checklist says `../sandbox`, use your language's folder.
 
 ## Required — Bean-Creator Rework
 
@@ -29,7 +29,7 @@ Starting point: `.claude/skills/planner/SKILL.md` (a copy from the Day 2 AM solu
 
 - [ ] `/planner Parenthesis support for calculator` → a new bean is created (`beans list` shows it)
 - [ ] `beans show <new-id>` shows a Description + a `## High-Level Plan` with Approach/Steps/AC/Non-Goals
-- [ ] The plan contains **no** `src/lexer.cpp`, **no** `tokenize()`, **no** line reference
+- [ ] The plan contains **no** file paths, **no** function names, **no** line references (no `src/lexer.cpp` / `Lexer.java` / `lexer.py`, no `tokenize()`)
 - [ ] The skill refuses gracefully when the `beans` CLI is missing
 
 ## Run

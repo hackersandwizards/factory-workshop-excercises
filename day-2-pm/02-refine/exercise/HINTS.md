@@ -4,7 +4,7 @@ You are building a new `refine` skill from scratch. Output: a `## Refined Plan` 
 
 ## Prerequisite — Beans CLI
 
-`beans --version` must run. `beans list` in `../sandbox/` shows three beans. The bean from Exercise 01 should already have a `## High-Level Plan` in its body.
+`beans --version` must run. `beans list` in your sandbox shows the beans. The bean from Exercise 01 should already have a `## High-Level Plan` in its body. Wherever this checklist says `../sandbox`, use your language's folder (`../sandbox` C++ · `../sandbox-java` Java · `../sandbox-python` Python).
 
 ## Required — Core Mechanic
 
@@ -14,7 +14,7 @@ You are building a new `refine` skill from scratch. Output: a `## Refined Plan` 
 - [ ] **Phase 3 (Explore via subagent)** — **one** Task subagent (`subagent_type: general-purpose`) with a focused prompt. Read-only. The subagent returns a structured map (Files / Functions / Integration points / Test patterns).
 - [ ] **Phase 4 (Refined Plan)** — `beans update` has **no** `--body-append`. Instead: fetch the current body, concatenate locally, write it back via `--body-file`. Schema:
   - `### Files to change` — `path:line — what changes`
-  - `### New signatures` — `ReturnType Class::method(Args)`
+  - `### New signatures` — in your language's syntax (C++ `ReturnType Class::method(Args)` · Java `ReturnType method(Args)` · Python `def method(args) -> ReturnType`)
   - `### Test sketch` — test names + input → expected
 
   **Body-fetch trap:** use `beans show <bean-id> --json | jq -r '.body'` — the body sits at the top level. `beans query '{ bean(id:…){body} }' --json | jq -r '.data.bean.body'` returns **`null`** (no `data` wrapper) and the next `--body-file` write wipes the bean body. Check for non-null before writing.
@@ -31,15 +31,15 @@ You are building a new `refine` skill from scratch. Output: a `## Refined Plan` 
 ## Self-Check before the Solution Comparison
 
 ```bash
-cd ../sandbox
+cd ../sandbox            # or ../sandbox-java / ../sandbox-python
 cp -r ../02-refine/exercise/.claude .
 claude
-> /refine refine-exercise-olqc
+> /refine <bean-id>      # the ID your Planner created
 ```
 
-- [ ] `beans show refine-exercise-olqc` shows a `## Refined Plan` in the body with real `src/lexer.cpp`, `src/parser.cpp` paths
+- [ ] `beans show <bean-id>` shows a `## Refined Plan` in the body with real source paths for your language (C++ `src/lexer.cpp`/`src/parser.cpp` · Java `src/main/java/calc/Lexer.java` · Python `calc/lexer.py`)
 - [ ] `git grep` finds every referenced path
-- [ ] `git status` in `sandbox/` shows no changes in `src/` or `tests/`
+- [ ] `git status` in your sandbox shows no changes in the source/test dirs
 - [ ] The bean status is `in-progress`
 
 ## Bridge

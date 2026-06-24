@@ -6,9 +6,14 @@
 
 Build a `refine` skill that takes a bean with a filled-in High-Level Plan, explores the codebase via a **subagent fork** (protecting the context of the main conversation), and writes a concrete `## Refined Plan` with real files, signatures, and a test sketch into the bean.
 
+> **Your sandbox.** Wherever this README says `../sandbox`, use your language's folder: `../sandbox` (C++) · `../sandbox-java` (Java) · `../sandbox-python` (Python). Bean IDs carry your prefix (`sandbox-` / `jsandbox-` / `pysandbox-`) — `sandbox-dy91` below is just an example; use the ID your Planner created. Refine is language-neutral: it explores whatever source the subagent finds and writes paths/signatures in your language.
+
 ## Prerequisites
 
-- The sandbox calculator under `../sandbox/` is built (`cmake -B build && cmake --build build`)
+- The sandbox calculator for your language is built:
+  - **C++** — `cd ../sandbox && cmake -B build && cmake --build build`
+  - **Java** — `cd ../sandbox-java && mvn -q test` (compiles + tests)
+  - **Python** — `cd ../sandbox-python && python3 -m unittest` (no build step)
 - The `beans` CLI is installed. The bean from Exercise 01 has a `## High-Level Plan` in its body.
 - Understanding: the Task tool dispatches subagents into isolated sub-contexts
 
@@ -27,9 +32,9 @@ Detailed hints + build checklist: `exercise/HINTS.md`. Skeleton: `exercise/.clau
 
 ## Self-Check
 
-- `beans show sandbox-dy91` shows a `## Refined Plan` in the body with real paths like `src/lexer.cpp:88` (with a line number from the source)
-- The paths really exist (`ls ../sandbox/src/lexer.cpp` without error)
-- No source files were edited (`git status` in `../sandbox/` shows only `.beans/sandbox-dy91--parenthesis-support.md` as modified)
+- `beans show <bean-id>` shows a `## Refined Plan` in the body with real paths + line numbers from the source. Per language: C++ `src/lexer.cpp:88`, Java `src/main/java/calc/Lexer.java:42`, Python `calc/lexer.py:31`
+- The paths really exist (e.g. `ls ../sandbox/src/lexer.cpp` / `ls ../sandbox-java/src/main/java/calc/Lexer.java` / `ls ../sandbox-python/calc/lexer.py` without error)
+- No source files were edited (`git status` in your sandbox shows only the `.beans/<bean-id>--*.md` file as modified)
 - The bean status is `in-progress`
 - The subagent output does NOT land as a long dump in the main conversation history — only the structured map flows into the Refined Plan
 
