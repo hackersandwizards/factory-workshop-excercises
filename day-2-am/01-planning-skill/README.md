@@ -1,75 +1,75 @@
-# Day 2 AM · Übung 01 — Planning-Skill
+# Day 2 AM · Exercise 01 — Planning Skill
 
-**Slot:** 09:00–10:10 · 70 Minuten
+**Slot:** 09:00–10:10 · 70 minutes
 
-## Ziel
+## Goal
 
-Eigenen Planning-Skill bauen, der ein **4-Mechaniken-Subset** aus `obra/superpowers/brainstorming` umsetzt. Output ist ein **Markdown-Plan-File** in `.plans/<task>.md` — Bean-File-Form, die in PM-Factory wiederkehrt.
+Build your own planning skill that implements a **4-mechanic subset** of `obra/superpowers/brainstorming`. The output is a **Markdown plan file** at `.plans/<task>.md` — the bean-file form that recurs throughout the PM Factory.
 
-## Pädagogisches Pattern: Demo → Deconstruct → Reconstruct
+## Teaching pattern: Demo → Deconstruct → Reconstruct
 
-| Phase | Was | Dauer |
+| Phase | What | Duration |
 |-------|-----|-------|
-| Demo | Trainer Walk-Through `obra/superpowers/brainstorming` SKILL.md auf GitHub | 10min |
-| Deconstruct | Plenum: was sehen wir? 8 Mechaniken extrahieren | 10min |
-| Reconstruct | Eigener Planning-Skill mit `/skill-creator`, 4★ Subset | 25min |
-| Share-out | Description + File-Output mit Nachbarn checken | 5min |
+| Demo | Trainer walks through the `obra/superpowers/brainstorming` SKILL.md on GitHub | 10min |
+| Deconstruct | Group discussion: what do we see? Extract the 8 mechanics | 10min |
+| Reconstruct | Your own planning skill with `/skill-creator`, 4★ subset | 25min |
+| Share-out | Check the description and file output with your neighbor | 5min |
 
-Rest ist Puffer + Übergang Rules.
+The rest is buffer plus the transition into Rules.
 
-## Referenz-Skill
+## Reference skill
 
 `https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md`
 
-**Inspiration, nicht Template.** Eigenen massgeschneiderten Anzug bauen.
+**Inspiration, not a template.** Build your own tailored suit.
 
-## Die 8 Mechaniken
+## The 8 mechanics
 
-| Mechanik | Was es bewirkt | |
+| Mechanic | What it does | |
 |----------|----------------|---|
-| **Explore project context** | Recon vor Frage — kein Blind-Plan | ★ |
-| **Eine Frage pro Message** | Explizite Entscheidungspunkte | ★ |
-| **2-3 Alternativen vor Convergenz** | Force-the-trade-off | ★ |
-| **Self-Review (Guardrail)** | Check vor Plan-Abschluss | ★ |
-| Spec → File, nicht Conversation | File ist Vertrag | |
-| Hard Approval Gate | Plan + Execute getrennt | |
-| Constraints/Non-Goals explizit | Scope-Creep verhindern | |
-| Wiederholbare Routine | Process > Inspiration | |
+| **Explore project context** | Recon before asking — no blind plan | ★ |
+| **One question per message** | Explicit decision points | ★ |
+| **2-3 alternatives before converging** | Force the trade-off | ★ |
+| **Self-review (guardrail)** | Check before finalizing the plan | ★ |
+| Spec → file, not conversation | The file is the contract | |
+| Hard approval gate | Plan and execute kept separate | |
+| Explicit constraints / non-goals | Prevent scope creep | |
+| Repeatable routine | Process > inspiration | |
 
-★ = Pflicht-Subset für die Übung. Rest sehen, später ergänzen.
+★ = mandatory subset for the exercise. See the rest now, add them later.
 
-Build-Checkliste: [`exercise/HINTS.md`](exercise/HINTS.md).
+Build checklist: [`exercise/HINTS.md`](exercise/HINTS.md).
 
-## Schritte (Reconstruct)
+## Steps (Reconstruct)
 
-1. Genereller Planer oder Planner in spezifischer Planning-Domäne aus eigenem Stack wählen:
+1. Choose a general planner or a planner for a specific planning domain from your own stack:
    - `refactor-planner`, `migration-planner`, `test-coverage-planner`, `feature-planner`
-2. `/skill-creator` starten — Interview-Flow durch Frontmatter + Body
-3. `name` + `description` (Description = Activation-Key)
-4. Workflow-Body mit **4★ Pflicht-Subset**: Explore Context · Eine Frage pro Message · 2-3 Approaches · Self-Review
-5. Output-Pfad: Skill schreibt Plan nach `.plans/<task>.md`
-6. Testen: Trigger-Phrase eingeben → triggert Skill? → schreibt er wirklich `.md`-File?
+2. Start `/skill-creator` — an interview flow through frontmatter plus body
+3. `name` + `description` (the description is the activation key)
+4. Workflow body with the **mandatory 4★ subset**: Explore context · One question per message · 2-3 approaches · Self-review
+5. Output path: the skill writes the plan to `.plans/<task>.md`
+6. Test: enter the trigger phrase → does the skill activate? → does it actually write the `.md` file?
 
 ## Verify
 
-- Description triggert für richtige Tasks, nicht für falsche
-- Nachbar liest Description und versteht wann zu triggern
-- 4★ Mechaniken im Workflow erkennbar
-- Output landet als File in `.plans/`, nicht nur in Conversation
+- The description triggers for the right tasks, not for the wrong ones
+- A neighbor reads the description and understands when to trigger it
+- The 4★ mechanics are recognizable in the workflow
+- The output lands as a file in `.plans/`, not just in the conversation
 
 ## Stretch
 
-- Restliche 4 Mechaniken ergänzen (Approval Gate, Constraints, etc.)
-- Skill mit mehreren Trigger-Phrasen testen, Activation tunen
-- Eigenen Subagent-Type via `.claude/agents/<name>.md` definieren und im Skill via `agent:` referenzieren
+- Add the remaining 4 mechanics (approval gate, constraints, etc.)
+- Test the skill with several trigger phrases and tune the activation
+- Define your own subagent type via `.claude/agents/<name>.md` and reference it in the skill via `agent:`
 
-## Brücke zu PM
+## Bridge to PM
 
-Markdown-File in `.plans/` = **Bean-File-Form**. PM-Factory nutzt File-as-Contract zwischen Agents — Planning-Skill ist der erste Schritt in Richtung Multi-Agent-Pipeline.
+A Markdown file in `.plans/` = **the bean-file form**. The PM Factory uses file-as-contract between agents — the planning skill is the first step toward a multi-agent pipeline.
 
 ## Solution
 
-Ein generischer Referenz-Skill in `solution/`:
-- [`planner/SKILL.md`](solution/.claude/skills/planner/SKILL.md) — domain-agnostisch, 4★ Subset + Externalize-Phase
+A generic reference skill in `solution/`:
+- [`planner/SKILL.md`](solution/.claude/skills/planner/SKILL.md) — domain-agnostic, 4★ subset plus an externalize phase
 
-Erst selbst bauen. Dann vergleichen wie das Subset abgebildet ist.
+Build it yourself first. Then compare how the subset is mapped out.

@@ -1,50 +1,50 @@
-# Day 1 · Übung 00 — Pirate-CLAUDE.md
+# Day 1 · Exercise 00 — Pirate-CLAUDE.md
 
-**Slot:** 14:00–14:15 (Block 3) · ~10 Minuten
+**Slot:** 14:00–14:15 (Block 3) · ~10 minutes
 
-## Ziel
+## Goal
 
-Verstehen wie `CLAUDE.md` Verhalten ändert — **always-on**, ohne Trigger-Wort. Foundation für alles, was später kommt (Skill = on-demand, Rule = scoped, Hook = deterministisch).
+Understand how `CLAUDE.md` changes behavior — **always-on**, without a trigger word. The foundation for everything that follows (Skill = on-demand, Rule = scoped, Hook = deterministic).
 
-## Hintergrund
+## Background
 
-`CLAUDE.md` wird bei **jedem Session-Start** gelesen. Egal was du fragst — die Instruktionen wirken. Anders als ein Skill (triggert per Task-Match) oder eine Rule (triggert per File-Glob).
+`CLAUDE.md` is read at **every session start**. No matter what you ask — the instructions take effect. Unlike a Skill (triggers on a task match) or a Rule (triggers on a file glob).
 
-Hierarchie:
+Hierarchy:
 
-| Pfad | Geladen wann |
+| Path | Loaded when |
 |------|--------------|
-| `~/.claude/CLAUDE.md` | Jede Session, jeder User-Ordner |
-| `./CLAUDE.md` | Projekt-Start im Repo |
-| `./src/CLAUDE.md` | Wenn du im Subfolder arbeitest |
+| `~/.claude/CLAUDE.md` | Every session, in any user folder |
+| `./CLAUDE.md` | At project start in the repo |
+| `./src/CLAUDE.md` | When you work in the subfolder |
 
-## Aufgabe
+## Task
 
-1. Leeres Test-Verzeichnis anlegen, `claude` starten
-2. *"Erzähl mir eine kurze Geschichte über einen Piraten."* — neutrale Antwort
-3. Session beenden, im Verzeichnis `CLAUDE.md` anlegen mit einer Zeile:
+1. Create an empty test directory, start `claude`
+2. *"Tell me a short story about a pirate."* — a neutral answer
+3. End the session, create a `CLAUDE.md` in the directory with a single line:
    ```
-   Antworte immer wie ein Pirat. Beginne jede Antwort mit "Arrr".
+   Always respond like a pirate. Begin every answer with "Arrr".
    ```
-4. `claude` neu starten, selbe Frage stellen → Pirate-Stil
-5. Variation: zweite Zeile *"Streue immer ein deutsches Schimpfwort ein."* → erneut Frage stellen
-6. Geh in einen Subfolder mit eigener `CLAUDE.md` (z.B. `./.test-subfolder/CLAUDE.md` mit gegenteiliger Anweisung) — Hierarchie beobachten
+4. Restart `claude`, ask the same question → pirate style
+5. Variation: add a second line *"Always slip in a German swear word."* → ask the question again
+6. Go into a subfolder with its own `CLAUDE.md` (e.g. `./.test-subfolder/CLAUDE.md` with the opposite instruction) — observe the hierarchy
 
 ## Verify
 
-- Antwort startet mit "Arrr" o.ä.
-- Ohne Neustart wirkt CLAUDE.md noch nicht (loaded only at session-start)
-- Subfolder-CLAUDE.md überschreibt Parent
+- The answer starts with "Arrr" or similar
+- Without a restart, CLAUDE.md has no effect yet (loaded only at session-start)
+- The subfolder CLAUDE.md overrides the parent
 
 ## Stretch
 
-- Globale `~/.claude/CLAUDE.md` öffnen, einmal lesen — wirkt always-on über alle Projekte
-- Was passiert wenn projekt-CLAUDE.md und globale widersprechen? (Test!)
+- Open the global `~/.claude/CLAUDE.md`, read it once — it acts always-on across all projects
+- What happens when the project CLAUDE.md and the global one contradict each other? (Try it!)
 
 ## Solution
 
-[`solution/CLAUDE.md`](solution/CLAUDE.md) — minimale Pirate-Instruction zum Kopieren.
+[`solution/CLAUDE.md`](solution/CLAUDE.md) — a minimal pirate instruction to copy.
 
-## Brücke zur nächsten Übung
+## Bridge to the next exercise
 
-CLAUDE.md ist **always-on Persönlichkeit** — Claude redet immer pirate. Übung 01 baut ein anderes Werkzeug: `pirate-speak` Skill ([`../01-pirate-skill/`](../01-pirate-skill/)) — Claude bleibt normal, transformiert Text **on-demand** wenn der User danach fragt. Selbe Domäne, andere Mechanik.
+CLAUDE.md is an **always-on personality** — Claude always talks like a pirate. Exercise 01 builds a different tool: the `pirate-speak` skill ([`../01-pirate-skill/`](../01-pirate-skill/)) — Claude stays normal and transforms text **on-demand** when the user asks for it. Same domain, different mechanics.
