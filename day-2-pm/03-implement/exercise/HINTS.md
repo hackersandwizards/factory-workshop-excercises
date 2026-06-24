@@ -4,14 +4,20 @@ You are building a new `implement` skill from scratch. **The first skill that wr
 
 ## Prerequisite — Beans CLI
 
-`beans --version` must run. The bean from Exercise 02 should have a `## Refined Plan` in its body and status `in-progress`.
+`beans --version` must run. The bean from Exercise 02 should have a `## Refined Plan` in its body and status `in-progress`. Build/test commands differ per language — your skill uses the row for the sandbox you're in:
+
+| Lang | Build | Test |
+|------|-------|------|
+| C++ | `cmake --build build` | `ctest --test-dir build` |
+| Java | `mvn -q compile` | `mvn -q test` |
+| Python | _(none)_ | `python3 -m unittest` |
 
 ## Required — Core Mechanic
 
 - [ ] **Frontmatter** — `name: implement`, `argument-hint: <bean-id>`, `model: claude-sonnet-4-6` (faster for code), `allowed-tools: Read, Edit, Write, Bash, Glob, Grep`
 - [ ] **Phase 1 (Preflight)** — parse `beans show --json <bean-id>`, extract the `## Refined Plan`. Abort if empty. The working tree must be clean. HEAD must be `main`.
 - [ ] **Phase 2 (Branch)** — build a slug from the bean's `title` field. Branch: `feat/<bean-id>-<slug>`. Abort if the branch exists. Verify via `git rev-parse --abbrev-ref HEAD`.
-- [ ] **Phase 3 (Implement loop)** — per Refined-Plan step: Edit → `cmake --build build` → `ctest` → commit. Tests red? Max 2 fix attempts, then abort.
+- [ ] **Phase 3 (Implement loop)** — per Refined-Plan step: Edit → build → test (your language's commands from the table above) → commit. Tests red? Max 2 fix attempts, then abort.
 - [ ] **Phase 4 (Implementation Log)** — `beans update <bean-id> --body-append "..."` with the branch name, commit SHAs + descriptions, and the final test status.
 - [ ] **Phase 5 (Status)** — if green: `beans update <bean-id> -s completed` + append `## Summary of Changes`. If red: status stays `in-progress`, append notes.
 
@@ -27,21 +33,18 @@ You are building a new `implement` skill from scratch. **The first skill that wr
 ## Self-Check before the Solution Comparison
 
 ```bash
-cd ../sandbox
+cd ../sandbox            # or ../sandbox-java / ../sandbox-python
 cp -r ../03-implement/exercise/.claude .
-# Build the skill, then the full v0:
-/planner 
-# produces bean implement-exercise-olqc
-/refine implement-exercise-olqc
-/implement implement-exercise-olqc
+# Build the skill, then the full v0 (use the bean ID your Planner created):
+/planner
+/refine <bean-id>
+/implement <bean-id>
 ```
 
-implement-exercise-olqc
-
-- [ ] The branch `feat/implement-exercise-olqc` (or similar) exists
-- [ ] `git log feat/implement-exercise-olqc-...` shows several commits, one per Refined-Plan step
-- [ ] `ctest --test-dir build` green
-- [ ] `beans show implement-exercise-olqc` shows status `completed`
+- [ ] The branch `feat/<bean-id>-...` exists
+- [ ] `git log feat/<bean-id>-...` shows several commits, one per Refined-Plan step
+- [ ] Tests green (`ctest --test-dir build` / `mvn -q test` / `python3 -m unittest`)
+- [ ] `beans show <bean-id>` shows status `completed`
 - [ ] The skill refuses to commit to `main` (test: after Phase 2, deliberately `git checkout main` → the skill must abort)
 
 ## Expected Bugs (note them, don't fix during the build)

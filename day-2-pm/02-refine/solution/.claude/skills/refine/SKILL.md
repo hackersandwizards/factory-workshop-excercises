@@ -90,6 +90,11 @@ material for Phase 4.
 
 ### Phase 4 — Compose & append the Refined Plan
 
+> The examples below use C++ syntax. This skill is language-neutral — write
+> paths and signatures in the language of the sandbox you're in (Java →
+> `src/main/java/...` + `ReturnType method(Args)`; Python → `calc/*.py` +
+> `def method(args) -> ReturnType`). The schema headings stay identical.
+
 Build the Refined Plan block in this exact schema:
 
 ```

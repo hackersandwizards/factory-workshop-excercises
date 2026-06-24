@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Use after /refine — takes a bean that carries a `## Refined Plan`, creates a `feat/<bean-id>-<slug>` branch, walks each refined-plan step (edit → cmake build → ctest → commit) with a hard build+test gate, and logs the commits back to the bean. Never pushes, never merges, never commits on `main`.
+description: Use after /refine — takes a bean that carries a `## Refined Plan`, creates a `feat/<bean-id>-<slug>` branch, walks each refined-plan step (edit → build → test → commit) with a hard build+test gate, and logs the commits back to the bean. Build/test commands match the sandbox language (C++ cmake/ctest · Java mvn · Python unittest). Never pushes, never merges, never commits on `main`.
 argument-hint: <bean-id>
 model: claude-sonnet-4-6
 allowed-tools: Read, Edit, Write, Bash, Glob, Grep
@@ -94,26 +94,29 @@ For each file listed in the step:
 - Apply edits with `Edit` (existing files) or `Write` (`:NEW` entries)
 - Never edit `.beans/*.md` directly
 
-**Step 3.2 — Build**
+**Step 3.2 — Build / Step 3.3 — Test**
+
+Use the build + test commands for the sandbox you're in:
+
+| Lang | Sandbox | Build | Test |
+|------|---------|-------|------|
+| C++ | `sandbox` | `cmake --build build` | `ctest --test-dir build --output-on-failure` |
+| Java | `sandbox-java` | `mvn -q compile` | `mvn -q test` |
+| Python | `sandbox-python` | _(none — interpreted)_ | `python3 -m unittest` |
+
+C++ example:
 
 ```bash
-cmake --build build
+cmake --build build               # build
+ctest --test-dir build --output-on-failure   # test
 ```
 
-If the build fails, you get **at most 2 fix attempts** for the *current step*.
-A fix attempt is: read the failing diagnostic, change the smallest thing that
-addresses it, rerun the build. If still red after 2 attempts → **stop the
-loop**, jump to Phase 4 with `Final test status: FAIL` and Phase 5 (status
-remains `in-progress`).
-
-**Step 3.3 — Test**
-
-```bash
-ctest --test-dir build --output-on-failure
-```
-
-Same 2-attempt rule. Tests must be green before the commit — there are no
-"fix it later" commits.
+If the build or tests fail, you get **at most 2 fix attempts** for the
+*current step*. A fix attempt is: read the failing diagnostic, change the
+smallest thing that addresses it, rerun build + test. If still red after 2
+attempts → **stop the loop**, jump to Phase 4 with `Final test status: FAIL`
+and Phase 5 (status remains `in-progress`). Tests must be green before the
+commit — there are no "fix it later" commits.
 
 **Step 3.4 — Pre-commit guard (mandatory)**
 
@@ -133,6 +136,7 @@ branches mid-loop.
 Stage only the files this step touched (named, never `-A` / `.`):
 
 ```bash
+# stage exactly the files this step touched (C++ example; use your language's paths)
 git add src/lexer.h src/lexer.cpp tests/lexer_test.cpp
 git commit -m "<step description from Refined Plan>"
 SHA=$(git rev-parse --short HEAD)
@@ -167,7 +171,7 @@ TMP=$(mktemp)
 - <sha2> — <step 2 description>
 - <sha3> — <step 3 description>
 
-**Final test status:** PASS  (ctest --test-dir build → all green)
+**Final test status:** PASS  (<your test command> → all green)
 EOF
 } > "$TMP"
 
@@ -213,8 +217,9 @@ Tell the user:
 - **Never commit on `main`.** Run `git rev-parse --abbrev-ref HEAD` before
   *every* commit. If it returns `main`, abort.
 - **Never `git push`.** Never `git merge`. Never `git rebase`.
-- **Tests green before every commit.** If `cmake --build` or `ctest` is red,
-  do not stage. Do not commit. Do not "fix in the next commit".
+- **Tests green before every commit.** If the build or test command for your
+  language (cmake/ctest · `mvn compile`/`mvn test` · `python3 -m unittest`) is
+  red, do not stage. Do not commit. Do not "fix in the next commit".
 - **Max 2 fix attempts per step.** After the second red build/test for the
   current step, stop the loop and log state. Do not enter an unbounded
   edit-build-test cycle.

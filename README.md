@@ -6,7 +6,7 @@ Cloned once on the morning of Day 1. Each exercise contains: the task (`README.m
 
 ## Prerequisites
 
-See [SETUP.md](SETUP.md). In short: cmake, beans CLI, jq, git, and Claude Code installed.
+See [SETUP.md](SETUP.md). In short: beans CLI, jq, git, Claude Code, and **the toolchain for your language** (C++: cmake; Java: JDK 21 + Maven; Python: 3.9+).
 
 ## Structure
 
@@ -17,6 +17,22 @@ day-2-pm/                   Factory pipeline (Planner → Refine → Implement a
 ```
 
 For Day 3 (Transfer Hackathon) you bring your own codebase — no folder here.
+
+## Pick your language
+
+The Day 2 PM calc sandbox ships in **three languages** — pick one and stick with it for the whole pipeline:
+
+| Language | Sandbox folder | Build / test |
+|----------|----------------|--------------|
+| **C++** (reference) | `day-2-pm/sandbox/` | `cmake -B build && cmake --build build` · `ctest --test-dir build` |
+| **Java** | `day-2-pm/sandbox-java/` | `mvn -q test` |
+| **Python** | `day-2-pm/sandbox-python/` | `python3 -m unittest` |
+
+All three are 1:1 ports — same grammar, same tests, same beans. The Day 2 PM
+exercise READMEs carry per-language command blocks; read the block for your
+sandbox. The Day 2 AM Rules exercise likewise ships `main.cpp` / `main.java` /
+`main.py` plus a convention rule per language. See [SETUP.md](SETUP.md) for the
+toolchain per language.
 
 ## Per exercise
 

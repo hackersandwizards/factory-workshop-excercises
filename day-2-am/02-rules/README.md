@@ -35,17 +35,17 @@ Same content, different layer. The loading mechanic becomes tangible through exp
 3. Body: short, one or two sentences ("Reply in pirate language when working on Markdown files")
 4. Start Claude Code in the exercise folder
 5. Test A: edit `README.md` or any `.md` file → ask for an edit → **pirate**
-6. Test B: edit `main.cpp` (or any other non-MD file) → ask for an edit → **normal**
+6. Test B: edit a non-MD file → ask for an edit → **normal**. Use the one for your stack: `main.cpp` (C++), `main.java` (Java), or `main.py` (Python).
 
 ## Verify
 
 - When editing `.md` files, Claude switches into pirate language
-- When editing `.cpp`/`.h`/`.py` files, Claude stays normal
+- When editing `.cpp`/`.h`/`.java`/`.py` files, Claude stays normal
 - The glob scope is the activation condition — not a description, not a skill trigger
 
-## Stretch — C++ conventions
+## Stretch — conventions for your stack
 
-For those who are quick: a second rule for your own stack.
+For those who are quick: a second rule for your own language. Use a glob that matches your files and list a handful of conventions. Example (C++):
 
 ```markdown
 ---
@@ -60,7 +60,9 @@ glob: "**/*.{cpp,h,hpp}"
 - Rule-of-Five when you have a custom destructor
 ```
 
-Test it on a file with anti-patterns: ask Claude "What do you see in this file?" → it names the violations and cites the rule as the source.
+Globs for the other stacks: Java → `glob: "**/*.java"`, Python → `glob: "**/*.py"`.
+
+Test it on the sample file for your stack (`main.cpp` / `main.java` / `main.py` — each carries a few intentional anti-patterns): ask Claude "What do you see in this file?" → it names the violations and cites the rule as the source.
 
 ## Bridge to the next exercise
 
@@ -70,3 +72,5 @@ Day 2 AM 03 — Subagents: where rules are **always-on per scope**, subagents ar
 
 - [`solution/.claude/rules/pirate.md`](solution/.claude/rules/pirate.md) — pirate rule, glob `**/*.md`
 - [`solution/.claude/rules/cpp-modern.md`](solution/.claude/rules/cpp-modern.md) — C++ stretch rule
+- [`solution/.claude/rules/java-modern.md`](solution/.claude/rules/java-modern.md) — Java stretch rule
+- [`solution/.claude/rules/python-modern.md`](solution/.claude/rules/python-modern.md) — Python stretch rule
