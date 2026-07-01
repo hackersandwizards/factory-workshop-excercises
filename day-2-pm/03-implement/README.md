@@ -47,17 +47,7 @@ Detailed hints + build checklist + expected bugs: `exercise/HINTS.md`. Skeleton:
 
 ## Solution Comparison
 
-The reference solution lives on branch **`solution/day-2-pm-03-implement`** (kept off
-`main` so it stays out of Claude's context). After the exercise, compare your skill
-with it. Pay attention to: the preflight guards (clean tree, on main), the 2-attempt
-limit, the exact Implementation Log schema, and the branch-naming logic. What is worded
-more defensively than in yours?
-
-```bash
-git checkout solution/day-2-pm-03-implement   # inspect solution/…
-git checkout main                             # back to your work
-git show solution/day-2-pm-03-implement:day-2-pm/03-implement/solution/.claude/skills/implement/SKILL.md
-```
+After the exercise, compare your skill with `solution/.claude/skills/implement/SKILL.md`. Pay attention to: the preflight guards (clean tree, on main), the 2-attempt limit, the exact Implementation Log schema, and the branch-naming logic. What is worded more defensively than in yours?
 
 ## Learning Goals
 
