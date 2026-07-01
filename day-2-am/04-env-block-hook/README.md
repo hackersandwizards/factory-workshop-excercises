@@ -50,13 +50,5 @@ Hooks are the **atom of determinism** for the Factory. For PM we build pipeline 
 
 ## Solution
 
-The reference solution lives on branch **`solution/day-2-am-04-env-block-hook`** (kept
-off `main` so it stays out of Claude's context) — `solution/.claude/hooks/block-env-access.sh`
-(the hook) plus `solution/.claude/settings.json` (its configuration). Try it yourself
-first, then compare:
-
-```bash
-git checkout solution/day-2-am-04-env-block-hook   # inspect solution/.claude/…
-git checkout main                                  # back to your work
-git show solution/day-2-am-04-env-block-hook:day-2-am/04-env-block-hook/solution/.claude/hooks/block-env-access.sh
-```
+- [`solution/.claude/hooks/block-env-access.sh`](solution/.claude/hooks/block-env-access.sh) — the hook
+- [`solution/.claude/settings.json`](solution/.claude/settings.json) — the hook configuration
