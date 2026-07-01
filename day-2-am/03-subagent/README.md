@@ -64,13 +64,6 @@ Day 2 PM: what you just built becomes `@refine` — same job, isolated context, 
 
 ## Solution
 
-The reference solution lives on branch **`solution/day-2-am-03-subagent`** (kept off
-`main` so it stays out of Claude's context) — two subagents under
-`solution/.claude/agents/`: `codebase-explorer.md` (read-only discovery) and
-`pr-diff-summarizer.md` (structured diff summary). Try it yourself first, then compare:
-
-```bash
-git checkout solution/day-2-am-03-subagent   # inspect solution/.claude/agents/…
-git checkout main                            # back to your work
-git show solution/day-2-am-03-subagent:day-2-am/03-subagent/solution/.claude/agents/codebase-explorer.md
-```
+Two reference subagents in `solution/`:
+- [`codebase-explorer.md`](solution/.claude/agents/codebase-explorer.md) — read-only discovery
+- [`pr-diff-summarizer.md`](solution/.claude/agents/pr-diff-summarizer.md) — structured diff summary
