@@ -41,17 +41,7 @@ Detailed hints: `exercise/HINTS.md`.
 
 ## Solution Comparison
 
-The reference solution lives on branch **`solution/day-2-pm-01-planner-rework`** (kept
-off `main` so it stays out of Claude's context). After the exercise, compare your skill
-with it. What is different? What would you adopt? Pay particular attention to: the
-self-review phase, the wording of the hard rules, the schema of the externalized
-section, and how the ID is parsed from the `beans create` output.
-
-```bash
-git checkout solution/day-2-pm-01-planner-rework   # inspect solution/…
-git checkout main                                  # back to your work
-git show solution/day-2-pm-01-planner-rework:day-2-pm/01-planner-rework/solution/.claude/skills/planner/SKILL.md
-```
+After the exercise, compare your skill with `solution/.claude/skills/planner/SKILL.md`. What is different? What would you adopt? Pay particular attention to: the self-review phase, the wording of the hard rules, the schema of the externalized section, and how the ID is parsed from the `beans create` output.
 
 ## Learning Goals
 
