@@ -70,7 +70,14 @@ Day 2 AM 03 — Subagents: where rules are **always-on per scope**, subagents ar
 
 ## Solution
 
-- [`solution/.claude/rules/pirate.md`](solution/.claude/rules/pirate.md) — pirate rule, glob `**/*.md`
-- [`solution/.claude/rules/cpp-modern.md`](solution/.claude/rules/cpp-modern.md) — C++ stretch rule
-- [`solution/.claude/rules/java-modern.md`](solution/.claude/rules/java-modern.md) — Java stretch rule
-- [`solution/.claude/rules/python-modern.md`](solution/.claude/rules/python-modern.md) — Python stretch rule
+The reference solution lives on branch **`solution/day-2-am-02-rules`** (kept off
+`main` so it stays out of Claude's context) — four rule files under
+`solution/.claude/rules/`: `pirate.md` (glob `**/*.md`) plus `cpp-modern.md`,
+`java-modern.md`, `python-modern.md` (the per-language stretch rules). Try it
+yourself first, then compare:
+
+```bash
+git checkout solution/day-2-am-02-rules   # inspect solution/.claude/rules/…
+git checkout main                         # back to your work
+git show solution/day-2-am-02-rules:day-2-am/02-rules/solution/.claude/rules/pirate.md
+```

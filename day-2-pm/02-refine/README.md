@@ -40,7 +40,17 @@ Detailed hints + build checklist: `exercise/HINTS.md`. Skeleton: `exercise/.clau
 
 ## Solution Comparison
 
-After the exercise, compare your skill with `solution/.claude/skills/refine/SKILL.md`. Pay attention to: the exact subagent prompt, the test-sketch format (test name + input → expected), the self-check phase, and how the hard "read-only on source" rule is worded.
+The reference solution lives on branch **`solution/day-2-pm-02-refine`** (kept off
+`main` so it stays out of Claude's context). After the exercise, compare your skill
+with it. Pay attention to: the exact subagent prompt, the test-sketch format (test
+name + input → expected), the self-check phase, and how the hard "read-only on source"
+rule is worded.
+
+```bash
+git checkout solution/day-2-pm-02-refine   # inspect solution/…
+git checkout main                          # back to your work
+git show solution/day-2-pm-02-refine:day-2-pm/02-refine/solution/.claude/skills/refine/SKILL.md
+```
 
 ## Learning Goals
 

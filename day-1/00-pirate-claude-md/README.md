@@ -43,7 +43,15 @@ Hierarchy:
 
 ## Solution
 
-[`solution/CLAUDE.md`](solution/CLAUDE.md) — a minimal pirate instruction to copy.
+The reference solution lives on branch **`solution/day-1-00-pirate-claude-md`** (kept
+off `main` so it stays out of Claude's context) — a minimal pirate `CLAUDE.md` to
+copy. Try it yourself first, then compare:
+
+```bash
+git checkout solution/day-1-00-pirate-claude-md   # inspect solution/…
+git checkout main                                 # back to your work
+git show solution/day-1-00-pirate-claude-md:day-1/00-pirate-claude-md/solution/CLAUDE.md
+```
 
 ## Bridge to the next exercise
 

@@ -2,7 +2,7 @@
 
 Exercise repo for the **3-day "Agentic Coding" workshop** (h&w · SSW).
 
-Cloned once on the morning of Day 1. Each exercise contains: the task (`README.md`), a starting point (`exercise/`), and a reference solution (`solution/`).
+Cloned once on the morning of Day 1. Each exercise contains: the task (`README.md`) and a starting point (`exercise/`). Reference solutions live on **per-exercise branches** (`solution/<slug>`), kept off `main` so they stay out of Claude's context while you work — see [Solutions](#solutions).
 
 ## Prerequisites
 
@@ -40,7 +40,10 @@ toolchain per language.
 |--------|--------|
 | `README.md` | Goal · Time · Steps · Verify · Stretch · Bridge to the next exercise |
 | `exercise/` | Starting point — you build here |
-| `solution/` | Reference solution (don't peek before you've tried it yourself) |
+
+The reference solution is not in the working tree — it lives on that exercise's
+`solution/<slug>` branch. Check it out only after you've tried it yourself. See
+[Solutions](#solutions).
 
 ## Clone
 
@@ -60,3 +63,34 @@ cd factory-workshop-excercises
 - [Day 2 PM 01: Planner-Rework](day-2-pm/01-planner-rework/)
 - [Day 2 PM 02: Refine](day-2-pm/02-refine/)
 - [Day 2 PM 03: Implement](day-2-pm/03-implement/)
+
+## Solutions
+
+Reference solutions are **not on `main`** — each lives on its own branch, so while
+you work an exercise there is no `solution/` folder in the tree for Claude to peek
+at. One branch per exercise:
+
+| Exercise | Solution branch |
+|----------|-----------------|
+| Day 1 00 · Pirate-CLAUDE.md | `solution/day-1-00-pirate-claude-md` |
+| Day 1 01 · Pirate-Skill | `solution/day-1-01-pirate-skill` |
+| Day 2 AM 01 · Planning-Skill | `solution/day-2-am-01-planning-skill` |
+| Day 2 AM 02 · Rules | `solution/day-2-am-02-rules` |
+| Day 2 AM 03 · Subagent | `solution/day-2-am-03-subagent` |
+| Day 2 AM 04 · env-block-Hook | `solution/day-2-am-04-env-block-hook` |
+| Day 2 PM 01 · Planner-Rework | `solution/day-2-pm-01-planner-rework` |
+| Day 2 PM 02 · Refine | `solution/day-2-pm-02-refine` |
+| Day 2 PM 03 · Implement | `solution/day-2-pm-03-implement` |
+
+View a solution:
+
+```bash
+git checkout solution/day-2-am-02-rules   # inspect its solution/ …
+git checkout main                         # back to your work
+
+# or peek one file without switching branches:
+git show solution/day-2-am-02-rules:day-2-am/02-rules/solution/.claude/rules/pirate.md
+```
+
+Each branch carries only its own exercise's solution; everything else matches
+`main`.
