@@ -61,13 +61,4 @@ On Day 2 AM we build more serious skills — planning skills with 6 mechanics. P
 
 ## Solution
 
-The reference solution lives on branch **`solution/day-1-01-pirate-skill`** (kept off
-`main` so it stays out of Claude's context) — a `pirate-speak` SKILL.md with a
-vocabulary table, interjections, grammar shifts, preserving rules, operating modes,
-and calibration. Try it yourself first, then compare:
-
-```bash
-git checkout solution/day-1-01-pirate-skill   # inspect solution/…
-git checkout main                             # back to your work
-git show solution/day-1-01-pirate-skill:day-1/01-pirate-skill/solution/.claude/skills/pirate-speak/SKILL.md
-```
+[`solution/.claude/skills/pirate-speak/SKILL.md`](solution/.claude/skills/pirate-speak/SKILL.md) — a reference implementation with a vocabulary table, interjections, grammar shifts, preserving rules, operating modes, and calibration. Try it yourself first, then compare.
