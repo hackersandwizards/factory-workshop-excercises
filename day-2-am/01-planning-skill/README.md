@@ -69,7 +69,13 @@ A Markdown file in `.plans/` = **the bean-file form**. The PM Factory uses file-
 
 ## Solution
 
-A generic reference skill in `solution/`:
-- [`planner/SKILL.md`](solution/.claude/skills/planner/SKILL.md) — domain-agnostic, 4★ subset plus an externalize phase
+The reference solution lives on branch **`solution/day-2-am-01-planning-skill`** (kept
+off `main` so it stays out of Claude's context) — a domain-agnostic `planner/SKILL.md`,
+4★ subset plus an externalize phase. Build it yourself first, then compare how the
+subset is mapped out:
 
-Build it yourself first. Then compare how the subset is mapped out.
+```bash
+git checkout solution/day-2-am-01-planning-skill   # inspect solution/…
+git checkout main                                  # back to your work
+git show solution/day-2-am-01-planning-skill:day-2-am/01-planning-skill/solution/.claude/skills/planner/SKILL.md
+```
