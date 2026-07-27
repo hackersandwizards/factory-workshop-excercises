@@ -1,0 +1,9 @@
+diff --git a/services/api/pricing.py b/services/api/pricing.py
+index 1a2b3c4..5d6e7f8 100644
+--- a/services/api/pricing.py
++++ b/services/api/pricing.py
+@@ -12,7 +12,10 @@ def calculate_discount(price, customer):
+-    return price * 0.9
++    if customer.is_loyalty_member:
++        return price * 0.85
++    return price * 0.9
