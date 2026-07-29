@@ -9,13 +9,17 @@ Choreografie, mehr geführte Demo + Diskussion, Hands-on nur bei der einen
 Mittag. Details siehe `README.md` (Abschnitt „Taktung"). Gilt für beide
 Workshop-Tage gleich.
 
+**Zu jedem Block gibt es unten eine Ablauf-Checkliste** — die Reihenfolge, an
+der du dich live entlanghangeln kannst. Die ausführliche Prosa darunter ist
+Vorbereitungs-/Begründungsmaterial, kein Sprechtext.
+
 | Block | Zeit | Dauer | Inhalt |
 |---|---|---|---|
 | 1 | 09:00–09:55 | 55 min | Kickoff + Foundations: Hook + Mechanismus |
 | — | 09:55–10:00 | 5 min | Pause |
-| 2 | 10:00–10:50 | 50 min | Foundations: Twist + Abschluss · Rules & Hooks Kurzdemo |
+| 2 | 10:00–10:50 | 50 min | Foundations: Twist + Abschluss · Capability vs. Command · Rules & Hooks Kurzdemo |
 | — | 10:50–11:00 | 10 min | Pause |
-| 3 | 11:00–12:00 | 60 min | Hands-on: Planner-Skill |
+| 3 | 11:00–12:00 | 60 min | Hands-on: Planner-Skill (inkl. Mini-Eval-Check) |
 | — | 12:00–13:00 | 60 min | Mittag |
 | 4 | 13:00–13:55 | 55 min | Roadmap-Workshop |
 | — | 13:55–14:00 | 5 min | Pause |
@@ -30,13 +34,17 @@ selbst einen Planner-Skill gebaut, und wir haben gemeinsam eine Roadmap +
 Pitfall-Liste für die Factory erarbeitet. Tag 1 endet auf der "Was"-Stufe der
 Pipeline (Planner) — Tag 2 baut "Wie" (Refine/Implement) obendrauf.
 
-**Herkunft:** kompaktiert aus `day-1/` (Foundations) + `day-2-am/`
-(Customization-Atome) des Original-Repos. Pirate-Beispiele durch Barista-nahe
-Beispiele ersetzt, um näher an der echten Arbeitsrealität des Teams zu bleiben.
-
 ---
 
 ## Block 1 · 09:00–09:55 · Kickoff + Foundations (Hook + Mechanismus)
+
+**Ablauf:**
+- Kickoff (15): Rahmen, Tagesziel, Tag-2-Termin grob fixieren, Blitzlicht-Runde
+- Hook (10): leerer Ordner, Barista-Aufgabe stellen → generisches Ergebnis
+- CLAUDE.md (10): Commit-Konvention eintragen, neu starten, Effekt zeigen · `00-commit-claude-md`
+- Skill (10): gleicher Effekt on-demand · `01-commit-skill`
+- Rule (10): gleicher Effekt, scoped per Glob
+- Nebenbei mitlaufen lassen: SKILL.md-Vergleich (Instruktion vs. Zweck), für Twist in Block 2 aufheben
 
 **Kickoff (~15 min):** kurzer Rahmen — warum heute, was am Ende des Tages
 steht, was Tag 2 bringt (Termin dafür idealerweise heute grob fixieren). Kurze
@@ -69,9 +77,21 @@ aufgegriffen.
 
 ## Pause · 09:55–10:00
 
-## Block 2 · 10:00–10:50 · Foundations (Twist + Abschluss) · Rules & Hooks Kurzdemo
+## Block 2 · 10:00–10:50 · Foundations (Twist + Abschluss) · Capability vs. Command · Rules & Hooks Kurzdemo
 
-**Foundations, Twist (~10 min):** Erwartung wäre "mehr Kontext ist immer
+**Ablauf:**
+- Twist (9): "mehr Kontext/genauer = besser" widerlegen — CLAUDE.md lädt immer, Unterordner überschreibt, Zweck-Skill robuster
+- Capability vs. Command (9): Commit = Capability (Intent), Planner = Command (bewusst) · Commit-Beispiel → Repo, Planner-Beispiel → Team · Teilbarkeit gleich
+- Prompting-Modi (1): Regular/Thinking/Plan, Verweis Glossar
+- Abschluss (5): "CLAUDE.md im Unterordner"
+- Rule (5): `02-commit-rule`, Scope api/frontend
+- Hook-Demo (5): `.env` lesen ohne Hook
+- Mechanismus (10): Rule weich, Hook hart — live nachrüsten
+- Twist (5): Prompt = Bitte, nur Hook hart
+- Permissions (3): Allow/Deny statt YOLO-Mode
+- Abschluss (2): "bitte nicht" vs. "geht nicht"
+
+**Foundations, Twist (~9 min):** Erwartung wäre "mehr Kontext ist immer
 besser" — und, aus der Skill-Vergleichsdemo eben mitgenommen, "genauere
 Instruktionen sind immer besser". Auflösung zu beidem: CLAUDE.md lädt bei
 **jeder** Nachricht, egal ob relevant — das kostet permanent Tokens und
@@ -83,27 +103,45 @@ eigentlich einsetzt. Bei einer Repo-Landschaft mit vielen Teams und Standards
 wie bei Barista heißt das doppelt: falsch platzierte Configs **und** zu enge
 Instruktionen brechen leise, nicht laut.
 
-**Foundations, Ergänzung — Command + Prompting-Modi (~5 min, kurzer Nebensatz):**
-Kontrast zum eben gebauten Skill: ein **Command** wird über `/name`
-aufgerufen — als Datei entweder unter `.claude/commands/<name>.md` oder
-unter `.claude/skills/<name>/SKILL.md` (beide Formen erzeugen denselben
-Aufruf und verhalten sich technisch identisch, Skills sind der aktuell
-empfohlene Nachfolger). **Wichtig, hier korrigiert:** nicht der Ordner
-macht daraus "nur der Mensch darf triggern" — standardmäßig können beide
-Formen auch vom Modell automatisch ausgelöst werden. Wer das ausschließen
-will, setzt explizit `disable-model-invocation: true` im Frontmatter.
-Faustregel aus der Trainer-Base-Card `slash-commands`: „Wenn du einen
-Prompt öfter als zweimal eingibst, mach ihn zum Command." Passend dazu
-(Card `effective-prompting`): Regular-, Thinking- und Plan-Modus sind Teil
-desselben Zweck-statt-Instruktion-Gedankens — wann lohnt sich lautes
-Nachdenken, wann reicht der Normalmodus. Kein eigener Übungspunkt, nur
-Erwähnung — siehe `glossary.md` für die vollständige Definition.
+**Foundations, Ergänzung — Capability vs. Command (~9 min):** Kontrast zum
+eben gebauten Commit-Skill: technisch ist er identisch zu einem **Command**
+(Datei unter `.claude/commands/<name>.md` oder `.claude/skills/<name>/SKILL.md`,
+beide Formen verhalten sich gleich) — der Unterschied liegt nicht im Ordner,
+sondern im Trigger. Der Commit-Skill ist eine **Capability**: er wird durch
+Intent ausgelöst, niemand ruft ihn bewusst auf — sobald die Arbeit fertig ist
+und committed werden soll, springt er an. Das eignet sich für Capabilities,
+weil Committen ein Routine-Moment ist, der sich zuverlässig erkennen lässt,
+und weil die Konvention dahinter (Type/Scope/Body/Ref) einmal festgelegt
+werden kann und dann nicht mehr bewusst angestoßen werden muss.
+
+Der Planner, den die Gruppe in Block 3 baut, wird dagegen bewusst als
+**Command** angelegt (`disable-model-invocation: true` im Frontmatter) —
+Planung ist kein Moment, der sich zuverlässig automatisch erkennen lässt, und
+der Prozess braucht bewussten Dialog mit dem Menschen, den man nicht im
+Hintergrund anstoßen will. Faustregel: wie zuverlässig lässt sich der richtige
+Moment automatisch erkennen (→ Capability), und wo braucht es stattdessen
+einen bewussten, expliziten Anstoß (→ Command)?
+
+Nebenpunkt, am Beispiel konkret gemacht: das Commit-Beispiel "gehört" in
+diesem Sinne eher dem Repo — die Konvention (Type/Scope/Body/Ref) ist lokal,
+jedes Repo/Team kann sie anders festlegen. Das Planner-Beispiel "gehört" eher
+dem Team — der Ablauf (Kontext explorieren, eine Frage nach der anderen,
+Alternativen abwägen) funktioniert unabhängig vom jeweiligen Repo und lässt
+sich entsprechend leichter teamweit statt nur repoweit einsetzen. Wichtig
+dabei: Teilbarkeit als Plugin ist bei beiden gleich möglich (siehe
+Marketplace, Tag 2) — das "gehört dem Repo/Team" beschreibt, wo der Inhalt
+typischerweise **entsteht**, nicht, ob er sich verteilen lässt.
+
+Kurzer Nebensatz zu Prompting-Modi (Card `effective-prompting`): Regular-,
+Thinking- und Plan-Modus folgen demselben Gedanken — wann lohnt sich lautes
+Nachdenken, wann reicht der Normalmodus. Kein eigener Übungspunkt — siehe
+`glossary.md` für die vollständige Definition.
 
 **Foundations, Abschluss (~5 min):** "Willkommen im Club der Leute, die jetzt
 jede Woche eine CLAUDE.md suchen, die sich heimlich in einen Unterordner
 geschlichen hat."
 
-**Rules & Hooks Kurzdemo (~35 min):** aus `day-2-am/02-rules` +
+**Rules & Hooks Kurzdemo (~30 min):** aus `day-2-am/02-rules` +
 `day-2-am/04-env-block-hook`, als Demo statt Einzelübung.
 
 - *Rule-Einstieg:* `exercises/day-1/02-commit-rule/` — knüpft direkt an die
@@ -139,6 +177,20 @@ Statt der Original-Zweiteilung (`day-2-am/01-planning-skill` generisch, dann
 bauen wir hier **direkt den Planner mit Bean-Anbindung** — das spart einen
 Umbauschritt und bringt sofort den echten Baustein der Pipeline.
 
+**Ablauf:**
+- Hook (10): ohne Planner große Aufgabe stellen → Kontrollverlust live
+- Kontext explorieren
+- Eine Frage pro Nachricht
+- 2–3 Alternativen vor Konvergenz
+- Self-Review vor Abschluss
+- Hard rule: nur "Was", keine Pfade/Signaturen
+- Eigene Planungs-Domäne wählen
+- Test: `/planner <Aufgabe>` → Bean mit High-Level-Plan
+- Mini-Eval (5): 2–3 Testaufgaben, Format-/Fragen-Disziplin prüfen
+- Übung `03-planner`, `disable-model-invocation: true` begründen
+- Twist: Planung macht Pipeline schneller, nicht langsamer
+- Abschluss: "fragt am meisten, nervt am wenigsten"
+
 **Hook:** Claude Code ohne Planner direkt eine größere, mehrschrittige Aufgabe
 geben ("baue Feature X komplett um"). Es rennt los, trifft eigene Annahmen,
 ändert vermutlich die falschen Dateien zuerst. Die Gruppe erlebt den
@@ -153,6 +205,12 @@ Hook-Beispiel: was wäre jetzt anders gelaufen?
 - Jeder wählt eine Planungs-Domäne aus dem eigenen Stack (z. B.
   `migration-planner`, `refactor-planner`).
 - Test: `/planner <eigene Aufgabe>` → Bean entsteht mit High-Level-Plan.
+- Mini-Eval-Check (~5 min): 2–3 vorbereitete Testaufgaben gegen den frisch
+  gebauten Planner laufen lassen, gemeinsam prüfen, ob Format-/Fragen-
+  Disziplin eingehalten wird. Macht explizit, was bisher implizit im
+  Self-Review steckte — erster konkreter Kontakt mit dem Begriff „Eval" für
+  die Factory (Tag 2 baut später mit dem Review-Rework-Converge-Loop eine
+  automatisierte Variante davon).
 - Übung: `exercises/day-1/03-planner/` — kein Copy-Paste-Startpunkt, die
   SKILL.md entsteht live; `HINTS.md` dort enthält Checkliste + Snippet-
   Template. Enthält auch die Trigger-Entscheidung `disable-model-invocation:
@@ -178,6 +236,16 @@ beschlossene Sache — die Aufgabe hier ist, sie mit dem ganzen Barista-Team zu
 validieren und zu konkretisieren, nicht sie zu verkünden. Bewusst auf 55
 Minuten fokussiert (Kernzielbild + Top-Meilensteine) statt erschöpfend —
 Detailtiefe kommt in der Mentoring-Phase.
+
+**Ablauf:**
+- Rahmen (5): PO/Eng-Lead-Skizze als Diskussionsgrundlage
+- Zielbild (15): Dark-Factory-Vision, Team-Reaktion einholen
+- Pilot-Team (5): Barista ist Pilot, Fokus auf "wie"
+- Standardisierung (5): Spring Boot/Nuxt, Legacy-Ktor/Auth offen ansprechen
+- Jira-Workflow (5): Brücke zu Block 3
+- Automatisierung (5): mentored → autonom, bread-and-butter zuerst
+- Rollen-Wandel (10): Code-Review/PO-Kapazität, "Product Engineer"
+- Nächste Schritte (5): wer, bis wann, wie sichtbar
 
 **Rahmen (~5 min):** kurz teilen, was PO und Eng-Lead skizziert haben — als
 Diskussionsgrundlage einführen, nicht als Ergebnis verkünden.
@@ -227,6 +295,12 @@ später begreifbar, warum sie Entscheidungshoheit nicht aufgeben wollen: Coden
 kann ein Agent gut, Architektur im Blick behalten und Herr über das Produkt
 bleiben ist eine andere Frage.
 
+**Ablauf:**
+- Rahmen: Muster nicht benennen, Team soll selbst draufkommen
+- Stufe 1 (15): eigenes Repo-Beispiel, Konventionen, Auflösungsreihenfolge
+- Stufe 2 (30): Rabatt-Code autonom, Cart-/Pricing-Service, Auswertung
+- Offen enden lassen, keine Auflösung vor der Pause
+
 **Stufe 1 — Hook + Mechanismus (~15 min):** Team bringt ein eigenes
 Repo-Beispiel mit widersprüchlichen Konventionen mit (in der Einladung vorher
 erbitten). Gemeinsam nachvollziehen, wie/warum sich der Agent für eine
@@ -257,6 +331,13 @@ Neugier-Lücke stehen.
 
 ## Block 6 · 15:00–15:55 · Pitfalls, Teil 2 (Twist + Abschluss)
 
+**Ablauf:**
+- Twist klein: Agent macht Ungeklärtes zwischen den Teams sichtbar
+- Twist groß: gleiches Muster bei Architektur-/Produktentscheidungen
+- Dark-Factory-Bezug: Entropie = Frage der Entscheidungshoheit, nicht Code-Qualität
+- Rückverweis Block 3: Planner-STOP-Gate als Antwort
+- Abschluss (5): "gut codet ist kein Problem..."
+
 **Twist (zweistufig):** "Man könnte denken, das Problem ist der Agent." Löst
 sich zuerst auf der kleinen Stufe auf (Konventionen aus Block 5 — der Agent
 macht nur sichtbar, was zwischen den Teams nie geklärt wurde). Dann auf der
@@ -279,6 +360,11 @@ ist."
 ## Pause · 15:55–16:00
 
 ## Block 7 · 16:00–17:00 · Recap + Ausblick Tag 2 · Wrap-up
+
+**Ablauf:**
+- Recap (30): Refine (Was→Wie), Implement (Wie→Code), was neu (Orchestration, Marketplace)
+- Wrap-up (30): offene Fragen, Termin Tag 2 fixieren, Mitbringsel klären (Repo-Ausschnitt)
+- Einordnung: Barista erstes Team, Beweismaterial fürs nächste
 
 **Recap + Ausblick (~30 min):** was macht Refine (Was → Wie), was macht
 Implement (Wie → Branch/Code), was ist neu gegenüber dem, was das Team kennt
