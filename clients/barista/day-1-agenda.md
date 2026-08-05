@@ -174,8 +174,15 @@ geschlichen hat."
 
 Statt der Original-Zweiteilung (`day-2-am/01-planning-skill` generisch, dann
 `day-2-pm/01-planner-rework` mit Bean-Anbindung getrennt an einem anderen Tag)
-bauen wir hier **direkt den Planner mit Bean-Anbindung** — das spart einen
+bauen wir hier **direkt den Planner mit Ticket-Anbindung** — das spart einen
 Umbauschritt und bringt sofort den echten Baustein der Pipeline.
+
+**Backend:** Die Teilnehmer bauen gegen **Jira** (lokaler MCP), Nils
+demonstriert auf **Beans** — auf dem Präsentations-Laptop gibt es keine
+Jira-Anbindung. Das aktiv ansagen statt verstecken: der Planner kennt
+sein Backend nicht, er erfüllt einen Vertrag (`## High-Level Plan`). Genau
+das ist die Lehre. Beans bleibt außerdem der Fallback, falls die
+Jira-Schreibrechte am Morgen nicht stehen.
 
 **Ablauf:**
 - Hook (10): ohne Planner große Aufgabe stellen → Kontrollverlust live
@@ -185,7 +192,7 @@ Umbauschritt und bringt sofort den echten Baustein der Pipeline.
 - Self-Review vor Abschluss
 - Hard rule: nur "Was", keine Pfade/Signaturen
 - Eigene Planungs-Domäne wählen
-- Test: `/planner <Aufgabe>` → Bean mit High-Level-Plan
+- Test: `/planner <Aufgabe>` → Ticket mit High-Level-Plan
 - Mini-Eval (5): 2–3 Testaufgaben, Format-/Fragen-Disziplin prüfen
 - Übung `03-planner`, `disable-model-invocation: true` begründen
 - Twist: Planung macht Pipeline schneller, nicht langsamer
@@ -204,7 +211,7 @@ Hook-Beispiel: was wäre jetzt anders gelaufen?
 - Hard rule: nur "Was", keine Pfade/Signaturen — die kommen erst in Refine (Tag 2).
 - Jeder wählt eine Planungs-Domäne aus dem eigenen Stack (z. B.
   `migration-planner`, `refactor-planner`).
-- Test: `/planner <eigene Aufgabe>` → Bean entsteht mit High-Level-Plan.
+- Test: `/planner <eigene Aufgabe>` → Ticket entsteht mit High-Level-Plan.
 - Mini-Eval-Check (~5 min): 2–3 vorbereitete Testaufgaben gegen den frisch
   gebauten Planner laufen lassen, gemeinsam prüfen, ob Format-/Fragen-
   Disziplin eingehalten wird. Macht explizit, was bisher implizit im
@@ -214,12 +221,12 @@ Hook-Beispiel: was wäre jetzt anders gelaufen?
 - Übung: `exercises/day-1/03-planner/` — kein Copy-Paste-Startpunkt, die
   SKILL.md entsteht live; `HINTS.md` dort enthält Checkliste + Snippet-
   Template. Enthält auch die Trigger-Entscheidung `disable-model-invocation:
-  true` (Begründung: Bean-Seiteneffekt + Dialog-Charakter sollen bewusst
+  true` (Begründung: Ticket-Seiteneffekt + Dialog-Charakter sollen bewusst
   angestoßen werden, nicht beiläufig vom Modell ausgelöst).
 
 **Twist:** Erwartung wäre "ein Planungsschritt macht den Agenten langsamer,
-weil er erstmal fragt statt loszulegen". Auflösung: das Gegenteil — der Bean
-als Datei-Vertrag macht die nächsten Pipeline-Schritte (Refine, Implement)
+weil er erstmal fragt statt loszulegen". Auflösung: das Gegenteil — das
+Ticket als Vertrag macht die nächsten Pipeline-Schritte (Refine, Implement)
 günstiger und schneller, weil sie nicht neu explorieren müssen. Die Investition
 zahlt sich nicht in der einzelnen Aufgabe aus, sondern über die ganze Pipeline.
 
@@ -230,15 +237,15 @@ nachfragt, am Ende der, der am wenigsten nervt."
 
 ## Block 4 · 13:00–13:55 · Roadmap-Workshop
 
-**Ausgangspunkt:** Nordstern aus der Konzeptionsphase mit PO und Eng-Lead,
-Termin vom 27.07. Das ist eine Diskussionsgrundlage auf Leads-Ebene, keine
-beschlossene Sache — die Aufgabe hier ist, sie mit dem ganzen Barista-Team zu
-validieren und zu konkretisieren, nicht sie zu verkünden. Bewusst auf 55
+**Ausgangspunkt:** Nordstern aus dem **Discovery Workshop vom 10.07.**
+(Björns Transkript-Zusammenfassung aus dem Team-Channel, Key Takeaways).
+Das sind ihre eigenen Aussagen, keine beschlossene Sache — die Aufgabe
+hier ist, sie mit dem ganzen Barista-Team zu validieren und zu konkretisieren, nicht sie zu verkünden. Bewusst auf 55
 Minuten fokussiert (Kernzielbild + Top-Meilensteine) statt erschöpfend —
 Detailtiefe kommt in der Mentoring-Phase.
 
 **Ablauf:**
-- Rahmen (5): PO/Eng-Lead-Skizze als Diskussionsgrundlage
+- Rahmen (5): vier Discovery-Erkenntnisse vom 10.07. als Diskussionsgrundlage
 - Zielbild (15): Dark-Factory-Vision, Team-Reaktion einholen
 - Pilot-Team (5): Barista ist Pilot, Fokus auf "wie"
 - Standardisierung (5): Spring Boot/Nuxt, Legacy-Ktor/Auth offen ansprechen
@@ -247,8 +254,12 @@ Detailtiefe kommt in der Mentoring-Phase.
 - Rollen-Wandel (10): Code-Review/PO-Kapazität, "Product Engineer"
 - Nächste Schritte (5): wer, bis wann, wie sichtbar
 
-**Rahmen (~5 min):** kurz teilen, was PO und Eng-Lead skizziert haben — als
-Diskussionsgrundlage einführen, nicht als Ergebnis verkünden.
+**Rahmen (~5 min):** die vier Kernpunkte aus dem Discovery vom 10.07.
+zurückspiegeln — als *eure Aussagen* einführen, nicht als unser Ergebnis
+verkünden. Nützlicher Umstand: Waldemar, Fredrik, Alexandra und Michael waren
+dabei, der Rest des Teams nicht. Genau daraus die Aufgabe machen — "das haben
+wir im Juli von euch gehört, gilt das noch, und was fehlt aus Sicht derer, die
+nicht dabei waren?"
 
 **Zielbild validieren (~15 min):** Dark-Factory-Vision vorstellen (Ticket-rein,
 Lösung-raus als Endziel, aber phasiert erreicht — erst mentored collaborative
@@ -256,11 +267,12 @@ mode für komplexe Aufgaben, dann volle Autonomie für "bread and butter" wie
 Dependency-Updates). Team-Reaktion einholen: deckt sich das mit eurer eigenen
 Wahrnehmung? Was fehlt aus eurer Sicht?
 
-**Meilensteine konkretisieren (~20 min):** entlang der vier Hebel aus der
-Konzeptionsphase, offene Fragen ans Team statt Vortrag:
+**Meilensteine konkretisieren (~20 min):** entlang der vier Hebel aus dem
+Discovery (= Björns vier Key Takeaways), offene Fragen ans Team statt Vortrag:
 
-- *Pilot-Team:* Barista **ist** das Pilot-Produktteam — bereits vor der
-  Konzeptionsphase geklärt, keine offene Suche. Fokus hier nicht "wer",
+- *Pilot-Team:* Barista **ist** das Pilot-Produktteam — im Discovery noch als
+  offener Next Step notiert ("identify a pilot product team"), inzwischen
+  geklärt. Fokus hier nicht "wer",
   sondern "wie": was heißt "mit ihnen zusammen bauen, nicht für sie" für die
   nächsten Wochen ganz konkret?
 - *Standardisierung:* Spring Boot/Nuxt als Ziel-Stack, Single-Service-Repos
@@ -277,8 +289,8 @@ Konzeptionsphase, offene Fragen ans Team statt Vortrag:
 mögliche Rollen-Verschmelzung. Offen diskutieren, nicht vorentscheiden — passt
 inhaltlich als Vorgeschmack auf Block 5/6 (Pitfalls) am Nachmittag.
 
-**Nächste Schritte festhalten (~5 min):** aus der Konzeptionsphase bereits
-klar benannt — Barista klärt Standardisierungsanforderungen im Team. Hier im
+**Nächste Schritte festhalten (~5 min):** im Discovery bereits als Next Step
+benannt — Barista klärt Standardisierungsanforderungen im Team. Hier im
 Workshop konkretisieren: wer treibt das, bis wann, wie wird's sichtbar
 gemacht.
 
@@ -385,5 +397,5 @@ onboardet. Nicht ausführen, nur als Perspektive stehen lassen.
 ## Voraussetzung
 
 Wie im Original-Repo: Harness läuft bei allen vorher (Claude Code installiert,
-Setup getestet) — das ist Bedingung aus der Konzeptionsphase, nicht Teil des
+Setup getestet) — das ist Bedingung aus dem Briefing, nicht Teil des
 Tages selbst.
