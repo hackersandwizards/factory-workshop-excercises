@@ -27,9 +27,9 @@ um die Architekturentscheidung, nicht um Infrastruktur-Ceremony.
 2. Agent live, komplett autonom, ohne Planner, ohne Checkpoint, folgenden
    Auftrag geben (wörtlich oder sinngemäß):
 
-   > "Beim Checkout im Cart-Service sollen Rabatt-Codes berücksichtigt
-   > werden können. Der Pricing-Service verwaltet die Rabatt-Regeln
-   > bereits. Bau das komplett durch, End-to-End."
+   > Beim Checkout im Cart-Service sollen Rabatt-Codes berücksichtigt werden können. Der Pricing-Service verwaltet die Rabatt-Regeln bereits. Bau das komplett durch, End-to-End.
+
+   > The Cart Service should be able to apply discount codes during checkout. The Pricing Service already manages the discount rules. Implement this completely, end-to-end. 
 
 3. Laufen lassen, nicht eingreifen — auch wenn er Zwischenfragen stellt
    oder Annahmen trifft, kommentarlos zusehen.
