@@ -1,12 +1,12 @@
 # Pricing-Service
 
-Verwaltet Rabatt-Regeln und Gutschein-Codes, unabhaengig vom Cart-Service.
-`validate_coupon()` prueft einen Code gegen den Bestellwert, `apply_discount()`
-rechnet ihn auf einen Betrag an.
+Manages discount rules and coupon codes, independently of the Cart-Service.
+`validate_coupon()` checks a code against the order total, `apply_discount()`
+applies it to an amount.
 
-Aktuell komplett eigenstaendig — keine Verbindung zum Cart-Service.
+Currently fully standalone — no connection to the Cart-Service.
 
-## Ausfuehren
+## Run
 
 ```bash
 python pricing.py

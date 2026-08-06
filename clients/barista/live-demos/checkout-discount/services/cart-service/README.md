@@ -1,11 +1,11 @@
 # Cart-Service
 
-Verwaltet Warenkoerbe: Artikel hinzufuegen, Summe berechnen, Checkout.
+Manages shopping carts: add items, calculate the total, check out.
 
-Aktuell berechnet `checkout()` nur die reine Artikelsumme — Rabatt-Codes
-oder Gutscheine werden nicht beruecksichtigt.
+Right now `checkout()` only calculates the plain item total — discount codes
+and coupons are not taken into account.
 
-## Ausfuehren
+## Run
 
 ```bash
 python cart.py

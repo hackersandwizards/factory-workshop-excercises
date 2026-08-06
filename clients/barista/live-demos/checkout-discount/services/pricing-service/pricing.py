@@ -1,7 +1,7 @@
-"""Pricing-Service: verwaltet Rabatt-Regeln und Gutschein-Codes.
+"""Pricing-Service: manages discount rules and coupon codes.
 
-Aktueller Stand: Rabatt-Logik existiert und funktioniert eigenstaendig,
-ist aber an keiner Stelle mit dem Cart-Service verbunden.
+Current state: the discount logic exists and works standalone, but is not
+connected to the Cart-Service anywhere.
 """
 
 from dataclasses import dataclass
@@ -26,10 +26,10 @@ _ACTIVE_RULES: dict[str, DiscountRule] = {
 
 
 def validate_coupon(code: str, order_total_cents: int, today: date | None = None) -> DiscountRule | None:
-    """Prueft einen Gutschein-Code gegen den aktuellen Bestellwert.
+    """Checks a coupon code against the current order total.
 
-    Gibt die passende Regel zurueck, oder None, wenn der Code ungueltig,
-    abgelaufen oder der Mindestbestellwert nicht erreicht ist.
+    Returns the matching rule, or None if the code is invalid, expired, or
+    the minimum order value has not been reached.
     """
     today = today or date.today()
     rule = _ACTIVE_RULES.get(code.upper())

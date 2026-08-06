@@ -1,7 +1,7 @@
-"""Cart-Service: verwaltet Warenkoerbe und den Checkout-Ablauf.
+"""Cart-Service: manages shopping carts and the checkout flow.
 
-Aktueller Stand: Checkout berechnet nur die reine Artikelsumme.
-Rabatt-Codes/Gutscheine werden noch nicht beruecksichtigt.
+Current state: checkout only calculates the plain item total.
+Discount codes and coupons are not taken into account yet.
 """
 
 from dataclasses import dataclass, field
@@ -31,11 +31,11 @@ class Cart:
         return sum(item.subtotal_cents for item in self.items)
 
     def checkout(self) -> dict:
-        """Schliesst den Warenkorb ab und gibt die Zahlungsuebersicht zurueck.
+        """Closes the cart and returns the payment summary.
 
-        TODO: Rabatt-Codes/Gutscheine werden hier noch nicht angewendet.
-        Der Pricing-Service (siehe ../pricing-service/) verwaltet die
-        Rabatt-Regeln bereits, ist aber noch nicht angebunden.
+        TODO: discount codes and coupons are not applied here yet.
+        The Pricing-Service (see ../pricing-service/) already manages the
+        discount rules, but is not wired up.
         """
         return {
             "cart_id": self.cart_id,
