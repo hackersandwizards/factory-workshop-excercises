@@ -1,7 +1,7 @@
-"""Platzhalter-Handler für die Rule-Uebung.
+"""Placeholder handler for the rule exercise.
 
-Vor dem Workshop: durch einen echten, unkritischen Ausschnitt aus einem
-Barista-API-Service ersetzen, wenn verfuegbar.
+Before the workshop: replace with a real, non-critical excerpt from a
+Barista API service, if one is available.
 """
 
 

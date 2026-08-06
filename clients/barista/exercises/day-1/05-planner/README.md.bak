@@ -4,15 +4,9 @@
 
 ## Goal
 
-Einen eigenen Planner-Skill bauen, der bei `/planner` **direkt ein Ticket
-anlegt** statt in eine `.md`-Datei zu planen — das "Was" der Pipeline, ohne
-Pfade oder Signaturen.
-
-**Zwei Backends, ein Vertrag.** Standard ist **Jira** (über den lokalen
-Jira-MCP). Fallback ist die **`beans`-CLI**, falls der MCP-Zugriff nicht
-steht. Die Mechanik des Skills ist in beiden Fällen identisch — nur der
-letzte Schritt (Phase 5) unterscheidet sich. Genau das ist der Punkt: der
-Planner kennt sein Backend nicht, er erfüllt einen Vertrag.
+Einen eigenen Planner-Skill bauen, der bei `/planner` **direkt einen Bean
+anlegt** (`beans create`) statt in eine `.md`-Datei zu planen — das "Was"
+der Pipeline, ohne Pfade oder Signaturen.
 
 ## Herkunft
 
@@ -25,14 +19,9 @@ Pipeline-Baustein.
 
 ## Vorbereitung
 
-**Backend prüfen.** Für den Jira-Weg: der Jira-MCP muss erreichbar sein und
-Schreibrechte auf ein Projekt haben, in dem ihr Tickets anlegen, bearbeiten
-und schließen dürft. Für den Fallback: `brew install hmans/beans/beans`,
-prüfen mit `beans --version`. Wenn möglich beides bereithalten — dann kostet
-ein Ausfall zur Laufzeit keine Übungszeit.
-
-Kopiere `exercise/.claude` (und für den Fallback `exercise/.beans.yml`) in
-ein Verzeichnis deiner Wahl — am besten ein
+Die `beans`-CLI muss installiert sein (`brew install hmans/beans/beans`,
+prüfen: `beans --version`). Kopiere `exercise/.claude` und
+`exercise/.beans.yml` in ein Verzeichnis deiner Wahl — am besten ein
 echtes, unkritisches Stück deines eigenen Stacks, nicht ein leeres
 Test-Verzeichnis. Wähle vorher eine Planungsdomäne, z. B.
 `migration-planner`, `refactor-planner`, `feature-planner`.
@@ -54,20 +43,14 @@ live erlebt, bevor über Planning gesprochen wird.
 3. Pflicht-Subset (4★): Kontext explorieren, bevor die erste Frage gestellt
    wird · eine Frage pro Nachricht · 2–3 Alternativen vor der Konvergenz,
    ohne selbst eine zu bevorzugen · Self-Review vor Abschluss.
-4. Ticket-Erzeugung statt Datei-Plan — **ein** Schreibvorgang mit
-   vollständigem Body:
-   - *Jira (Standard):* Issue über den Jira-MCP anlegen. Summary = Titel,
-     Description = Description + `## High-Level Plan`. Issue-Key (z. B.
-     `BAR-123`) für die Übergabe an `/refine` (Tag 2) zurückgeben.
-   - *Beans (Fallback):* `beans create "<Titel>" -t feature -d "<Heredoc mit
-     Description + ## High-Level Plan>"`. Die `beans`-CLI hat **kein**
-     `--body-append` — bei langen Bodies `--body-file <pfad>` statt `-d`
-     nutzen. ID aus stdout parsen.
+4. Bean-Erzeugung statt Datei-Plan: **ein** CLI-Aufruf mit vollständigem
+   Body — `beans create "<Titel>" -t feature -d "<Heredoc mit Description +
+   ## High-Level Plan>"`. Die `beans`-CLI hat **kein** `--body-append` — bei
+   langen Bodies `--body-file <pfad>` statt `-d` nutzen. ID aus stdout
+   parsen für die Übergabe an `/refine` (Tag 2).
 5. Heading-Vertrag: der Plan steht wortwörtlich unter der Überschrift
    `## High-Level Plan` — `/refine` an Tag 2 parst per Exact-Match, fehlt
-   die Überschrift, bricht Refine ab. **Bei Jira aufpassen:** die
-   Description darf das Markdown-Heading nicht wegformatieren. Nach dem
-   ersten Ticket einmal nachlesen, was tatsächlich gespeichert wurde.
+   die Überschrift, bricht Refine ab.
 6. Harte Regel: **keine** Dateipfade, **keine** Funktionssignaturen,
    **keine** Klassennamen im Plan — stattdessen Acceptance Criteria.
 7. **Neu, bewusste Design-Entscheidung:** `disable-model-invocation: true`
@@ -77,22 +60,20 @@ live erlebt, bevor über Planning gesprochen wird.
    ein Seiteneffekt — genau der Fall, für den explizite statt automatische
    Auslösung empfohlen wird. Passt außerdem zum
    Human-in-the-loop-Grundton des Workshops.
-8. Test: `/planner <eigene Aufgabe>` → ein neues Ticket existiert, und seine
-   Description enthält `## High-Level Plan` mit Approach/Steps/AC/Non-Goals.
-   (Jira: Issue im Projekt öffnen. Beans: `beans list`, `beans show <id>`.)
+8. Test: `/planner <eigene Aufgabe>` → `beans list` zeigt einen neuen Bean,
+   `beans show <id>` zeigt Description + `## High-Level Plan` mit
+   Approach/Steps/AC/Non-Goals.
 
 ## Verify
 
-- Nach dem `/planner`-Lauf existiert ein neues Ticket (Jira-Issue bzw. Bean)
+- `beans list` enthält nach dem `/planner`-Lauf einen neuen Bean
 - Der Plan enthält keine Dateipfade, keine Funktionsnamen, keine
   Zeilenverweise
 - Der Skill fragt eine Frage nach der anderen, nicht alle auf einmal
 - Der Skill triggert **nicht** von selbst — nur auf expliziten
   `/planner`-Aufruf (Test: eine komplexe Aufgabe beiläufig erwähnen, ohne
   `/planner` zu tippen — nichts sollte passieren)
-- Der Skill scheitert kontrolliert, wenn sein Backend fehlt (Jira-MCP nicht
-  erreichbar bzw. `beans`-CLI nicht installiert) — er erfindet kein Ticket
-  und plant nicht still in eine Datei
+- Der Skill scheitert kontrolliert, wenn die `beans`-CLI fehlt
 
 ## Twist (~10 min)
 
@@ -131,17 +112,16 @@ stabil sehen, bevor die Architektur verkompliziert wird.
 
 ## Bridge zu Tag 2
 
-Die Ticket-ID (Jira-Issue-Key bzw. Bean-ID) ist die Übergabe an `/refine
-<id>` — Pfade und Signaturen kommen dort dazu, nicht hier.
+Der neue Bean (genauer: seine ID) ist die Übergabe an `/refine
+<bean-id>` — Pfade und Signaturen kommen dort dazu, nicht hier.
 
 ## Solution
 
 Referenzlösung liegt auf Branch **`solution/barista-day-1-03-planner`**
 (bewusst nicht auf `client/barista`, damit sie nicht in Claudes Kontext
-landet) — `solution/.claude/skills/planner/SKILL.md` mit vollem 4★-Subset +
-`disable-model-invocation: true`. Die Referenzlösung schreibt nach
-**Beans** — wer nach Jira gebaut hat, vergleicht Phase 1–4 eins zu eins und
-nur Phase 5 sinngemäß. Erst selbst bauen, dann vergleichen:
+landet) — `solution/.claude/skills/planner/SKILL.md` mit vollem
+4★-Subset + Bean-Creator + `disable-model-invocation: true`. Erst selbst
+bauen, dann vergleichen:
 
 ```bash
 git checkout solution/barista-day-1-03-planner   # inspect solution/.claude/skills/planner/SKILL.md

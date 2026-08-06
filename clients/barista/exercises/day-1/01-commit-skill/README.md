@@ -1,77 +1,77 @@
-# Tag 1 · Exercise 01 — Commit-Skill: Purpose vs. Instructions
+# Day 1 · Exercise 01 — Commit Skill: Purpose vs. Instructions
 
-**Slot:** Block 1, ~20 Minuten (Foundations, Mechanismus)
+**Slot:** Block 1, ~20 minutes (Foundations, Mechanism)
 
 ## Goal
 
-Denselben Effekt wie in Übung 00 als **Skill** bauen — und dabei live
-erleben, warum eine zweckbeschriebene Skill robuster ist als eine
-schrittgenaue. Läuft **beiläufig** mit, kein eigenes Etikett, keine Folie —
-wird erst im Twist von Block 2 aufgegriffen.
+Build the same effect as exercise 00 as a **Skill** — and experience live
+why a purpose-described skill is more robust than a step-by-step one. This
+runs **alongside**, without a label and without a slide — it is picked up
+later, in the Block 2 twist.
 
-## Zwei Varianten
+## Two variants
 
-Beide sollen eine Commit-Message nach Konvention erzeugen. Baue sie in
-`exercise/.claude/skills/`:
+Both are supposed to produce a commit message that follows the convention.
+Build them in `exercise/.claude/skills/`:
 
-**Variante A — `commit-message-strict`:** schrittgenaue Anleitung.
-
-```yaml
----
-description: Erstellt eine Commit-Message. Schritte befolgen.
----
-
-1. Öffne die Datei `CHANGELOG.md` im Repo-Root.
-2. Lies den letzten Eintrag, um den aktuellen Scope zu bestimmen.
-3. Formuliere: <type>(<scope aus Schritt 2>): <Betreff>
-4. Ergänze den Body aus dem Diff.
-```
-
-**Variante B — `commit-message-purpose`:** Zweck statt Schritte.
+**Variant A — `commit-message-strict`:** precise step-by-step instructions.
 
 ```yaml
 ---
-description: Erstellt eine Commit-Message nach Team-Konvention (Type/Scope/Body/Ref). Nutzen, sobald ein Commit ansteht.
+description: Creates a commit message. Follow the steps.
 ---
 
-Ziel: eine Commit-Message, die in sechs Monaten noch erklärt, warum die
-Änderung gemacht wurde. Leite Type und Scope aus dem tatsächlichen Inhalt
-der Änderung ab, nicht aus einer festen Quelle. Body: warum, nicht nur was.
+1. Open the file `CHANGELOG.md` in the repo root.
+2. Read the latest entry to determine the current scope.
+3. Write: <type>(<scope from step 2>): <subject>
+4. Add the body from the diff.
 ```
 
-## Test — der Fehlschlag
+**Variant B — `commit-message-purpose`:** purpose instead of steps.
 
-`exercise/` enthält **keine** `CHANGELOG.md` (bewusst entfernt). Frag Claude
-Code mit jeder Skill einzeln aktiv nach einer Commit-Message für
+```yaml
+---
+description: Creates a commit message following the team convention (Type/Scope/Body/Ref). Use whenever a commit is due.
+---
+
+Goal: a commit message that still explains in six months why the change was
+made. Derive type and scope from the actual content of the change, not from
+a fixed source. Body: why, not just what.
+```
+
+## Test — the failure
+
+`exercise/` deliberately contains **no** `CHANGELOG.md`. Ask Claude Code
+with each skill separately for a commit message for
 `../00-commit-claude-md/exercise/sample.diff`:
 
-- **Strict:** Schritt 1 scheitert (Datei fehlt) — Claude hängt fest, rät,
-  oder bricht ab, weil die vorgegebene Quelle fehlt.
-- **Purpose:** leitet den Scope trotzdem aus dem Diff-Inhalt ab, liefert ein
-  brauchbares Ergebnis.
+- **Strict:** step 1 fails (the file is missing) — Claude gets stuck,
+  guesses, or gives up, because the prescribed source is not there.
+- **Purpose:** derives the scope from the diff content anyway and produces
+  something usable.
 
 ## Verify
 
-- Strict-Variante liefert ein sichtbar schlechteres oder gar kein Ergebnis,
-  wenn die erwartete Datei fehlt.
-- Purpose-Variante liefert in derselben Situation ein brauchbares Ergebnis.
+- The strict variant produces a visibly worse result, or none at all, when
+  the expected file is missing.
+- The purpose variant produces a usable result in the same situation.
 
-## Was du lernst
+## What you learn
 
-- Genauere Instruktionen sind nicht automatisch robuster — sie sind nur
-  robuster **solange die Annahme stimmt**.
-- Eine Zweck-Beschreibung überlässt dem Modell die Urteilsfähigkeit, für die
-  man es eigentlich einsetzt.
+- More precise instructions are not automatically more robust — they are
+  only more robust **as long as the assumption holds**.
+- A purpose description leaves the model the judgement you are employing it
+  for in the first place.
 
-## Bridge zur nächsten Übung
+## Bridge to the next exercise
 
-CLAUDE.md und Skill liefern **eine** Konvention, egal wo im Repo. Übung 02
-zeigt die Grenze davon: bei einer heterogenen Repo-Landschaft wie bei Barista
-braucht es teils unterschiedliche Konventionen je nach **Ort** im Repo —
-dafür ist eine Rule da.
+CLAUDE.md and Skill give you **one** convention, wherever you are in the
+repo. Exercise 02 shows the limit of that: in a heterogeneous repo
+landscape like Barista's you sometimes need different conventions depending
+on **where** you are in the repo — that is what a Rule is for.
 
 ## Solution
 
-Referenzlösung liegt auf Branch **`solution/barista-day-1-01-commit-skill`**
-(noch anzulegen) — beide SKILL.md-Varianten. Erst selbst bauen, dann
-vergleichen.
+The reference solution lives on branch
+**`solution/barista-day-1-01-commit-skill`** (still to be created) — both
+SKILL.md variants. Build it yourself first, then compare.

@@ -1,9 +1,9 @@
-# Tag 1 — 06.08.2026, remote, Nils solo
+# Tag 1 — 06.08.2026, remote
 
-**Format:** Remote, 9:00–17:00 (Europe/Berlin), Nils aus Thailand zugeschaltet,
-Björn im Urlaub — kein Co-Trainer vor Ort. Entsprechend weniger Pair-Programming-
-Choreografie, mehr geführte Demo + Diskussion, Hands-on nur bei der einen
-Übung, die wirklich trägt.
+**Format:** Remote, 9:00–17:00 (Europe/Berlin), ein Trainer. Der Zuschnitt
+folgt dem Format: geführte Demos und Diskussion statt Pair-Programming-
+Choreografie, und ein tiefes Hands-on statt vieler kleiner — der Planner in
+Block 3, weil er als einziger ein Artefakt für Tag 2 hervorbringt.
 
 **Taktung:** 7 Blöcke à 50–60 Minuten mit 5–10 Minuten Pause dazwischen, 1h
 Mittag. Details siehe `README.md` (Abschnitt „Taktung"). Gilt für beide
@@ -17,7 +17,7 @@ Vorbereitungs-/Begründungsmaterial, kein Sprechtext.
 |---|---|---|---|
 | 1 | 09:00–09:55 | 55 min | Kickoff + Foundations: Hook + Mechanismus |
 | — | 09:55–10:00 | 5 min | Pause |
-| 2 | 10:00–10:50 | 50 min | Foundations: Twist + Abschluss · Capability vs. Command · Rules & Hooks Kurzdemo |
+| 2 | 10:00–10:50 | 50 min | Foundations: Twist + Abschluss · Capability vs. Command · Guardrails: Hook & Subagent |
 | — | 10:50–11:00 | 10 min | Pause |
 | 3 | 11:00–12:00 | 60 min | Hands-on: Planner-Skill (inkl. Mini-Eval-Check) |
 | — | 12:00–13:00 | 60 min | Mittag |
@@ -43,7 +43,7 @@ Pipeline (Planner) — Tag 2 baut "Wie" (Refine/Implement) obendrauf.
 - Hook (10): leerer Ordner, Barista-Aufgabe stellen → generisches Ergebnis
 - CLAUDE.md (10): Commit-Konvention eintragen, neu starten, Effekt zeigen · `00-commit-claude-md`
 - Skill (10): gleicher Effekt on-demand · `01-commit-skill`
-- Rule (10): gleicher Effekt, scoped per Glob
+- Rule (5): gleicher Effekt, scoped per Pfad · `02-commit-rule`
 - Nebenbei mitlaufen lassen: SKILL.md-Vergleich (Instruktion vs. Zweck), für Twist in Block 2 aufheben
 
 **Kickoff (~15 min):** kurzer Rahmen — warum heute, was am Ende des Tages
@@ -56,14 +56,21 @@ Commit-Message für diesen Diff" oder "beschreibe diesen PR"). Ergebnis ist
 generisch, trifft keine Team-Konvention. Die Gruppe sieht die Lücke, bevor ein
 Begriff fällt.
 
-**Foundations, Mechanismus (~30 min):** Schritt für Schritt CLAUDE.md ergänzen,
+**Foundations, Mechanismus (~25 min):** Schritt für Schritt CLAUDE.md ergänzen,
 neu starten, Effekt zeigen. Dann denselben Effekt als Skill bauen (on-demand
 statt immer an). Dann als Rule (scoped per Glob). Die Gruppe sieht bei jedem
 Schritt, was sich ändert — sie leitet die drei Mechaniken selbst her, statt sie
 präsentiert zu bekommen. Durchgängiges Beispiel über alle drei Schritte:
 Commit-Message-Konvention (Type/Scope/Body/Ref) — läuft wie Björns Piraten-
 Beispiel dreimal durch, nur mit Barista-Bezug statt Piraten-Sprache. Übungen:
-`exercises/day-1/00-commit-claude-md/`, `01-commit-skill/`.
+`exercises/day-1/00-commit-claude-md/`, `01-commit-skill/`, `02-commit-rule/`.
+
+Der Rule-Schritt schließt den Dreiklang: dieselbe Commit-Konvention, jetzt
+per Pfad gescoped (`services/api` vs. `services/frontend`). Er klärt
+nebenbei, warum eine Rule nicht "Commit-Konvention, dritte Variante" ist,
+sondern auf *Ort im Repo* statt auf *Aktion* reagiert — die Begründung steht
+in der Übungs-README, muss hier nicht wiederholt werden. Fünf Minuten
+reichen, weil das Beispiel schon steht.
 
 Beim Skill-Bau **beiläufig, ohne es zu benennen**: zwei Versionen der
 SKILL.md-Beschreibung gegeneinander laufen lassen — eine mit Schritt-für-
@@ -77,18 +84,18 @@ aufgegriffen.
 
 ## Pause · 09:55–10:00
 
-## Block 2 · 10:00–10:50 · Foundations (Twist + Abschluss) · Capability vs. Command · Rules & Hooks Kurzdemo
+## Block 2 · 10:00–10:50 · Foundations (Twist + Abschluss) · Capability vs. Command · Guardrails: Hook & Subagent
 
 **Ablauf:**
 - Twist (9): "mehr Kontext/genauer = besser" widerlegen — CLAUDE.md lädt immer, Unterordner überschreibt, Zweck-Skill robuster
 - Capability vs. Command (9): Commit = Capability (Intent), Planner = Command (bewusst) · Commit-Beispiel → Repo, Planner-Beispiel → Team · Teilbarkeit gleich
 - Prompting-Modi (1): Regular/Thinking/Plan, Verweis Glossar
-- Abschluss (5): "CLAUDE.md im Unterordner"
-- Rule (5): `02-commit-rule`, Scope api/frontend
-- Hook-Demo (5): `.env` lesen ohne Hook
+- Abschluss (1): "CLAUDE.md im Unterordner" — Einzeiler, kein Ausbau
+- Hook-Demo (5): `.env` lesen ohne Hook · `03-env-block-hook`
 - Mechanismus (10): Rule weich, Hook hart — live nachrüsten
 - Twist (5): Prompt = Bitte, nur Hook hart
 - Permissions (3): Allow/Deny statt YOLO-Mode
+- Subagent-Demo (5): Kontext-Balken vor/nach · Brücke zu Refine (Tag 2)
 - Abschluss (2): "bitte nicht" vs. "geht nicht"
 
 **Foundations, Twist (~9 min):** Erwartung wäre "mehr Kontext ist immer
@@ -137,18 +144,18 @@ Thinking- und Plan-Modus folgen demselben Gedanken — wann lohnt sich lautes
 Nachdenken, wann reicht der Normalmodus. Kein eigener Übungspunkt — siehe
 `glossary.md` für die vollständige Definition.
 
-**Foundations, Abschluss (~5 min):** "Willkommen im Club der Leute, die jetzt
+**Foundations, Abschluss (~1 min):** "Willkommen im Club der Leute, die jetzt
 jede Woche eine CLAUDE.md suchen, die sich heimlich in einen Unterordner
 geschlichen hat."
 
-**Rules & Hooks Kurzdemo (~30 min):** aus `day-2-am/02-rules` +
-`day-2-am/04-env-block-hook`, als Demo statt Einzelübung.
+**Guardrails: Hook & Subagent (~23 min):** Übung
+`exercises/day-1/03-env-block-hook/` (aus `day-2-am/04-env-block-hook`
+übernommen), als Demo statt Einzelübung. Die Rule ist in Block 1 schon
+gelaufen — hier wird sie nur noch als Kontrast aufgerufen.
 
-- *Rule-Einstieg:* `exercises/day-1/02-commit-rule/` — knüpft direkt an die
-  Commit-Konvention aus Block 1 an, diesmal per-Pfad gescoped (Scope `api`
-  vs. `frontend`). Klärt nebenbei, warum eine Rule nicht "Commit-Konvention,
-  dritte Variante" ist, sondern auf *Ort im Repo* statt *Aktion* reagiert —
-  Begründung steht in der Übungs-README, muss hier nicht wiederholt werden.
+- *Rückgriff (30 Sekunden):* die Rule aus `02-commit-rule` ist die **weiche**
+  Leitplanke — Kontext, aber umgehbar. Sie ist der Gegner, gegen den der Hook
+  gleich anläuft. Nicht neu erklären, nur aufrufen.
 - *Hook:* Claude Code bitten, `.env` zu lesen ("nur um zu prüfen, ob die
   Variable korrekt gesetzt ist") — es tut es klaglos, wenn kein Hook existiert.
 - *Mechanismus:* Rule als weiche Leitplanke zeigen (Kontext, aber umgehbar),
@@ -161,10 +168,31 @@ geschlichen hat."
 - *Ergänzung (Card `permissions-security`, kurzer Nebensatz):* Hooks sind die
   harte Leitplanke, aber die alltägliche Steuerung läuft über
   Allow-/Deny-Permissions — bewusst konfigurieren statt „YOLO-Mode" (alles
-  erlauben). Gerade relevant, wenn das Team hofft, den Agenten möglichst
-  autonom laufen zu lassen (siehe Dark-Factory-Punkt im Glossar) — Berechtigungen
+  erlauben). Gerade relevant auf dem Weg zu mehr Autonomie
+  (siehe Dark-Factory-Punkt im Glossar) — Berechtigungen
   sind der Ort, an dem sich diese Autonomie bewusst statt zufällig
   dosieren lässt.
+**Subagent-Kurzdemo (~5 min):** der sechste und letzte Baustein des Tages —
+und der einzige, der nur vorgeführt statt gebaut wird. Begründung: Tag 2
+führt Refine als Subagent-Fork live vor und diskutiert Subagents als
+Plugin-Kategorie; sie müssen das Konzept haben und einmal gesehen haben,
+nicht selbst einen gebaut haben.
+
+- *Abgrenzung, zwei Sätze:* ein Skill lebt im **laufenden** Gespräch, ein
+  Subagent bekommt ein **eigenes**. Vorgriff auf Block 3: der Planner, den
+  ihr gleich baut, ist bewusst keiner — "eine Frage pro Nachricht" braucht
+  den Gesprächsverlauf, den ein Fork nicht hat.
+- *Demo:* dieselbe Explorationsaufgabe zweimal. Erst im Hauptkontext
+  ("finde jede Stelle, an der X passiert, und fass zusammen") — `/context`
+  zeigt, wie er vollläuft. Dann über `.claude/agents/explorer.md`, vier
+  Zeilen Frontmatter (`name`, `description`, `tools: Read, Grep, Glob`) —
+  `/context` bleibt fast unverändert, das Ergebnis ist trotzdem da.
+- *Die Pointe ist der Kontext-Balken, nicht der Output.* Deshalb vorher
+  einmal `/context` zeigen, damit der Vergleich sitzt.
+- *Brücke zu Tag 2:* "Der Subagent liest viel und sagt wenig. Genau deshalb
+  wird Refine morgen einer sein." Übung zum Selberbauen liegt in
+  `exercises/day-2/03-subagent/`, falls Tag 2 Luft hat.
+
 - *Abschluss:* "Der Unterschied zwischen 'bitte nicht' und 'geht technisch
   nicht' ist meistens der Unterschied zwischen Incident und Nicht-Incident."
 
@@ -194,7 +222,7 @@ Jira-Schreibrechte am Morgen nicht stehen.
 - Eigene Planungs-Domäne wählen
 - Test: `/planner <Aufgabe>` → Ticket mit High-Level-Plan
 - Mini-Eval (5): 2–3 Testaufgaben, Format-/Fragen-Disziplin prüfen
-- Übung `03-planner`, `disable-model-invocation: true` begründen
+- Übung `04-planner`, `disable-model-invocation: true` begründen
 - Twist: Planung macht Pipeline schneller, nicht langsamer
 - Abschluss: "fragt am meisten, nervt am wenigsten"
 
@@ -218,7 +246,7 @@ Hook-Beispiel: was wäre jetzt anders gelaufen?
   Self-Review steckte — erster konkreter Kontakt mit dem Begriff „Eval" für
   die Factory (Tag 2 baut später mit dem Review-Rework-Converge-Loop eine
   automatisierte Variante davon).
-- Übung: `exercises/day-1/03-planner/` — kein Copy-Paste-Startpunkt, die
+- Übung: `exercises/day-1/04-planner/` — kein Copy-Paste-Startpunkt, die
   SKILL.md entsteht live; `HINTS.md` dort enthält Checkliste + Snippet-
   Template. Enthält auch die Trigger-Entscheidung `disable-model-invocation:
   true` (Begründung: Ticket-Seiteneffekt + Dialog-Charakter sollen bewusst
@@ -256,10 +284,10 @@ Detailtiefe kommt in der Mentoring-Phase.
 
 **Rahmen (~5 min):** die vier Kernpunkte aus dem Discovery vom 10.07.
 zurückspiegeln — als *eure Aussagen* einführen, nicht als unser Ergebnis
-verkünden. Nützlicher Umstand: Waldemar, Fredrik, Alexandra und Michael waren
-dabei, der Rest des Teams nicht. Genau daraus die Aufgabe machen — "das haben
-wir im Juli von euch gehört, gilt das noch, und was fehlt aus Sicht derer, die
-nicht dabei waren?"
+verkünden. Vier aus dem Team waren beim Discovery dabei, die anderen nicht —
+das offen ansprechen und zur gemeinsamen Aufgabe machen: "das haben wir im
+Juli von euch gehört, gilt das noch, und was fehlt aus Sicht derer, die nicht
+dabei waren?"
 
 **Zielbild validieren (~15 min):** Dark-Factory-Vision vorstellen (Ticket-rein,
 Lösung-raus als Endziel, aber phasiert erreicht — erst mentored collaborative
@@ -276,8 +304,8 @@ Discovery (= Björns vier Key Takeaways), offene Fragen ans Team statt Vortrag:
   sondern "wie": was heißt "mit ihnen zusammen bauen, nicht für sie" für die
   nächsten Wochen ganz konkret?
 - *Standardisierung:* Spring Boot/Nuxt als Ziel-Stack, Single-Service-Repos
-  statt Monorepo. Bewusst offen ansprechen, wo das wehtut (Legacy-Ktor,
-  proprietäre Auth) — bei diesem Team keine Beschönigung.
+  statt Monorepo. Offen ansprechen, wo das wehtut (Legacy-Ktor,
+  proprietäre Auth): Was kostet die Migration dorthin, und wer trägt sie?
 - *Jira-Workflow:* interaktiver Refinement-Schritt für präzise Sub-Tickets.
   **Direkte Brücke zu Block 3** — der Planner-Skill von heute Vormittag ist
   exakt dieser Mechanismus im Kleinen.
@@ -302,10 +330,10 @@ Zwei Stufen desselben Musters, nicht zwei getrennte Themen: wenn niemand
 explizit entscheidet, entscheidet trotzdem etwas — nur nicht mehr das Team.
 Erst im Kleinen (Konventionen), dann im Großen (Architektur/Produkt). Ziel
 ist nicht, das direkt zu benennen — das Team soll selbst draufkommen, was auf
-dem Spiel steht, statt es präsentiert zu bekommen. Genau das macht ihnen
-später begreifbar, warum sie Entscheidungshoheit nicht aufgeben wollen: Coden
-kann ein Agent gut, Architektur im Blick behalten und Herr über das Produkt
-bleiben ist eine andere Frage.
+dem Spiel steht, statt es präsentiert zu bekommen. Die Frage dahinter: Coden
+kann ein Agent gut — Architektur im Blick behalten und Herr über das Produkt
+bleiben ist eine andere. Wo die Grenze verläuft, erarbeitet die Gruppe
+selbst.
 
 **Ablauf:**
 - Rahmen: Muster nicht benennen, Team soll selbst draufkommen
@@ -362,7 +390,8 @@ Entscheidungshoheit behält. Rückverweis auf Block 3: der Planner mit seinem
 STOP-Gate bei den Alternativen ("Wahl des Ansatzes ist Pflicht-Gate, keine
 Rückfrage, die sich wegoptimieren lässt") ist genau die Antwort auf dieses
 Problem — kein Zufall, dass das Team das schon vormittags selbst gebaut hat.
-Genau hier fließen auch die Agile-Manifest-Werte unterschwellig ein.
+Inhaltlich berührt das direkt die Werte des Agilen Manifests — falls die
+Diskussion dorthin läuft, ist das der Anknüpfungspunkt.
 
 **Abschluss (~5 min):** bewusst klein halten — Beobachtung, kein Appell.
 Möglicher Satz: "Ein Agent, der gut codet, ist kein Problem. Einer, der
@@ -376,7 +405,7 @@ ist."
 **Ablauf:**
 - Recap (30): Refine (Was→Wie), Implement (Wie→Code), was neu (Orchestration, Marketplace)
 - Wrap-up (30): offene Fragen, Termin Tag 2 fixieren, Mitbringsel klären (Repo-Ausschnitt)
-- Einordnung: Barista erstes Team, Beweismaterial fürs nächste
+- Einordnung: Barista erstes Team, hilft dem nächsten beim Einstieg
 
 **Recap + Ausblick (~30 min):** was macht Refine (Was → Wie), was macht
 Implement (Wie → Branch/Code), was ist neu gegenüber dem, was das Team kennt
@@ -389,8 +418,8 @@ den Transfer-Hackathon).
 
 **Einordnung zum Schluss (kurzer Nebensatz):** Barista ist bewusst das erste
 Team, das das ausprobiert — nicht das einzige, das es je tun wird. Was hier
-entsteht, ist später auch Beweismaterial für das nächste Team, das
-onboardet. Nicht ausführen, nur als Perspektive stehen lassen.
+entsteht, hilft später dem nächsten Team beim Einstieg. Nicht ausführen, nur
+als Perspektive stehen lassen.
 
 ---
 

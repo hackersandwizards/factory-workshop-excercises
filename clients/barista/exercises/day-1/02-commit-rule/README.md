@@ -1,36 +1,34 @@
-# Tag 1 · Exercise 02 — Commit-Rule: Scope per Pfad
+# Day 1 · Exercise 02 — Commit Rule: scope by path
 
-**Slot:** Block 2, ~15 Minuten (Rules & Hooks Kurzdemo, Einstieg)
+**Slot:** Block 1, ~15 minutes (Rules & Hooks short demo, opener)
 
 ## Concept
 
-Rules = `.claude/rules/<name>.md`, aktiviert per `paths:`-Frontmatter (Liste
-von Glob-Mustern) — **immer aktiv, aber nur für passende Dateien**, nicht
-global wie CLAUDE.md, nicht on-demand wie eine Skill.
+Rules = `.claude/rules/<name>.md`, activated via the `paths:` frontmatter (a
+list of glob patterns) — **always active, but only for matching files**.
+Not global like CLAUDE.md, not on-demand like a Skill.
 
-## Die eigentliche Frage, die diese Übung beantwortet
+## The actual question this exercise answers
 
-CLAUDE.md und Skill (Übung 00/01) geben **eine** Commit-Konvention für das
-ganze Repo. Naheliegend wäre zu fragen: "Und was macht dann die Rule — auch
-eine Commit-Konvention, nur als dritte Variante?" Nein — und der Grund ist
-lehrreich:
+CLAUDE.md and Skill (exercises 00/01) give **one** commit convention for the
+whole repo. The obvious question is: "So what does the Rule do — another
+commit convention, just a third variant?" No — and the reason is
+instructive:
 
-**Eine Rule reagiert auf *welche Dateien gerade angefasst werden*, nicht
-auf *welche Aktion gerade ansteht*.** Es gibt keinen Glob für "gerade wird
-eine Commit-Message geschrieben" — Commit ist eine Aktion, kein
-Dateimuster. Was sich per Glob sinnvoll scopen lässt, ist nicht *ob* eine
-Konvention gilt, sondern *welche Variante* der Konvention gilt, abhängig
-vom **Ort** im Repo.
+**A Rule reacts to *which files are being touched*, not to *which action is
+about to happen*.** There is no glob for "a commit message is being written
+right now" — a commit is an action, not a file pattern. What you can
+sensibly scope by glob is not *whether* a convention applies, but *which
+variant* of it applies, depending on **where** you are in the repo.
 
-Bei einer heterogenen Repo-Landschaft wie bei Barista ist genau das der
-Normalfall: unterschiedliche Teams/Services im selben Repo wollen
-unterschiedliche Commit-Scopes, ohne dass jemand von Hand daran denken
-muss, welcher gerade zutrifft.
+In a heterogeneous repo landscape like Barista's that is the normal case:
+different teams/services in the same repo want different commit scopes,
+without anyone having to remember by hand which one currently applies.
 
-## Aufgabe
+## Task
 
-`exercise/` enthält zwei Platzhalter-Bereiche (**vor dem Workshop durch
-echte Barista-Pfade ersetzen, falls ihr ein Beispiel-Repo mitbringt**):
+`exercise/` contains two placeholder areas (**replace with real Barista
+paths before the workshop if you bring an example repo**):
 
 ```
 exercise/
@@ -38,61 +36,61 @@ exercise/
 └── services/frontend/component.tsx
 ```
 
-1. `.claude/rules/commit-scope-api.md` anlegen:
+1. Create `.claude/rules/commit-scope-api.md`:
    ```yaml
    ---
    paths:
      - "services/api/**"
    ---
-   Commits, die Dateien unter `services/api/` betreffen, nutzen den Scope
-   `api`: `<type>(api): <Betreff>`.
+   Commits touching files under `services/api/` use the scope
+   `api`: `<type>(api): <subject>`.
    ```
-2. `.claude/rules/commit-scope-frontend.md` anlegen:
+2. Create `.claude/rules/commit-scope-frontend.md`:
    ```yaml
    ---
    paths:
      - "services/frontend/**"
    ---
-   Commits, die Dateien unter `services/frontend/` betreffen, nutzen den
-   Scope `frontend`: `<type>(frontend): <Betreff>`.
+   Commits touching files under `services/frontend/` use the scope
+   `frontend`: `<type>(frontend): <subject>`.
    ```
-3. Claude Code im `exercise/`-Ordner starten.
-4. `services/api/handler.py` ändern, Commit-Message erfragen → Scope `api`.
-5. `services/frontend/component.tsx` ändern, Commit-Message erfragen →
-   Scope `frontend`.
-6. Eine Datei außerhalb beider Pfade ändern (z. B. `README.md`) → keine der
-   beiden Rules greift, es zählt nur noch die CLAUDE.md-/Skill-Konvention
-   aus Übung 00/01 (kein spezifischer Scope).
+3. Start Claude Code inside the `exercise/` folder.
+4. Change `services/api/handler.py`, ask for a commit message → scope `api`.
+5. Change `services/frontend/component.tsx`, ask for a commit message →
+   scope `frontend`.
+6. Change a file outside both paths (e.g. `README.md`) → neither rule
+   applies, only the CLAUDE.md/Skill convention from exercises 00/01 is
+   left (no specific scope).
 
 ## Verify
 
-- Scope wechselt automatisch mit dem bearbeiteten Pfad, ohne dass jemand
-  ihn ansagt.
-- Dateien außerhalb beider Globs fallen auf die allgemeine Konvention
-  zurück.
-- Beide Rules gleichzeitig aktiv, kein Konflikt, weil sich ihre Globs nicht
-  überschneiden.
+- The scope switches automatically with the path being edited, without
+  anyone announcing it.
+- Files outside both globs fall back to the general convention.
+- Both rules are active at the same time with no conflict, because their
+  globs do not overlap.
 
 ## Stretch
 
-- Was passiert, wenn sich zwei Rules mit **überlappenden** Globs
-  widersprechen? (Ausprobieren — guter Anknüpfungspunkt für den Twist in
-  Block 2: "immer aktiv" heißt nicht "immer eindeutig".)
+- What happens when two rules with **overlapping** globs contradict each
+  other? (Try it — a good hook for the Block 2 twist: "always active" does
+  not mean "always unambiguous".)
 
-## Bridge zur Hooks-Kurzdemo
+## Bridge to the Hooks short demo
 
-Die Rule hier ist weiterhin eine **Bitte** — nichts hindert Claude
-technisch daran, den Scope zu ignorieren. Die Hooks-Demo direkt im
-Anschluss (`.env`-Block) zeigt den Unterschied zur harten Leitplanke.
+The rule here is still a **request** — technically nothing stops Claude from
+ignoring the scope. The hooks demo right afterwards (`.env` block) shows the
+difference to a hard guardrail.
 
 ## Solution
 
-Referenzlösung liegt auf Branch **`solution/barista-day-1-02-commit-rule`**
-(bewusst nicht auf `client/barista`, damit sie nicht in Claudes Kontext
-landet) — beide Rule-Dateien. Erst selbst bauen, dann vergleichen:
+The reference solution lives on branch
+**`solution/barista-day-1-02-commit-rule`** (deliberately not on
+`client/barista`, so it does not end up in Claude's context) — both rule
+files. Build it yourself first, then compare:
 
 ```bash
 git checkout solution/barista-day-1-02-commit-rule   # inspect solution/.claude/rules/…
-git checkout client/barista                          # zurück zur eigenen Arbeit
+git checkout client/barista                          # back to your own work
 git show solution/barista-day-1-02-commit-rule:clients/barista/exercises/day-1/02-commit-rule/solution/.claude/rules/commit-scope-api.md
 ```

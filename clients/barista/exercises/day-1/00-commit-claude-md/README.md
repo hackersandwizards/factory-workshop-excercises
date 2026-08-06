@@ -1,73 +1,75 @@
-# Tag 1 · Exercise 00 — Commit-Convention-CLAUDE.md
+# Day 1 · Exercise 00 — Commit-Convention CLAUDE.md
 
-**Slot:** Block 1, ~10 Minuten (Foundations, Hook + Start Mechanismus)
+**Slot:** Block 1, ~10 minutes (Foundations, Hook + start of Mechanism)
 
 ## Goal
 
-Verstehen, wie CLAUDE.md Verhalten ändert — **immer aktiv**, ohne Trigger-Wort.
-Das Fundament für alles, was folgt (Skill = on-demand, Rule = scoped).
+Understand how CLAUDE.md changes behaviour — **always active**, no trigger
+word needed. This is the foundation for everything that follows (Skill =
+on-demand, Rule = scoped).
 
-## Hintergrund
+## Background
 
-CLAUDE.md wird bei **jedem Session-Start** gelesen. Egal was gefragt wird —
-die Anweisungen wirken. Anders als ein Skill (triggert bei Aufgaben-Match)
-oder eine Rule (triggert bei Datei-Glob).
+CLAUDE.md is read at **every session start**. Whatever you ask, the
+instructions apply. That is different from a Skill (triggers on a task
+match) or a Rule (triggers on a file glob).
 
-Hierarchie:
+Hierarchy:
 
-| Pfad | Geladen wann |
-|------|--------------|
-| `~/.claude/CLAUDE.md` | Jede Session, in jedem Nutzer-Ordner |
-| `./CLAUDE.md` | Beim Projektstart im Repo |
-| `./services/legacy/CLAUDE.md` | Bei Arbeit im Unterordner |
+| Path | Loaded when |
+|------|-------------|
+| `~/.claude/CLAUDE.md` | Every session, in every user folder |
+| `./CLAUDE.md` | On project start inside the repo |
+| `./services/legacy/CLAUDE.md` | When working in that subfolder |
 
-## Aufgabe
+## Task
 
-1. Leeres Testverzeichnis anlegen, `claude` starten.
-2. Diff `exercise/sample.diff` zeigen und bitten: *"Schreib eine
-   Commit-Message für diesen Diff."* → generisches Ergebnis (kein festes
-   Format, keine Ticket-Referenz, kein Scope).
-3. Session beenden, im Verzeichnis eine `CLAUDE.md` anlegen mit der
-   gewünschten Konvention, z. B.:
+1. Create an empty test directory and start `claude`.
+2. Show the diff `exercise/sample.diff` and ask: *"Write a commit message
+   for this diff."* → generic result (no fixed format, no ticket reference,
+   no scope).
+3. End the session, create a `CLAUDE.md` in the directory with the
+   convention you want, for example:
    ```
-   Commit-Messages folgen immer diesem Format:
-   <type>(<scope>): <Betreff im Imperativ, max. 72 Zeichen>
+   Commit messages always follow this format:
+   <type>(<scope>): <subject in the imperative, max. 72 characters>
 
-   <Body: warum diese Änderung nötig war>
+   <body: why this change was necessary>
 
-   Ref: <Ticket-ID, falls vorhanden>
+   Ref: <ticket ID, if there is one>
    ```
-4. `claude` neu starten, dieselbe Frage stellen → Konvention wird befolgt.
-5. Variation: zweite Zeile ergänzen ("Scope ist immer der oberste
-   Verzeichnisname des größten geänderten Pfads") → erneut fragen.
-6. In einen Unterordner mit eigener `CLAUDE.md` gehen (z. B.
-   `./services/legacy/CLAUDE.md` mit abweichender Konvention) — Hierarchie
-   live beobachten.
+4. Restart `claude` and ask the same question → the convention is followed.
+5. Variation: add a second line ("Scope is always the top-level directory
+   name of the largest changed path") → ask again.
+6. Move into a subfolder that has its own `CLAUDE.md` (e.g.
+   `./services/legacy/CLAUDE.md` with a different convention) — watch the
+   hierarchy live.
 
 ## Verify
 
-- Die Commit-Message folgt jetzt Type/Scope/Body/Ref.
-- Ohne Neustart wirkt die CLAUDE.md noch nicht (nur bei Session-Start
-  geladen).
-- Die Unterordner-CLAUDE.md überschreibt die übergeordnete, statt sie zu
-  ergänzen.
+- The commit message now follows Type/Scope/Body/Ref.
+- Without a restart the CLAUDE.md has no effect yet (it is only loaded at
+  session start).
+- The subfolder CLAUDE.md **overrides** the parent one instead of adding to
+  it.
 
 ## Stretch
 
-- Globale `~/.claude/CLAUDE.md` öffnen, einmal lesen — wirkt
-  projektübergreifend immer.
-- Was passiert, wenn Projekt- und globale CLAUDE.md sich widersprechen?
-  (Ausprobieren!)
+- Open your global `~/.claude/CLAUDE.md` and read it once — it applies
+  across all projects, always.
+- What happens when the project CLAUDE.md and the global one contradict
+  each other? (Try it!)
 
-## Bridge zur nächsten Übung
+## Bridge to the next exercise
 
-CLAUDE.md ist eine **immer aktive Konvention** — jede Commit-Message folgt
-demselben Format, in jedem Kontext. Übung 01 baut denselben Effekt als
-**Skill**: on-demand, mit der Fähigkeit, sich an eine falsche Annahme
-anzupassen statt starr zu scheitern.
+CLAUDE.md is an **always-active convention** — every commit message follows
+the same format, in every context. Exercise 01 builds the same effect as a
+**Skill**: on-demand, and able to adapt when an assumption turns out to be
+wrong instead of failing rigidly.
 
 ## Solution
 
-Referenzlösung liegt auf Branch **`solution/barista-day-1-00-commit-claude-md`**
-(bewusst nicht auf `client/barista`, damit sie nicht in Claudes Kontext
-landet — noch anzulegen). Erst selbst versuchen, dann vergleichen.
+The reference solution lives on branch
+**`solution/barista-day-1-00-commit-claude-md`** (deliberately not on
+`client/barista`, so it does not end up in Claude's context — still to be
+created). Try it yourself first, then compare.

@@ -1,6 +1,6 @@
-// Platzhalter-Komponente fuer die Rule-Uebung.
-// Vor dem Workshop: durch einen echten, unkritischen Ausschnitt aus einem
-// Barista-Frontend-Repo ersetzen, wenn verfuegbar.
+// Placeholder component for the rule exercise.
+// Before the workshop: replace with a real, non-critical excerpt from a
+// Barista frontend repo, if one is available.
 
 export function PlaceholderComponent() {
   return <div>placeholder</div>;

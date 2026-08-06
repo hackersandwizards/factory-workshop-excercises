@@ -75,11 +75,7 @@ gelassene Neugier-Lücke, Twist+Abschluss erst in Block 6). Details je Tag in
 ## Zeitplan für die Vorbereitung
 
 Ziel: **erster vollständiger Workshop-Entwurf bis 24.07.2026**,
-damit genug Puffer bleibt, um Björns Feedback einzuarbeiten und das Material
-notfalls nochmal umzuwerfen — plus Zeit für Nils' eigenes Nachlernen bei
-Marketplace-/Plugin-Mechanik (siehe unten, dazu hat Nils selbst noch keine
-praktische Erfahrung). Workshop-Termin Tag 1 ist der 06.08. — das lässt real
-gut zwei Wochen zwischen Entwurf und Durchführung für Iteration.
+Workshop-Termin Tag 1 ist der 06.08.
 
 ## Warum diese Aufteilung
 

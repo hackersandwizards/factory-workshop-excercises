@@ -1,9 +1,9 @@
-# Test-Repo für die Commit-Scope-Rule
+# Test repo for the commit-scope rule
 
-Siehe `../README.md` für die vollständige Anleitung.
+See `../README.md` for the full instructions.
 
-## Dateien
+## Files
 
-- `services/api/handler.py` — matched `services/api/**`
-- `services/frontend/component.tsx` — matched `services/frontend/**`
-- Diese Datei — matched keins von beiden
+- `services/api/handler.py` — matches `services/api/**`
+- `services/frontend/component.tsx` — matches `services/frontend/**`
+- This file — matches neither
