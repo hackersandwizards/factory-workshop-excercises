@@ -1,0 +1,8 @@
+{
+  "name": "commit-convention",
+  "description": "Commit message convention (Type/Scope/Body/Ref) from Day 1, distributable as a plugin",
+  "version": "1.0.0",
+  "author": {
+    "name": "Barista Workshop"
+  }
+}

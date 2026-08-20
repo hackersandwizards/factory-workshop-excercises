@@ -1,0 +1,13 @@
+{
+  "name": "barista-demo-marketplace",
+  "owner": {
+    "name": "Barista Workshop"
+  },
+  "plugins": [
+    {
+      "name": "commit-convention",
+      "source": "./plugins/commit-convention",
+      "description": "Commit message convention (Type/Scope/Body/Ref) from Day 1 — demo plugin for the auto-update proof"
+    }
+  ]
+}

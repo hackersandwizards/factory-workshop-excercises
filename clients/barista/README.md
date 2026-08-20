@@ -8,12 +8,18 @@ für h&w · SSW). Für Barista auf **zwei separate Tage** verdichtet — kein Da
 | Tag | Datum | Ort | Trainer |
 |---|---|---|---|
 | **Tag 1** | 06.08.2026, 9:00–17:00 | Remote (Nils aus Thailand zugeschaltet) | **Nils solo** — Björn im Urlaub |
-| **Tag 2** | noch offen | Vor Ort Hamburg | **Nils + Björn** |
+| **Tag 2** | 21.08.2026, 9:00–17:00 | Remote | **Nils solo**, Kamil ab Block 6 (15:00) dazu — Björn nicht dabei |
 
 Die beiden Tage liegen **getrennt**, nicht an aufeinanderfolgenden Tagen wie im
-Original-Format. Das beeinflusst den Zuschnitt: Tag 1 ist bewusst so gebaut, dass
-er remote und solo trägt (weniger Pair-Choreografie, mehr geführte Demo +
-Diskussion); Tag 2 ist der hands-on-intensive Vor-Ort-Tag mit zwei Trainern.
+Original-Format. Beide Tage sind remote — Tag 2 war ursprünglich als
+Vor-Ort-Tag geplant, wurde aber auf Vorschlag der Trainer auf remote
+umgestellt, weil ein Teil der Teilnehmenden in Rumänien sitzt. Das beeinflusst
+den Zuschnitt: Tag 1 ist bewusst so gebaut, dass er remote und solo trägt
+(weniger Pair-Choreografie, mehr geführte Demo + Diskussion); Tag 2 bleibt
+Hackathon-Spirit, aber remote über Google Meet — die 2er-Teams pairen über
+Breakout-Räume statt am gemeinsamen Tisch, Trainer unterstützt per
+Screen-Share statt im Raum herumzugehen, und die Teilnehmenden schreiben den
+Code selbst in ihren eigenen Repos.
 
 ## Didaktisches Prinzip: Erfahrung vor Theorie
 
@@ -102,6 +108,14 @@ Fundament-Legen bleibt — wir kompensieren, wo möglich, über Kompaktierung
 
 ## Zwei Bausteine, die im Original-Repo fehlen und ergänzt werden müssen
 
+**Update vom 18.08.2026 (Call mit dem Team):** das Team hat zwischenzeitlich
+selbst einen MCP-Server als Marketplace-Ersatz gebaut — in der (falschen)
+Annahme, ein Plugin-Marketplace biete kein Auto-Update. Für Block 2 an Tag 2
+heißt das: keine leichte Demo mehr, sondern eine volle Session, die die
+Annahme live widerlegt (Auto-Update-Beweis) und die MCP-Lösung sauber
+einordnet (löst Zugriff, nicht Verhalten-Verteilung — beides bleibt nötig).
+Details in `day-2-agenda.md`, Block 2.
+
 1. **Marketplace-/Plugin-Mechanik** — im Original nur als Stretch-Erwähnung
    (`/skill-creator`-Demo), nicht als eigene Übung. Für Barista laut Björns
    Slack-Notiz früh relevant (heterogene Repo-Landschaft, viele Teams — Plugins
@@ -121,8 +135,11 @@ Fundament-Legen bleibt — wir kompensieren, wo möglich, über Kompaktierung
 
 ## Rollen
 
-- **Nils** — Lead, Tag 1 solo, Tag 2 gemeinsam mit Björn.
-- **Björn** — Workshop-Partner für Tag 2 (vor Ort), hat die ursprüngliche
+- **Nils** — Lead, Tag 1 solo, Tag 2 solo bis Block 6 (15:00).
+- **Kamil** — steigt an Tag 2 ab Block 6 (15:00) ein, übernimmt den
+  Eval-Block aus eigener Erfahrung (hat Evals in seiner eigenen Factory
+  bereits gebaut).
+- **Björn** — nicht Teil von Tag 2, hat aber die ursprüngliche
   Ersteinschätzung zum Kunden geliefert (technisch heterogen,
   Material-Anforderungen).
 - Ein weiterer H&W-Kollege gibt vor Fertigstellung noch eine Feedback-Runde
@@ -131,5 +148,8 @@ Fundament-Legen bleibt — wir kompensieren, wo möglich, über Kompaktierung
 ## Dateien
 
 - `day-1-agenda.md` — 06.08., remote, Nils solo.
-- `day-2-agenda.md` — TBD, vor Ort, Nils + Björn.
+- `day-2-agenda.md` — 21.08.2026, remote, Nils solo, Kamil ab Block 6.
 - `glossary.md` — Begriffs-Vorbesprechung vor dem Workshop.
+- `exercises/day-2/02-refine/`, `03-implement/`, `04-review/` —
+  Übungsgerüste für den Hackathon-Nachmittag, `04-review` ohne
+  Original-Vorbild (siehe Punkt 2 unten).
