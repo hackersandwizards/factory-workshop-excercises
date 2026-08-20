@@ -29,7 +29,7 @@ Verhalten-Verteilung).
 | — | 13:55–14:00 | 5 min | Pause |
 | 5 | 14:00–14:50 | 50 min | Fertigbauen · Ticket + Planner · Marketplace-Merge (Versuch) · Orchestrator · Testlauf bis zum Light-Switch |
 | — | 14:50–15:00 | 10 min | Pause |
-| 6 | 15:00–15:55 | 55 min | Wie man Evals baut (Kamil, aus seiner eigenen Factory) |
+| 6 | 15:00–15:55 | 55 min | Wie man Evals baut — Table-Test-Session-Aufbau, Kamil ergänzt |
 | — | 15:55–16:00 | 5 min | Pause |
 | 7 | 16:00–17:00 | 60 min | Recap · Marketplace-Merge nachholen (falls nötig) · Q&A · Mentoring-Angebot · Wrap-up |
 
@@ -407,36 +407,58 @@ wie würde man das systematisch statt live entdecken?
 
 ## Pause · 14:50–15:00
 
-## Block 6 · 15:00–15:55 · Wie man Evals baut (Kamil)
+## Block 6 · 15:00–15:55 · Wie man Evals baut
 
 **Kamil steigt zu Beginn dieses Blocks ein** — kurz einordnen, wo der Tag
-gerade steht, bevor er übernimmt.
+gerade steht.
 
 **Ablauf:**
 - Ankommen (5): kurzer Stand der Dinge für Kamil
-- Kamils Eval-Ansatz (25): wie er Evals in seiner eigenen Factory gebaut hat, konkretes Beispiel
-- Übertragen auf Barista (20): Skill-Evals + Factory-Eval gemeinsam anwenden
+- Session-Aufbau erklären (15): Table-Test-Prinzip, frische Session pro Case, Fixture-Reset
+- Kamils Ergänzung (15): was er in seiner eigenen Factory zusätzlich/anders macht
+- Anwenden auf Barista (15): `06-eval`-Beispiel live gegen das laufen lassen, was heute entstanden ist
 - Abschluss (5): "grün heißt nicht fertig" — Rückbezug auf Tag 1 und Block 3
 
 **Ankommen (~5 min):** kurzer Stand der Dinge — was ist heute entstanden,
 wo hakt es gerade (aus Block 5 mitgenommen).
 
-**Kamils Eval-Ansatz (~25 min):** Kamil bringt das aus erster Hand mit —
-wie er in seiner eigenen Factory geprüft hat, ob Skills zuverlässig das tun,
-was sie sollen, statt sich auf Einzelbeobachtung zu verlassen. Konkretes
-Beispiel aus seiner Praxis, keine generische Eval-Theorie.
+**Session-Aufbau erklären (~15 min):** ein Eval ist nichts Neues — es ist
+das Self-Check, das in jedem Exercise-README (`02-refine`, `03-implement`,
+`04-review`) schon steht, nur automatisiert und wiederholbar statt einmalig
+von Hand geprüft. Kernpunkte, Details in
+`exercises/day-2/06-eval/README.md`:
 
-**Übertragen auf Barista (~20 min):** gemeinsam anwenden — 2–3 Testfälle je
-Skill (Refine, Implement, Review) gegen das, was heute entstanden ist,
-laufen lassen: hält die Format-/Fragen-Disziplin, prüft Review wirklich
-Kriterium für Kriterium? Dazu ein Factory-Eval mit dem präparierten Beispiel
-aus Block 3 (Tests grün, ein AC verfehlt) gegen die zusammengesetzte
-Mini-Factory: fängt der Review-Schritt es ab, oder rutscht es durch?
+- **Table-Test:** eine JSON-Liste von Cases, je `input` (welches Ticket)
+  + `setup` (Fixture) + `expected` (strukturell mechanisch prüfbar,
+  semantisch braucht Urteilsvermögen).
+- **Frische Session pro Case, keine Ausnahme:** dieselbe Harness-
+  Entscheidung wie für Implementer/Reviewer aus Block 3 (frisch bei jedem
+  Aufruf) — hier nur konsequent auf den Eval-Runner selbst angewendet.
+  Ohne das ist das Ergebnis nicht wiederholbar, weil Case 2 vom Kontext aus
+  Case 1 abhängt.
+- **Fixture-Reset vor jedem Case:** bei Implement zusätzlich Repo-Reset
+  (`git checkout main`, alte Branches löschen), sonst kollidieren Cases.
+- **Aussagefähig heißt: nicht nur der Happy Path.** Mindestens ein
+  False-Negative-Check (das bekannte AC-Miss-Beispiel wird wirklich
+  erkannt) UND ein False-Positive-Check (eine echt vollständige
+  Implementierung wird nicht fälschlich abgelehnt) — beide gleich wichtig.
+
+**Kamils Ergänzung (~15 min):** was er in seiner eigenen Factory zusätzlich
+oder anders macht — echte Praxiserfahrung obendrauf, kein Ersatz für den
+obigen Rahmen, sondern Erweiterung.
+
+**Anwenden auf Barista (~15 min):** `06-eval/cases/review.json` live gegen
+das laufen lassen, was heute entstanden ist — drei Cases: AC-Miss wird
+erkannt, ein vollständiger Fall wird nicht abgelehnt, der dritte
+Rework-Versuch wird vom Hook aus Block 3 geblockt. Danach dieselbe
+AC-Miss-Fixture einmal durch den vollen Orchestrator-Prompt aus
+`05-orchestrator/` laufen lassen — fängt der Review-Schritt es auch auf
+Factory-Ebene ab, nicht nur isoliert?
 
 **Abschluss (~5 min):** "Grün heißt nicht fertig, grün heißt nur: niemand
 hat bisher gemerkt, dass es nicht fertig ist." — derselbe Satz wie in den
-Pitfalls von Tag 1, jetzt mit einer echten Prüfung dagegen statt nur der
-Beobachtung.
+Pitfalls von Tag 1, jetzt mit einer echten, wiederholbaren Prüfung dagegen
+statt nur der Beobachtung.
 
 ## Pause · 15:55–16:00
 

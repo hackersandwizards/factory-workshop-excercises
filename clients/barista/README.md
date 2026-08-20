@@ -136,7 +136,7 @@ Details in `day-2-agenda.md`, Block 2.
 ## Rollen
 
 - **Nils** — Lead, Tag 1 solo, Tag 2 solo bis Block 6 (15:00).
-- **Kamil** — steigt an Tag 2 ab Block 6 (15:00) ein, übernimmt den
+- **Kamil** — steigt an Tag 2 ab Block 6 (15:00) ein, ergänzt den
   Eval-Block aus eigener Erfahrung (hat Evals in seiner eigenen Factory
   bereits gebaut).
 - **Björn** — nicht Teil von Tag 2, hat aber die ursprüngliche
