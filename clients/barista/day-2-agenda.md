@@ -179,16 +179,37 @@ sondern das Werkzeug selbst:
 
 - **Loop:** ein Agent, der einen Job wiederholt — Refiner ist ein Loop
   (Ticket lesen → Subagent forken → Pfade verifizieren → zurückschreiben).
-- **Harness:** die Wände um den Loop — welche Tools er greifen darf, was er
-  sich zwischen Durchläufen merkt, was "fertig" heißt. Und hier wird's
-  konkret uneinheitlich, bewusst: Refiner bekommt ein **eigenes,
-  session-persistiertes Gedächtnis pro Ticket** (`claude --resume
-  <session-id>`, die ID liegt im Ticket) — bei einem Rework-Zyklus knüpft
-  er an seine frühere Exploration an, statt neu zu graben. Implementer und
-  Reviewer starten dagegen **jedes Mal bei null** (kein `--resume`) — für
-  Reviewer bewusst so, damit das Urteil unabhängig bleibt und nicht an der
-  eigenen Vorgeschichte klebt. Zwei Skills, zwei Harness-Entscheidungen,
-  gleiche Pipeline.
+- **Harness:** die Wände um den Loop — **wo** er läuft (Sandbox), welche
+  Tools er greifen darf, was er sich zwischen Durchläufen merkt, was
+  "fertig" heißt. Zur Sandbox-Wand ein Live-Beispiel, das euch bei der
+  Vorbereitung selbst passiert ist statt konstruiert zu sein (gern genau so
+  erzählen): ein `git push` schlägt in einer sandboxed Shell mit einer
+  kryptischen Fehlermeldung fehl ("No user exists for uid 501") — kein
+  Git-Problem, sondern die Isolation selbst, die eine Nutzer-Auflösung
+  bricht, die SSH braucht. Genau dafür ist die Sandbox da: Implement
+  arbeitet nicht direkt gegen Produktion oder mit vollem Zugriff auf die
+  eigene Maschine, sondern isoliert — Kosten dieser Isolation sind
+  Reibungsverluste wie eben dieser, kein Show-Stopper, aber real, und ihr
+  habt sie am eigenen Leib gehabt, bevor ihr sie erklärt.
+
+  Twist obendrauf, falls Zeit ist: Claude Code selbst bringt schon einen
+  eingebauten Sandbox mit (`/sandbox`-Befehl, macOS Seatbelt, Linux
+  bubblewrap+seccomp) — klingt nach "Problem gelöst". Ist es nicht ganz:
+  der deckt nur **Bash** ab. Read/Edit/Write, MCP-Server und Hooks laufen
+  weiterhin unbeschränkt auf dem Host. Für eine Factory, die vor allem
+  editiert (Implement) und über MCP mit Jira spricht, ist genau der Teil
+  nicht geschützt, der am meisten passiert. Echte Isolation für die ganze
+  Pipeline, nicht nur für Bash-Aufrufe, braucht mehr (Dev-Container, VM) —
+  dazu mehr in Block 7 bei den nächsten Schritten.
+
+  Und hier wird's konkret uneinheitlich, bewusst: Refiner bekommt ein
+  **eigenes, session-persistiertes Gedächtnis pro Ticket** (`claude
+  --resume <session-id>`, die ID liegt im Ticket) — bei einem Rework-Zyklus
+  knüpft er an seine frühere Exploration an, statt neu zu graben.
+  Implementer und Reviewer starten dagegen **jedes Mal bei null** (kein
+  `--resume`) — für Reviewer bewusst so, damit das Urteil unabhängig bleibt
+  und nicht an der eigenen Vorgeschichte klebt. Zwei Skills, zwei
+  Harness-Entscheidungen, gleiche Pipeline.
 - **Factory:** mehrere Loop+Harness-Paare — Planner, Refiner, Implementer,
   Reviewer, jeder ein eigenständiger Agent — hintereinander verkettet, das
   Ticket als dauerhaftes, crash-resistentes Übergabe-Artefakt zwischen
@@ -504,11 +525,15 @@ läuft echt durch, konvergiert echt — aber als **Basis-Version**, beliebig
 erweiterbar. Nicht als Lücke framen, sondern als Fundament: offen
 ansprechen, wohin sich das ausbauen lässt, statt es vage zu lassen:
 
-- **Lokal vs. remote:** das Team will die Factory remote laufen lassen,
-  nicht nur lokal auf einem Entwickler-Rechner — Grund dafür noch nicht
-  abschließend geklärt, gemeinsam im Raum einordnen statt vorzugeben. Zwei
-  naheliegende Optionen zum Anreißen: ein Rechner, der durchgehend läuft,
-  oder eine Cloud-Lösung (z. B. GitHub Actions als Trigger/Runner). Kein
+- **Lokal vs. remote, und echte Sandbox:** das Team will die Factory remote
+  laufen lassen, nicht nur lokal auf einem Entwickler-Rechner — Grund dafür
+  noch nicht abschließend geklärt, gemeinsam im Raum einordnen statt
+  vorzugeben. Hängt direkt mit der Sandbox-Lücke aus Block 3 zusammen: der
+  eingebaute Claude-Code-Sandbox deckt nur Bash ab, für die ganze Pipeline
+  (Edit/Write, MCP-Server) braucht's eine echte Isolation drumherum — ein
+  Dev-Container oder eine VM lösen "remote" und "sandboxed" gleichzeitig,
+  nicht zwei getrennte Probleme. Netzwerk-Egress-Regeln für Package-Installs
+  (npm/PyPI-Registries erlauben) sind dabei der übliche Stolperstein. Kein
   fertiges Rezept heute, nur der Rahmen für die nächste Iteration.
 - **Rückkanal Observability:** die Factory bekommt aktuell nichts davon
   mit, was in Produktion passiert — kein Automatismus, der Monitoring-
