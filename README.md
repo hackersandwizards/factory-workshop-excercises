@@ -1,6 +1,6 @@
 # factory-workshop-excercises
 
-Exercise repo for the **3-day "Agentic Coding" workshop** (h&w · SSW).
+Exercise repo for the **3-day "Agentic Coding" workshop** by hackers&wizards.
 
 Cloned once on the morning of Day 1. Each exercise contains: the task (`README.md`) and a starting point (`exercise/`). Reference solutions live on **per-exercise branches** (`solution/<slug>`), kept off `main` so they stay out of Claude's context while you work — see [Solutions](#solutions).
 
