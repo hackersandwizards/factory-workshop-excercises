@@ -1,5 +1,9 @@
 # factory-workshop-excercises
 
+> **Archived.** This repository holds the exercises of the three-day Agentic Coding workshop as
+> it ran. The training continues in [hackersandwizards/agentic-software-factory](https://github.com/hackersandwizards/agentic-software-factory),
+> the exercises for Agentic Software Factory: Advanced Team Training. Clone that one.
+
 Exercise repo for the **3-day "Agentic Coding" workshop** by hackers&wizards.
 
 Cloned once on the morning of Day 1. Each exercise contains: the task (`README.md`) and a starting point (`exercise/`). Reference solutions live on **per-exercise branches** (`solution/<slug>`), kept off `main` so they stay out of Claude's context while you work — see [Solutions](#solutions).
